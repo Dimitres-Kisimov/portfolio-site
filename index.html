@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dimitres Kisimov - Data &amp; AI Portfolio</title>
+  <meta name="description" content="Data &amp; AI portfolio: automation, agents, analytics/BI and applied ML. Hand-built, offline-capable, generated from projects.json.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#projects">Skip to projects</a>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Data &amp; AI &middot; Automation + Analytics</p>
+      <h1>Dimitres Kisimov</h1>
+      <p class="lede">I build the seam between prediction and decision: agentic &amp; low-code
+      automation on one side, BI / forecasting / optimization on the other - each project shipped
+      with a fair baseline, an honest evaluation, and a working offline artifact.</p>
+      <nav class="hero-links">
+        <a class="btn primary" href="https://github.com/Dimitres-Kisimov" rel="noopener">GitHub profile</a>
+        <a class="btn" href="#projects">Browse 12 projects</a>
+        <a class="btn" href="#impact">Impact chart</a>
+        <a class="btn" href="#approach">Approach</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="projects" aria-labelledby="projects-h">
+      <div class="section-head">
+        <h2 id="projects-h">Projects</h2>
+        <p class="muted">Filter by focus area. 12 projects across analytics, automation, logistics and research.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter projects by focus area">
+        <button class="filter is-active" data-filter="all" type="button">All</button><button class="filter" data-filter="flagship" type="button">Flagship</button><button class="filter" data-filter="Job#2 analytics" type="button">Analytics (Job #2)</button><button class="filter" data-filter="Job#1 automation" type="button">Automation (Job #1)</button><button class="filter" data-filter="research" type="button">Research</button>
+      </div>
+      <div class="grid" id="grid">
+        
+        <article class="card" data-role="Job#2 analytics" data-category="Analytics &amp; BI">
+          <header class="card-head">
+            <h3>revops-optimizer</h3>
+            <span class="badge">Analytics (Job #2)</span>
+          </header>
+          <p class="category">Analytics &amp; BI</p>
+          <p class="tagline">A predict-to-optimize revenue engine: forecast, elasticity and decline-risk feed four optimizers into one prescriptive plan with a single euro uplift number.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">~EUR 160k / yr</span><span class="metric-label">Modelled margin uplift</span></div><div class="metric"><span class="metric-value">0.75 (beats naive)</span><span class="metric-label">Forecast MASE</span></div><div class="metric"><span class="metric-value">0.99</span><span class="metric-label">Decline-risk ROC-AUC</span></div><div class="metric"><span class="metric-value">240 SKUs, 8 categories</span><span class="metric-label">Dataset</span></div></div>
+          <ul class="highlights"><li>The predict-to-optimize seam is the whole project: forecast replaces the raw average in the newsvendor and assortment MILP; estimated elasticity drives pricing; decline probability haircuts fragile SKUs.</li><li>Ships a Power BI star schema with real DAX, an executive PDF/PPTX deck, a styled Excel workbook, and a dependency-free offline web dashboard with a what-if slider.</li><li>Honest about the MILP-vs-greedy gap: it only opens up when a second (shelf) constraint binds.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">SciPy</span><span class="chip">MILP</span><span class="chip">Power BI / DAX</span><span class="chip">matplotlib</span><span class="chip">openpyxl</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/revops-optimizer" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#2 analytics" data-category="Analytics &amp; BI">
+          <header class="card-head">
+            <h3>sales-kpi-analytics</h3>
+            <span class="badge">Analytics (Job #2)</span>
+          </header>
+          <p class="category">Analytics &amp; BI</p>
+          <p class="tagline">24 months of B2B wholesale orders turned into the QBR leadership actually acts on: KPIs, margin bridge, ABC-XYZ, RFM, out-of-sample forecast and a replenishment buy-list.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">EUR 21.8M</span><span class="metric-label">Distributor revenue modelled</span></div><div class="metric"><span class="metric-value">EUR 2.6M / yr</span><span class="metric-label">Discount-leakage lever found</span></div><div class="metric"><span class="metric-value">pure stdlib (no pandas/numpy)</span><span class="metric-label">Analytics core</span></div><div class="metric"><span class="metric-value">rolling-origin CV, MASE</span><span class="metric-label">Forecast evaluation</span></div></div>
+          <ul class="highlights"><li>Analytics core is pure Python standard library on purpose: MASE, Croston&#x27;s method and Holt-Winters written from scratch to actually understand them.</li><li>A SQL-vs-Python cross-check asserts the revenue rollup equal to the cent, so the two engines cannot silently drift.</li><li>Honest that the 24-month series makes seasonal-naive a brutally strong baseline; the point is the honest evaluation, not a hero number.</li></ul>
+          <div class="chips"><span class="chip">Python stdlib</span><span class="chip">SQLite</span><span class="chip">matplotlib</span><span class="chip">openpyxl</span><span class="chip">python-pptx</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/sales-kpi-analytics" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#2 analytics" data-category="Analytics &amp; BI">
+          <header class="card-head">
+            <h3>distributor-intelligence-platform</h3>
+            <span class="badge">Analytics (Job #2)</span>
+          </header>
+          <p class="category">Analytics &amp; BI</p>
+          <p class="tagline">The MRO command center: describe, forecast, and optimize price/assortment/routing behind one API and one dashboard, rolled into a single annual euro uplift.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">EUR 136,972 (4.2% of GM)</span><span class="metric-label">Expected annual uplift</span></div><div class="metric"><span class="metric-value">0.38 over 9 rolling folds</span><span class="metric-label">Forecast MASE</span></div><div class="metric"><span class="metric-value">140 km / 25% per run</span><span class="metric-label">Routing saving</span></div><div class="metric"><span class="metric-value">EUR 4.79M</span><span class="metric-label">Revenue modelled (24 mo)</span></div></div>
+          <ul class="highlights"><li>Every prescriptive engine ships next to a fair baseline so the lift is always quantified (MILP vs greedy, elasticity pricing vs status quo, CVRP vs nearest-neighbour).</li><li>Flask caches every expensive computation at boot; only the parameterised optimisers recompute per request.</li><li>Honest that the assortment MILP only edges greedy by ~EUR 1k here, and that OTIF is a modelled proxy, not observed service data.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">Flask</span><span class="chip">Holt-Winters</span><span class="chip">MILP</span><span class="chip">OR-Tools CVRP</span><span class="chip">Docker</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/distributor-intelligence-platform" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#2 analytics" data-category="Logistics &amp; Optimization">
+          <header class="card-head">
+            <h3>route-optimizer</h3>
+            <span class="badge">Analytics (Job #2)</span>
+          </header>
+          <p class="category">Logistics &amp; Optimization</p>
+          <p class="tagline">Last-mile CVRP: how much does a real optimizer beat the heuristic a dispatcher reaches for by hand? Clarke-Wright savings vs Google OR-Tools, measured.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">-4.6% distance</span><span class="metric-label">OR-Tools vs Clarke-Wright</span></div><div class="metric"><span class="metric-value">-31% distance</span><span class="metric-label">OR-Tools vs naive sweep</span></div><div class="metric"><span class="metric-value">60 customers, capacity-50 vans</span><span class="metric-label">Instance</span></div><div class="metric"><span class="metric-value">~8 s on CPU</span><span class="metric-label">Solve time</span></div></div>
+          <ul class="highlights"><li>Baseline is the classic 1964 Clarke-Wright savings algorithm written from scratch; the optimizer is OR-Tools CVRP with guided local search.</li><li>Honest headline: ~5% over an already-good baseline, and on the 100-customer instance the gap shrinks to ~1% - shown rather than hidden.</li><li>Interactive offline Canvas map: depot, customers and coloured routes with a savings-heuristic overlay toggle.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">OR-Tools</span><span class="chip">NumPy</span><span class="chip">matplotlib</span><span class="chip">Canvas web map</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/route-optimizer" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#1 automation" data-category="Automation &amp; Agents">
+          <header class="card-head">
+            <h3>agentic-automation-lab</h3>
+            <span class="badge">Automation (Job #1)</span>
+          </header>
+          <p class="category">Automation &amp; Agents</p>
+          <p class="tagline">The same RFQ-intake agent built low-code (n8n) and full-code, driving identical tool logic, then scored on nine dimensions so the trade-off is measured not asserted.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">~EUR 625k / yr</span><span class="metric-label">Modelled time returned</span></div><div class="metric"><span class="metric-value">4.44 / 5</span><span class="metric-label">Scorecard (full-code)</span></div><div class="metric"><span class="metric-value">3.33 / 5</span><span class="metric-label">Scorecard (n8n)</span></div><div class="metric"><span class="metric-value">2.33 / 5</span><span class="metric-label">Scorecard (Power Automate)</span></div></div>
+          <ul class="highlights"><li>A from-scratch, provider-agnostic tool-use loop (mock or Claude) parses an RFQ email, resolves SKUs, checks stock and drafts a quote - number of tool calls varies per email, which is what makes it genuinely agentic.</li><li>Full-code and n8n drive the exact same tool functions (imported vs called over HTTP), so it is one logic compared two ways, not two implementations.</li><li>Honest that only runtime figures are measured; the 1-5 ratings are reasoned judgements with cited sources.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">LLM tool-use loop</span><span class="chip">n8n</span><span class="chip">Power Automate</span><span class="chip">Docker</span><span class="chip">pytest</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/agentic-automation-lab" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#1 automation" data-category="Automation &amp; Agents">
+          <header class="card-head">
+            <h3>agent-flow-studio</h3>
+            <span class="badge">Automation (Job #1)</span>
+          </header>
+          <p class="category">Automation &amp; Agents</p>
+          <p class="tagline">A tiny visual agent-workflow builder that runs entirely in the browser: drag nodes, wire ports, hit Run, watch a mock agent walk the graph and pick tools.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">~EUR 47k / yr</span><span class="metric-label">Modelled engineering time freed</span></div><div class="metric"><span class="metric-value">zero (no npm, no CDN)</span><span class="metric-label">Dependencies</span></div><div class="metric"><span class="metric-value">16, pure logic</span><span class="metric-label">Engine tests</span></div><div class="metric"><span class="metric-value">Trigger / Agent / Tool / Condition / Output</span><span class="metric-label">Node types</span></div></div>
+          <ul class="highlights"><li>A real topological sort (Kahn&#x27;s algorithm) with cycle detection walks the DAG, highlights each node, lights live wires and streams a trace; the same engine.js runs in the browser and the test suite.</li><li>Every connection is a hand-drawn SVG path re-attached as nodes move; a Condition node prunes the dead branch.</li><li>Small enough to read in one sitting; deliberately not competing with n8n on features.</li></ul>
+          <div class="chips"><span class="chip">Vanilla JS</span><span class="chip">SVG</span><span class="chip">Canvas</span><span class="chip">Node test runner</span><span class="chip">no build step</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/agent-flow-studio" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#1 automation" data-category="Automation &amp; Agents">
+          <header class="card-head">
+            <h3>doc-extract-agent</h3>
+            <span class="badge">Automation (Job #1)</span>
+          </header>
+          <p class="category">Automation &amp; Agents</p>
+          <p class="tagline">Unstructured business document in, structured record out: a five-stage pipeline that pulls header, line items and cross-checked totals with a confidence gate.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">~EUR 110k / yr</span><span class="metric-label">Modelled AP capacity freed</span></div><div class="metric"><span class="metric-value">~4 min to under 1 s</span><span class="metric-label">Per-document handling</span></div><div class="metric"><span class="metric-value">~60k documents / yr</span><span class="metric-label">Scenario</span></div><div class="metric"><span class="metric-value">stdlib only, no API key</span><span class="metric-label">Dependencies</span></div></div>
+          <ul class="highlights"><li>Totals are cross-checked against summed line items; only documents that reconcile and clear a confidence gate post automatically, the rest route to a human.</li><li>Two real parsing bugs (VAT amount vs percentage, Subtotal read as Total) are now pinned by regression tests; number parsing handles both EU and US decimal conventions.</li><li>Built around an LLMProvider interface: set DOCEXTRACT_PROVIDER=anthropic and each stage routes through a real model while the trace/confidence/validation logic stays put.</li></ul>
+          <div class="chips"><span class="chip">Python stdlib</span><span class="chip">regex</span><span class="chip">HTTP API</span><span class="chip">pytest</span><span class="chip">LLMProvider interface</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/doc-extract-agent" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#1 automation" data-category="Automation &amp; Agents">
+          <header class="card-head">
+            <h3>automation-roi-explorer</h3>
+            <span class="badge">Automation (Job #1)</span>
+          </header>
+          <p class="category">Automation &amp; Agents</p>
+          <p class="tagline">Which back-office process to automate first, with the math shown: hours saved, euros saved, payback and 3-year ROI, ranked so budget follows value not volume.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">EUR 383,300 / yr</span><span class="metric-label">Portfolio net saving</span></div><div class="metric"><span class="metric-value">13,460 / yr</span><span class="metric-label">Hours freed</span></div><div class="metric"><span class="metric-value">EUR 171,300/yr, 2.8-mo payback</span><span class="metric-label">Top pick (invoice matching)</span></div><div class="metric"><span class="metric-value">8%</span><span class="metric-label">Discount rate (NPV)</span></div></div>
+          <ul class="highlights"><li>The browser dashboard runs the exact same compute() as the Python CLI, line for line, so the slider and the CLI can never disagree.</li><li>Charts are hand-drawn on a Canvas element rather than Chart.js/D3, keeping the whole thing a single double-clickable offline file.</li><li>Every assumption (coverage, flat volumes, excluded change-management cost) is out in the open and adjustable - the design, not a corner cut.</li></ul>
+          <div class="chips"><span class="chip">Python stdlib</span><span class="chip">Canvas charts</span><span class="chip">offline HTML dashboard</span><span class="chip">pytest</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/automation-roi-explorer" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="research" data-category="Research">
+          <header class="card-head">
+            <h3>bio-efficient-ai</h3>
+            <span class="badge">Research</span>
+          </header>
+          <p class="category">Research</p>
+          <p class="tagline">A small honest study: circuits copied from real animal brains can be more efficient than conventional methods on narrow tasks. FlyHash vs LSH, and a liquid CfC cell vs a GRU.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">0.614 vs LSH 0.419</span><span class="metric-label">FlyHash precision@10 (128 bits)</span></div><div class="metric"><span class="metric-value">0.152 vs LSH 0.017</span><span class="metric-label">FlyHash precision@10 (4 bits)</span></div><div class="metric"><span class="metric-value">3,233 vs GRU 3,393</span><span class="metric-label">Liquid CfC params</span></div><div class="metric"><span class="metric-value">0.0142 vs GRU 0.0147</span><span class="metric-label">CfC clean MSE</span></div></div>
+          <ul class="highlights"><li>Reproduces the fruit-fly odour-hashing trick (Dasgupta, Stevens &amp; Navlakha, Science 2017) and runs the fair equal-budget comparison on real MNIST across 3 seeds; FlyHash wins at every hash length.</li><li>A from-scratch ~32-neuron closed-form continuous-time (CfC) liquid cell matches or beats a parameter-heavier GRU under input noise.</li><li>Careful about what it does NOT claim: not beating the brain, not beating HNSW/FAISS, not beating a well-tuned RNN in general - narrow, measured claims only.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">NumPy</span><span class="chip">MNIST</span><span class="chip">from-scratch implementations</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/bio-efficient-ai" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="research" data-category="Research">
+          <header class="card-head">
+            <h3>ml-models-lab</h3>
+            <span class="badge">Research</span>
+          </header>
+          <p class="category">Research</p>
+          <p class="tagline">Five small models that train locally in seconds: each takes a published method, adds one principled improvement for a B2B distributor use case, and evaluates with the metric that survives imbalance and short series.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">5 (forecast, text, anomaly, churn, elasticity)</span><span class="metric-label">Models</span></div><div class="metric"><span class="metric-value">MASE / macro-F1 / PR-AUC (not accuracy)</span><span class="metric-label">Recurring metric</span></div><div class="metric"><span class="metric-value">seconds-to-minutes on laptop CPU/GPU</span><span class="metric-label">Training</span></div><div class="metric"><span class="metric-value">PyTorch + numpy only</span><span class="metric-label">Dependencies</span></div></div>
+          <ul class="highlights"><li>The defensible thread across all five: implement the core from scratch, add one principled improvement, evaluate with a metric that survives class imbalance and zeros.</li><li>Examples: a DeepAR-lite global forecaster with a negative-binomial head for intermittent SKUs; a fastText-core text classifier with regex sub-token splitting for unseen part numbers.</li><li>Every spec is grounded in cited literature (DeepAR, N-BEATS, fastText, focal loss, ridge/lasso), deliberately the smallest credible version of each method.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">NumPy</span><span class="chip">from-scratch cores</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/ml-models-lab" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="Job#2 analytics" data-category="Logistics &amp; Optimization">
+          <header class="card-head">
+            <h3>logistics-digital-twin</h3>
+            <span class="badge">Analytics (Job #2)</span>
+          </header>
+          <p class="category">Logistics &amp; Optimization</p>
+          <p class="tagline">A warehouse digital twin: 3D bin-packing, slotting optimization and a discrete-event simulation quantifying the legacy-vs-modern operations gap. (In progress.)</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">in progress</span><span class="metric-label">3D bin-packing</span></div><div class="metric"><span class="metric-value">in progress</span><span class="metric-label">Slotting optimization</span></div><div class="metric"><span class="metric-value">in progress</span><span class="metric-label">Discrete-event simulation</span></div><div class="metric"><span class="metric-value">under construction</span><span class="metric-label">Status</span></div></div>
+          <ul class="highlights"><li>Models a warehouse as a digital twin to quantify the gap between legacy and modern operations under the same synthetic demand.</li><li>Combines 3D bin-packing and slotting optimization with a discrete-event simulation layer.</li><li>Metrics are marked in progress: the repository is still under construction at the time of writing.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">OR-Tools</span><span class="chip">SciPy</span><span class="chip">Flask</span><span class="chip">SVG / Canvas</span><span class="chip">matplotlib</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/logistics-digital-twin" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="flagship" data-category="BIM / AEC">
+          <header class="card-head">
+            <h3>3DpicToIFCModeling</h3>
+            <span class="badge">Flagship</span>
+          </header>
+          <p class="category">BIM / AEC</p>
+          <p class="tagline">SCS Studio: one photo in, a furnished German-workplace-law-compliant BIM building out. Photo to 3D to ergonomic room and whole-building layout, exported as optimized IFC4.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">805 across 8 storeys</span><span class="metric-label">Solver-placed pieces (tower)</span></div><div class="metric"><span class="metric-value">5 engines on 187 photos (F-score)</span><span class="metric-label">Engine benchmark</span></div><div class="metric"><span class="metric-value">95.9% time saved</span><span class="metric-label">Measured ROI (fleet)</span></div><div class="metric"><span class="metric-value">IFC4, German ASR, DIN 277</span><span class="metric-label">Standards</span></div></div>
+          <ul class="highlights"><li>A people-aware CP-SAT solver places furniture under real German ASR workplace law (movement areas, route widths, protected access), citing the legal text - or honestly refuses per item when there is not enough space.</li><li>Five image-to-3D engines benchmarked on 187 photos against ground-truth meshes; DINOv2 + FAISS retrieval over the ABO library; a written record of what did NOT work.</li><li>IFC4 round-trips that survive Revit, DIN 277 room classification in four languages, validated across a 15-building fleet; shipped through four tagged releases.</li></ul>
+          <div class="chips"><span class="chip">Node/Express</span><span class="chip">Vanilla JS + xeokit</span><span class="chip">Python</span><span class="chip">OR-Tools CP-SAT</span><span class="chip">TripoSR/TripoSG</span><span class="chip">DINOv2 + FAISS</span><span class="chip">IfcOpenShell</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/3DpicToIFCModeling" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section id="impact" aria-labelledby="impact-h">
+      <div class="section-head">
+        <h2 id="impact-h">Impact at a glance</h2>
+        <p class="muted">Headline annual euro figure per project that reports one - modelled/estimated
+        on <strong>synthetic data</strong>, drawn to scale (note the wide range). A bar is a claim about
+        method on generated data, not a guaranteed business outcome.</p>
+      </div>
+      <figure class="chart-wrap">
+        <div id="chart" class="chart" role="img" aria-label="Bar chart of modelled annual euro impact per project"></div>
+        <figcaption class="muted">Values are annual euro impact (uplift, net saving, freed capacity, or an
+        identified leakage lever). All synthetic/estimated. Source: each project's README.</figcaption>
+      </figure>
+    </section>
+
+    <section id="approach" aria-labelledby="approach-h">
+      <div class="section-head">
+        <h2 id="approach-h">Approach &amp; honesty</h2>
+      </div>
+      <div class="approach-grid">
+        <div class="approach-card">
+          <h3>Baseline next to every claim</h3>
+          <p>Optimizers ship beside a fair heuristic (greedy, Clarke-Wright, nearest-neighbour,
+          seasonal-naive) so any lift is quantified, and I say plainly when the gap is small.</p>
+        </div>
+        <div class="approach-card">
+          <h3>Metrics that survive reality</h3>
+          <p>MASE, macro-F1, PR-AUC and rolling-origin CV instead of accuracy or a hero number -
+          scores chosen because they hold up under class imbalance, short series and zeros.</p>
+        </div>
+        <div class="approach-card">
+          <h3>Offline, dependency-light</h3>
+          <p>Cores written from scratch, stdlib where possible, hand-drawn SVG/Canvas charts. Web
+          artifacts open straight off disk with no server, CDN or API key.</p>
+        </div>
+        <div class="approach-card">
+          <h3>Synthetic data, stated once and everywhere</h3>
+          <p>All figures are measured on synthetic, self-generated data. They demonstrate method,
+          not results on any real company's business.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <p class="note"><strong>Data note:</strong> All metrics below are measured on synthetic, self-generated data unless otherwise stated. They demonstrate method, not results on any real company&#x27;s business.</p>
+      <p class="note">Any mention of Wuerth or Schwarz/Lidl/Kaufland is independent analysis of
+      public information only - not affiliated with, endorsed by, or using internal data from those
+      companies.</p>
+      <p class="muted">Built by Dimitres Kisimov, 2026 &middot; MIT licensed &middot; original
+      hand-written HTML/CSS/JS, system fonts, no CDN, no tracking &middot;
+      <a href="https://github.com/Dimitres-Kisimov" rel="noopener">github.com/Dimitres-Kisimov</a></p>
+    </div>
+  </footer>
+
+  <script id="projects-data" type="application/json">[{"name": "revops-optimizer", "impact_eur": 159966, "role": "Job#2 analytics"}, {"name": "sales-kpi-analytics", "impact_eur": 2600000, "role": "Job#2 analytics"}, {"name": "distributor-intelligence-platform", "impact_eur": 136972, "role": "Job#2 analytics"}, {"name": "route-optimizer", "impact_eur": null, "role": "Job#2 analytics"}, {"name": "agentic-automation-lab", "impact_eur": 625000, "role": "Job#1 automation"}, {"name": "agent-flow-studio", "impact_eur": 47000, "role": "Job#1 automation"}, {"name": "doc-extract-agent", "impact_eur": 110000, "role": "Job#1 automation"}, {"name": "automation-roi-explorer", "impact_eur": 383300, "role": "Job#1 automation"}, {"name": "bio-efficient-ai", "impact_eur": null, "role": "research"}, {"name": "ml-models-lab", "impact_eur": null, "role": "research"}, {"name": "logistics-digital-twin", "impact_eur": null, "role": "Job#2 analytics"}, {"name": "3DpicToIFCModeling", "impact_eur": null, "role": "flagship"}]</script>
+  <script src="app.js"></script>
+</body>
+</html>

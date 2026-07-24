@@ -1,0 +1,258 @@
+{
+  "owner": "Dimitres-Kisimov",
+  "generated_note": "All metrics below are measured on synthetic, self-generated data unless otherwise stated. They demonstrate method, not results on any real company's business.",
+  "projects": [
+    {
+      "name": "revops-optimizer",
+      "slug": "revops-optimizer",
+      "tagline": "A predict-to-optimize revenue engine: forecast, elasticity and decline-risk feed four optimizers into one prescriptive plan with a single euro uplift number.",
+      "role": "Job#2 analytics",
+      "category": "Analytics & BI",
+      "stack": ["Python", "NumPy", "SciPy", "MILP", "Power BI / DAX", "matplotlib", "openpyxl"],
+      "metrics": [
+        {"label": "Modelled margin uplift", "value": "~EUR 160k / yr"},
+        {"label": "Forecast MASE", "value": "0.75 (beats naive)"},
+        {"label": "Decline-risk ROC-AUC", "value": "0.99"},
+        {"label": "Dataset", "value": "240 SKUs, 8 categories"}
+      ],
+      "impact_eur": 159966,
+      "highlights": [
+        "The predict-to-optimize seam is the whole project: forecast replaces the raw average in the newsvendor and assortment MILP; estimated elasticity drives pricing; decline probability haircuts fragile SKUs.",
+        "Ships a Power BI star schema with real DAX, an executive PDF/PPTX deck, a styled Excel workbook, and a dependency-free offline web dashboard with a what-if slider.",
+        "Honest about the MILP-vs-greedy gap: it only opens up when a second (shelf) constraint binds."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/revops-optimizer"
+    },
+    {
+      "name": "sales-kpi-analytics",
+      "slug": "sales-kpi-analytics",
+      "tagline": "24 months of B2B wholesale orders turned into the QBR leadership actually acts on: KPIs, margin bridge, ABC-XYZ, RFM, out-of-sample forecast and a replenishment buy-list.",
+      "role": "Job#2 analytics",
+      "category": "Analytics & BI",
+      "stack": ["Python stdlib", "SQLite", "matplotlib", "openpyxl", "python-pptx"],
+      "metrics": [
+        {"label": "Distributor revenue modelled", "value": "EUR 21.8M"},
+        {"label": "Discount-leakage lever found", "value": "EUR 2.6M / yr"},
+        {"label": "Analytics core", "value": "pure stdlib (no pandas/numpy)"},
+        {"label": "Forecast evaluation", "value": "rolling-origin CV, MASE"}
+      ],
+      "impact_eur": 2600000,
+      "highlights": [
+        "Analytics core is pure Python standard library on purpose: MASE, Croston's method and Holt-Winters written from scratch to actually understand them.",
+        "A SQL-vs-Python cross-check asserts the revenue rollup equal to the cent, so the two engines cannot silently drift.",
+        "Honest that the 24-month series makes seasonal-naive a brutally strong baseline; the point is the honest evaluation, not a hero number."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/sales-kpi-analytics"
+    },
+    {
+      "name": "distributor-intelligence-platform",
+      "slug": "distributor-intelligence-platform",
+      "tagline": "The MRO command center: describe, forecast, and optimize price/assortment/routing behind one API and one dashboard, rolled into a single annual euro uplift.",
+      "role": "Job#2 analytics",
+      "category": "Analytics & BI",
+      "stack": ["Python", "Flask", "Holt-Winters", "MILP", "OR-Tools CVRP", "Docker"],
+      "metrics": [
+        {"label": "Expected annual uplift", "value": "EUR 136,972 (4.2% of GM)"},
+        {"label": "Forecast MASE", "value": "0.38 over 9 rolling folds"},
+        {"label": "Routing saving", "value": "140 km / 25% per run"},
+        {"label": "Revenue modelled (24 mo)", "value": "EUR 4.79M"}
+      ],
+      "impact_eur": 136972,
+      "highlights": [
+        "Every prescriptive engine ships next to a fair baseline so the lift is always quantified (MILP vs greedy, elasticity pricing vs status quo, CVRP vs nearest-neighbour).",
+        "Flask caches every expensive computation at boot; only the parameterised optimisers recompute per request.",
+        "Honest that the assortment MILP only edges greedy by ~EUR 1k here, and that OTIF is a modelled proxy, not observed service data."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/distributor-intelligence-platform"
+    },
+    {
+      "name": "route-optimizer",
+      "slug": "route-optimizer",
+      "tagline": "Last-mile CVRP: how much does a real optimizer beat the heuristic a dispatcher reaches for by hand? Clarke-Wright savings vs Google OR-Tools, measured.",
+      "role": "Job#2 analytics",
+      "category": "Logistics & Optimization",
+      "stack": ["Python", "OR-Tools", "NumPy", "matplotlib", "Canvas web map"],
+      "metrics": [
+        {"label": "OR-Tools vs Clarke-Wright", "value": "-4.6% distance"},
+        {"label": "OR-Tools vs naive sweep", "value": "-31% distance"},
+        {"label": "Instance", "value": "60 customers, capacity-50 vans"},
+        {"label": "Solve time", "value": "~8 s on CPU"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "Baseline is the classic 1964 Clarke-Wright savings algorithm written from scratch; the optimizer is OR-Tools CVRP with guided local search.",
+        "Honest headline: ~5% over an already-good baseline, and on the 100-customer instance the gap shrinks to ~1% - shown rather than hidden.",
+        "Interactive offline Canvas map: depot, customers and coloured routes with a savings-heuristic overlay toggle."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/route-optimizer"
+    },
+    {
+      "name": "agentic-automation-lab",
+      "slug": "agentic-automation-lab",
+      "tagline": "The same RFQ-intake agent built low-code (n8n) and full-code, driving identical tool logic, then scored on nine dimensions so the trade-off is measured not asserted.",
+      "role": "Job#1 automation",
+      "category": "Automation & Agents",
+      "stack": ["Python", "LLM tool-use loop", "n8n", "Power Automate", "Docker", "pytest"],
+      "metrics": [
+        {"label": "Modelled time returned", "value": "~EUR 625k / yr"},
+        {"label": "Scorecard (full-code)", "value": "4.44 / 5"},
+        {"label": "Scorecard (n8n)", "value": "3.33 / 5"},
+        {"label": "Scorecard (Power Automate)", "value": "2.33 / 5"}
+      ],
+      "impact_eur": 625000,
+      "highlights": [
+        "A from-scratch, provider-agnostic tool-use loop (mock or Claude) parses an RFQ email, resolves SKUs, checks stock and drafts a quote - number of tool calls varies per email, which is what makes it genuinely agentic.",
+        "Full-code and n8n drive the exact same tool functions (imported vs called over HTTP), so it is one logic compared two ways, not two implementations.",
+        "Honest that only runtime figures are measured; the 1-5 ratings are reasoned judgements with cited sources."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/agentic-automation-lab"
+    },
+    {
+      "name": "agent-flow-studio",
+      "slug": "agent-flow-studio",
+      "tagline": "A tiny visual agent-workflow builder that runs entirely in the browser: drag nodes, wire ports, hit Run, watch a mock agent walk the graph and pick tools.",
+      "role": "Job#1 automation",
+      "category": "Automation & Agents",
+      "stack": ["Vanilla JS", "SVG", "Canvas", "Node test runner", "no build step"],
+      "metrics": [
+        {"label": "Modelled engineering time freed", "value": "~EUR 47k / yr"},
+        {"label": "Dependencies", "value": "zero (no npm, no CDN)"},
+        {"label": "Engine tests", "value": "16, pure logic"},
+        {"label": "Node types", "value": "Trigger / Agent / Tool / Condition / Output"}
+      ],
+      "impact_eur": 47000,
+      "highlights": [
+        "A real topological sort (Kahn's algorithm) with cycle detection walks the DAG, highlights each node, lights live wires and streams a trace; the same engine.js runs in the browser and the test suite.",
+        "Every connection is a hand-drawn SVG path re-attached as nodes move; a Condition node prunes the dead branch.",
+        "Small enough to read in one sitting; deliberately not competing with n8n on features."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/agent-flow-studio"
+    },
+    {
+      "name": "doc-extract-agent",
+      "slug": "doc-extract-agent",
+      "tagline": "Unstructured business document in, structured record out: a five-stage pipeline that pulls header, line items and cross-checked totals with a confidence gate.",
+      "role": "Job#1 automation",
+      "category": "Automation & Agents",
+      "stack": ["Python stdlib", "regex", "HTTP API", "pytest", "LLMProvider interface"],
+      "metrics": [
+        {"label": "Modelled AP capacity freed", "value": "~EUR 110k / yr"},
+        {"label": "Per-document handling", "value": "~4 min to under 1 s"},
+        {"label": "Scenario", "value": "~60k documents / yr"},
+        {"label": "Dependencies", "value": "stdlib only, no API key"}
+      ],
+      "impact_eur": 110000,
+      "highlights": [
+        "Totals are cross-checked against summed line items; only documents that reconcile and clear a confidence gate post automatically, the rest route to a human.",
+        "Two real parsing bugs (VAT amount vs percentage, Subtotal read as Total) are now pinned by regression tests; number parsing handles both EU and US decimal conventions.",
+        "Built around an LLMProvider interface: set DOCEXTRACT_PROVIDER=anthropic and each stage routes through a real model while the trace/confidence/validation logic stays put."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/doc-extract-agent"
+    },
+    {
+      "name": "automation-roi-explorer",
+      "slug": "automation-roi-explorer",
+      "tagline": "Which back-office process to automate first, with the math shown: hours saved, euros saved, payback and 3-year ROI, ranked so budget follows value not volume.",
+      "role": "Job#1 automation",
+      "category": "Automation & Agents",
+      "stack": ["Python stdlib", "Canvas charts", "offline HTML dashboard", "pytest"],
+      "metrics": [
+        {"label": "Portfolio net saving", "value": "EUR 383,300 / yr"},
+        {"label": "Hours freed", "value": "13,460 / yr"},
+        {"label": "Top pick (invoice matching)", "value": "EUR 171,300/yr, 2.8-mo payback"},
+        {"label": "Discount rate (NPV)", "value": "8%"}
+      ],
+      "impact_eur": 383300,
+      "highlights": [
+        "The browser dashboard runs the exact same compute() as the Python CLI, line for line, so the slider and the CLI can never disagree.",
+        "Charts are hand-drawn on a Canvas element rather than Chart.js/D3, keeping the whole thing a single double-clickable offline file.",
+        "Every assumption (coverage, flat volumes, excluded change-management cost) is out in the open and adjustable - the design, not a corner cut."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/automation-roi-explorer"
+    },
+    {
+      "name": "bio-efficient-ai",
+      "slug": "bio-efficient-ai",
+      "tagline": "A small honest study: circuits copied from real animal brains can be more efficient than conventional methods on narrow tasks. FlyHash vs LSH, and a liquid CfC cell vs a GRU.",
+      "role": "research",
+      "category": "Research",
+      "stack": ["Python", "PyTorch", "NumPy", "MNIST", "from-scratch implementations"],
+      "metrics": [
+        {"label": "FlyHash precision@10 (128 bits)", "value": "0.614 vs LSH 0.419"},
+        {"label": "FlyHash precision@10 (4 bits)", "value": "0.152 vs LSH 0.017"},
+        {"label": "Liquid CfC params", "value": "3,233 vs GRU 3,393"},
+        {"label": "CfC clean MSE", "value": "0.0142 vs GRU 0.0147"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "Reproduces the fruit-fly odour-hashing trick (Dasgupta, Stevens & Navlakha, Science 2017) and runs the fair equal-budget comparison on real MNIST across 3 seeds; FlyHash wins at every hash length.",
+        "A from-scratch ~32-neuron closed-form continuous-time (CfC) liquid cell matches or beats a parameter-heavier GRU under input noise.",
+        "Careful about what it does NOT claim: not beating the brain, not beating HNSW/FAISS, not beating a well-tuned RNN in general - narrow, measured claims only."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/bio-efficient-ai"
+    },
+    {
+      "name": "ml-models-lab",
+      "slug": "ml-models-lab",
+      "tagline": "Five small models that train locally in seconds: each takes a published method, adds one principled improvement for a B2B distributor use case, and evaluates with the metric that survives imbalance and short series.",
+      "role": "research",
+      "category": "Research",
+      "stack": ["Python", "PyTorch", "NumPy", "from-scratch cores"],
+      "metrics": [
+        {"label": "Models", "value": "5 (forecast, text, anomaly, churn, elasticity)"},
+        {"label": "Recurring metric", "value": "MASE / macro-F1 / PR-AUC (not accuracy)"},
+        {"label": "Training", "value": "seconds-to-minutes on laptop CPU/GPU"},
+        {"label": "Dependencies", "value": "PyTorch + numpy only"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "The defensible thread across all five: implement the core from scratch, add one principled improvement, evaluate with a metric that survives class imbalance and zeros.",
+        "Examples: a DeepAR-lite global forecaster with a negative-binomial head for intermittent SKUs; a fastText-core text classifier with regex sub-token splitting for unseen part numbers.",
+        "Every spec is grounded in cited literature (DeepAR, N-BEATS, fastText, focal loss, ridge/lasso), deliberately the smallest credible version of each method."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/ml-models-lab"
+    },
+    {
+      "name": "logistics-digital-twin",
+      "slug": "logistics-digital-twin",
+      "tagline": "A warehouse digital twin: 3D bin-packing, slotting optimization and a discrete-event simulation quantifying the legacy-vs-modern operations gap. (In progress.)",
+      "role": "Job#2 analytics",
+      "category": "Logistics & Optimization",
+      "stack": ["Python", "OR-Tools", "SciPy", "Flask", "SVG / Canvas", "matplotlib"],
+      "metrics": [
+        {"label": "3D bin-packing", "value": "in progress"},
+        {"label": "Slotting optimization", "value": "in progress"},
+        {"label": "Discrete-event simulation", "value": "in progress"},
+        {"label": "Status", "value": "under construction"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "Models a warehouse as a digital twin to quantify the gap between legacy and modern operations under the same synthetic demand.",
+        "Combines 3D bin-packing and slotting optimization with a discrete-event simulation layer.",
+        "Metrics are marked in progress: the repository is still under construction at the time of writing."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/logistics-digital-twin"
+    },
+    {
+      "name": "3DpicToIFCModeling",
+      "slug": "scs-studio-3d-to-ifc",
+      "tagline": "SCS Studio: one photo in, a furnished German-workplace-law-compliant BIM building out. Photo to 3D to ergonomic room and whole-building layout, exported as optimized IFC4.",
+      "role": "flagship",
+      "category": "BIM / AEC",
+      "stack": ["Node/Express", "Vanilla JS + xeokit", "Python", "OR-Tools CP-SAT", "TripoSR/TripoSG", "DINOv2 + FAISS", "IfcOpenShell"],
+      "metrics": [
+        {"label": "Solver-placed pieces (tower)", "value": "805 across 8 storeys"},
+        {"label": "Engine benchmark", "value": "5 engines on 187 photos (F-score)"},
+        {"label": "Measured ROI (fleet)", "value": "95.9% time saved"},
+        {"label": "Standards", "value": "IFC4, German ASR, DIN 277"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "A people-aware CP-SAT solver places furniture under real German ASR workplace law (movement areas, route widths, protected access), citing the legal text - or honestly refuses per item when there is not enough space.",
+        "Five image-to-3D engines benchmarked on 187 photos against ground-truth meshes; DINOv2 + FAISS retrieval over the ABO library; a written record of what did NOT work.",
+        "IFC4 round-trips that survive Revit, DIN 277 room classification in four languages, validated across a 15-building fleet; shipped through four tagged releases."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/3DpicToIFCModeling"
+    }
+  ]
+}
