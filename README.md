@@ -7,6 +7,8 @@ JavaScript framework**. Every icon is inline SVG I wrote; the "impact at a glanc
 built by hand from the DOM. The page works **fully offline** — double-click `index.html` and it
 just runs, no server and no network request.
 
+![Portfolio site — hero section and the filterable project grid](docs/img/portfolio-site.png)
+
 Live projects, with real (synthetic-data) numbers, are the point. If you want the detail, the
 two documents under [`docs/`](docs/) are the substance:
 
