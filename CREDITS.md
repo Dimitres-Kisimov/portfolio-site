@@ -1,7 +1,8 @@
 # Credits
 
 All assets in this repository are **original work by Dimitres Kisimov**, created from scratch for
-this site.
+this site — © 2026 Dimitres Kisimov, all rights reserved; third-party libraries remain under their
+own licenses.
 
 - **Code** — hand-written HTML template (`build.py`), CSS (`styles.css`) and JavaScript
   (`app.js`). No framework, no build tooling beyond Python's standard library.

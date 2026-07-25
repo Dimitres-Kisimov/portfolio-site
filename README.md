@@ -73,4 +73,4 @@ on any real company's business. Any mention of Würth or Schwarz/Lidl/Kaufland i
 analysis of public information only — not affiliated with, endorsed by, or using internal data
 from those companies. No superlatives, no "state-of-the-art" claims.
 
-— Dimitres Kisimov, 2026 · MIT licensed
+— © 2026 Dimitres Kisimov — all rights reserved; published for portfolio review. See LICENSE.
