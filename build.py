@@ -225,7 +225,10 @@ def build() -> int:
         {"name": p["name"], "impact_eur": p.get("impact_eur"), "role": p["role"]}
         for p in projects
     ]
-    data_json = json.dumps(chart_data, ensure_ascii=True)
+    # Escape every "<" to its JSON unicode-escape form (backslash-u003c) so a
+    # value can never close the inline script block; JSON.parse restores "<",
+    # so the client sees identical data.
+    data_json = json.dumps(chart_data, ensure_ascii=True).replace("<", "\\u003c")
 
     page = TEMPLATE.format(
         count=len(projects),
