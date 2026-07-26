@@ -175,22 +175,143 @@ source describes qualitatively rather than as a single number.
 - **Open improvements:** (1) consolidate the five into one comparable evaluation harness;
   (2) larger held-out sets so the class-imbalance metrics are tighter.
 
-## 11. logistics-digital-twin — Logistics & Optimization *(in progress)*
+## 11. predictive-maintenance — Applied ML & Ops
 
-- **What it is:** a warehouse digital twin — 3D bin-packing, slotting optimization and a
-  discrete-event simulation quantifying the legacy-vs-modern operations gap.
-- **Measured results:** **in progress** — the repository is still under construction; the
-  package (`logitwin/`) currently holds the synthetic data generator and packing module, with
-  the simulation and slotting layers landing next. Metrics to be reported once the DES runs.
-- **Visualizations:** a hand-built warehouse-map view and charts (inline SVG / HTML Canvas in
-  the web UI, matplotlib for the PDF) are planned/partly built; `deliverables/` is the target
-  output directory.
-- **Use case:** quantifying the throughput/cost gap between legacy and modern warehouse ops
-  under the same demand.
-- **Open improvements:** (1) publish the README with the first measured legacy-vs-modern gap;
-  (2) wire the packing + slotting output into the discrete-event simulation.
+- **What it is:** the full predictive-maintenance loop on synthetic, seeded sensor data — 20
+  machines × 60 days of correlated multivariate readings, two anomaly detectors trained on
+  healthy-only windows (numpy PCA-SVD baseline vs a small PyTorch autoencoder), a 0–100
+  health index (labelled a heuristic, **not** an RUL prediction), and CP-SAT crew scheduling
+  against a named FIFO baseline.
+- **Measured results (seed 42, default config):** PCA **ROC-AUC 0.937 / PR-AUC 0.926** vs
+  autoencoder 0.921 / 0.909; precision@50 = 1.000 for both; **10/10** faulty machines
+  detected, mean delay **3.4 days** after true onset (PCA) vs 4.8 (AE); validation FPR 5.4%
+  at a 5% budget. Scheduling: CP-SAT total weighted delay **778 vs 1013 FIFO (−23.2%)**,
+  proven **OPTIMAL**. The pre-stated policy (simpler unless beaten by >0.03 PR-AUC) picks
+  the PCA baseline — the AE lost by 0.017. 21 tests.
+- **Visualizations:** `deliverables/pdm_report.pdf` (cover with disclaimer, PR curves, health
+  ranking, before/after Gantt) and `deliverables/pdm_workbook.xlsx` (Machines, Alerts,
+  HealthIndex, Schedule, Comparison sheets).
+- **Use case:** an operations team ranking degrading machines and scheduling scarce
+  maintenance crews so the riskiest work happens first.
+- **Open improvements (its own framing):** (1) fault signatures are the author's own designs,
+  so detection delay would not transfer as-is to real telemetry; (2) the scheduling model is
+  deliberately small (single-day jobs, uniform crews, no travel/parts) to keep optimality
+  provable.
 
-## 12. 3DpicToIFCModeling (SCS Studio) — Flagship (BIM / AEC)
+## 12. fraud-detection-ops — Applied ML & Ops
+
+- **What it is:** fraud detection framed around the operational decisions, not the score —
+  from-scratch NumPy logistic regression (focal loss vs weighted BCE), Platt calibration, a
+  cost-based alert threshold, and a HiGHS-optimized analyst review queue. ~60,000 synthetic
+  time-ordered transactions at ~1.45% fraud prevalence, strict time-based split.
+- **Measured results (seed 7, test window):** **PR-AUC 0.270** vs 0.034 for the
+  amount-rule baseline and 0.013 random, with the generator's own probabilities as an oracle
+  ceiling at 0.367; ROC-AUC 0.878; **precision@100 = 0.40** at 1.4% prevalence. Calibration:
+  **ECE 0.366 → 0.003** after Platt (Brier 0.158 → 0.012). Chosen threshold t* = 0.047 is
+  **43.3% cheaper** than the naive 0.5 default ($8,841 vs $15,587) under labelled cost
+  assumptions ($8/review; missed fraud = amount). Queue: the constrained LP gives up only
+  0.6% expected value to keep all 8 merchant segments watched; top-K-by-probability recovers
+  13% less. 18 tests.
+- **Visualizations:** executive PDF + Excel workbook via `python -m fdo --deliverables`
+  (matplotlib PdfPages / openpyxl); reliability and cost-curve tables in the report.
+- **Use case:** a small analyst team deciding which alerts fire and which 100 of 608 fired
+  alerts actually get reviewed.
+- **Open improvements (its own framing):** (1) constructed fraud patterns guarantee
+  learnability in a way production never does — the oracle ceiling makes that explicit;
+  (2) no adversarial adaptation — the generator's drift is scheduled, not responsive.
+
+## 13. energy-demand-forecast — Applied ML & Ops
+
+- **What it is:** day-ahead load forecasting for a synthetic two-shift plant plus battery
+  peak shaving as a linear program — all from scratch on numpy/scipy/pandas (Holt-Winters as
+  ~30 lines of recursions, regression via `lstsq`, LP via `linprog`/HiGHS on a hand-assembled
+  constraint matrix).
+- **Measured results (rolling-origin CV, 14 folds):** temperature + calendar regression
+  **MASE 0.497 / MAPE 4.8%, 14/14 folds won** vs seasonal-naive 1.369/17.6% and Holt-Winters
+  3.040/37.6% (the H-W loss to the naive is reported, not hidden; the Boxing Day fold that
+  inflates the naive's mean to 8.40 is unpacked). Peak shaving (400 kWh / 120 kW battery,
+  2025): mean monthly peak **368.2 → 291.1 kW (−77.1 kW / 20.9%)**; **~EUR 11,100/yr**
+  demand-charge saving at an **assumed** EUR 12/kW-month tariff; the fixed evening-timer
+  baseline saved EUR 0. 19 tests.
+- **Visualizations:** `deliverables/energy_report.pdf` (6-page executive PDF with the
+  per-fold table) and `deliverables/energy_workbook.xlsx` (4 sheets).
+- **Use case:** a light-industrial site cutting the demand-charge line of its electricity
+  bill — forecast first, then dispatch the battery against the monthly peak.
+- **Open improvements (its own framing):** (1) the LP knows the month in advance, so its
+  saving is an upper bound — a deployed controller would run on the day-ahead forecast;
+  (2) the regression consumes the actual next-day temperature (a "perfect weather forecast"
+  assumption).
+
+## 14. quality-anomaly-vision — Applied ML & Ops
+
+- **What it is:** surface-defect screening on 64×64 synthetic procedural textures (scratches,
+  blobs, texture-breaks with exact ground-truth masks): local statistics vs PCA reconstruction
+  vs a small conv autoencoder (105,521 params), all trained on 600 clean images only and
+  scored by one shared rule fixed in advance.
+- **Measured results (seed 7, 300 test images):** overall ROC-AUC — local stats 0.687, PCA
+  **0.772**, autoencoder **0.779**; PR-AUC 0.812/0.813 (PCA/AE); **TPR @ 5% FPR: PCA 0.407 vs
+  AE 0.393**; mean IoU: PCA 0.207 best (random heatmaps: 0.011). The pre-stated rule
+  (simplest method within 0.02 ROC-AUC wins) **recommends PCA** — the AE is only 0.007 ahead.
+  Reported surprises: 30 epochs halves training loss but drops AUC 0.779 → 0.738 (blobs
+  0.828 → 0.610); texture-breaks are the hard class — only the AE is meaningfully above
+  chance (0.609), and the best localization on them is IoU 0.043. 15 tests, two full runs
+  bit-identical.
+- **Visualizations:** `figures/gallery.png` (per-method heatmaps), `figures/roc_pr.png`,
+  `figures/per_type_auc.png`; `deliverables/qa_defect_report.pdf` (5-page) and
+  `deliverables/qa_defect_metrics.xlsx` (incl. every raw score so the curves can be
+  re-derived).
+- **Use case:** a visual QA station deciding whether a deep model earns its keep over the
+  boring methods before anyone ships a neural network.
+- **Open improvements (its own framing):** (1) the autoencoder is untuned — a better recipe
+  might clear the 0.02 margin; (2) no lighting/perspective/focus variation, the classic real
+  failure modes, by construction.
+
+## 15. quantum-explainer — Teaching (live PWA)
+
+- **What it is:** an installable, offline-first PWA that teaches one- and two-qubit quantum
+  computing on a hand-written state-vector simulator (`sim.js`, ~300 lines, zero
+  dependencies) — circuit playground, draggable Bloch sphere (reduced states in two-qubit
+  mode), lessons including "What quantum computers are NOT". Live at
+  <https://dimitres-kisimov.github.io/quantum-explainer/>.
+- **Measured results:** **42 physics/behaviour assertions** pass in plain Node (H|0⟩ gives
+  50/50, H·H interference, Bell-state probabilities {00: 0.5, 11: 0.5} with a failing
+  factorability check, RY(π) ≈ X up to global phase, norms stay 1 to 1e-10); **57 structural
+  checks** in `tools/verify.mjs` prove the manifest, precache list and that the app references
+  **no external asset of any kind**; zero runtime network calls after first load.
+- **Visualizations:** the app itself — live amplitude/probability readouts, the canvas Bloch
+  sphere, the 1000-shot seeded histogram; original SVG-sourced icons.
+- **Use case:** a curious person building correct quantum intuition without matrix walls or
+  "tries every answer at once" hype; every claim demonstrated live or cited (Nielsen &
+  Chuang, Preskill's NISQ paper, and five more references).
+- **Open improvements:** (1) two qubits is the honest ceiling for full state display — a
+  three-qubit mode would need a different visual language; (2) lessons could link out to
+  exercises, kept offline-first.
+
+## 16. logistics-flow-studio — Logistics & Optimization (WarehouseTwin + LSP Planner)
+
+- **What it is:** a game-like warehouse digital-twin PWA (WarehouseTwin) plus a network-level
+  planning game (LSP Planner at `lsp/`) — hand-written HTML/CSS/JS, no build step, fully
+  offline, installable, with a seeded deterministic simulation, an explainable rule-based
+  advisor, an A/B predictor, a one-click layout optimizer, twelve storage systems,
+  material-flow chains, push-vs-pull inventory, and a demo/full tier gate honestly documented
+  as a showcase gate (not DRM). **All five passes shipped (P1–P5).**
+- **Measured results (pinned in `docs/MEASUREMENTS.md`, seed 42, starter demo layout):** the
+  golden-zone optimizer cuts average pick travel **36.70 → 18.85 m/order (−48.6%)**,
+  reproducible headlessly via `node measure_optimizer.js`; **ABC 80/20 beats random slotting
+  by ~21%** (46.71 → 36.70 m/order) — the measurement behind the advisor's suggestion. LSP
+  Planner's `lsp/verify.js` harness proves determinism and the level lessons (L3 pull beats
+  push, L4 a cross-dock pays off) on every run.
+- **Visualizations:** the live canvas floor plan and network map themselves;
+  `docs/img/warehousetwin.png` and `docs/img/lsp-planner.png`; KPI panels, A/B diff panels,
+  optimizer ghost previews.
+- **Use case:** learning warehouse/network trade-offs (selectivity vs density, slotting,
+  push vs pull, risk pooling, FTL vs LTL) by playing with them — a teaching twin, not a WMS.
+- **Open improvements (its own framing):** (1) simulation simplifications are documented in
+  `docs/DOMAIN_NOTES.md` — it charges handling deltas, not a full labour model; (2) the
+  Android path ships as a Bubblewrap/TWA scaffold only — signing and store submission are the
+  owner's steps.
+
+## 17. 3DpicToIFCModeling (SCS Studio) — Flagship (BIM / AEC)
 
 - **What it is:** a finished flagship — one photo in, a furnished, German-workplace-law-compliant
   BIM building out. Photo → AI 3D → ergonomic room and whole-building layout → optimized IFC4.
