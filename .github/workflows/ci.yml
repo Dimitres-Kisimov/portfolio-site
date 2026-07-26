@@ -17,14 +17,20 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install ruff
-        run: pip install ruff
+      - name: Install tooling (ruff, pytest, matplotlib)
+        run: pip install ruff pytest matplotlib
 
       - name: Lint (ruff)
         run: python -m ruff check .
 
+      - name: Tests (pytest)
+        run: python -m pytest -q
+
       - name: Regenerate the site
         run: python build.py
+
+      - name: Regenerated site must match the committed index.html
+        run: git diff --exit-code -- index.html
 
       - name: index.html must exist and be non-empty
         run: |
@@ -61,3 +67,12 @@ jobs:
           fi
           echo "Offline/copyright-free guard passed: no external asset references."
           echo "(Anchor links to github.com in rendered <a> tags are allowed and not scanned.)"
+
+      - name: Build the PDF one-pager (deliverables)
+        run: python tools/make_onepager.py
+
+      - name: PDF must exist and exceed 10 KB
+        run: |
+          size=$(wc -c < deliverables/portfolio_onepager.pdf)
+          echo "portfolio_onepager.pdf size: $size bytes"
+          test "$size" -gt 10240
