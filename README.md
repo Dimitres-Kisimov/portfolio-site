@@ -46,9 +46,13 @@ portfolio-site/
 ├── app.js                      # hand-written JS: filter + hand-built bar chart
 ├── docs/
 │   ├── RESULTS_AND_VIZ.md       # master results & visualization catalog
-│   └── MARKET_REQUESTS.md       # cited market-demand -> project mapping
-├── pyproject.toml              # ruff config
-├── .github/workflows/ci.yml    # builds + guards the offline/copyright-free rule
+│   ├── MARKET_REQUESTS.md       # cited market-demand -> project mapping
+│   └── BUSINESS_CASE.md         # why this site exists, for whom, evidence of quality
+├── tests/test_build.py         # pytest: determinism, coverage, offline guard, escaping, schema
+├── tools/make_onepager.py      # projects.json -> deliverables/portfolio_onepager.pdf
+├── deliverables/               # portfolio_onepager.pdf (generated, committed)
+├── pyproject.toml              # ruff + pytest config
+├── .github/workflows/ci.yml    # lint + tests + build + offline guard + PDF size check
 ├── LICENSE  ·  CREDITS.md  ·  .gitignore
 ```
 
