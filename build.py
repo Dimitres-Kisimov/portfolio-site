@@ -33,7 +33,9 @@ ROLE_LABELS = {
     "flagship": "Flagship",
     "Job#2 analytics": "Analytics (Job #2)",
     "Job#1 automation": "Automation (Job #1)",
+    "applied-ml": "Applied ML & Ops",
     "research": "Research",
+    "teaching": "Teaching",
 }
 
 
@@ -54,6 +56,20 @@ def render_metric(metric: dict) -> str:
     )
 
 
+def render_live_link(project: dict) -> str:
+    """Optional second anchor for projects that ship a live, hosted app."""
+    live_url = project.get("live_url")
+    if not live_url:
+        return ""
+    return f"""
+          <a class="repo-link" href="{esc(live_url)}" rel="noopener">Open the live app
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>"""
+
+
 def render_card(project: dict) -> str:
     role = project["role"]
     role_label = ROLE_LABELS.get(role, role)
@@ -61,6 +77,7 @@ def render_card(project: dict) -> str:
     metrics = "".join(render_metric(m) for m in project["metrics"][:4])
     highlights = "".join(f"<li>{esc(h)}</li>" for h in project["highlights"])
     repo = esc(project["repo_url"])
+    live_link = render_live_link(project)
     return f"""
         <article class="card" data-role="{esc(role)}" data-category="{esc(project['category'])}">
           <header class="card-head">
@@ -77,7 +94,7 @@ def render_card(project: dict) -> str:
               <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
               <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
             </svg>
-          </a>
+          </a>{live_link}
         </article>"""
 
 
@@ -122,7 +139,7 @@ TEMPLATE = """<!doctype html>
     <section id="projects" aria-labelledby="projects-h">
       <div class="section-head">
         <h2 id="projects-h">Projects</h2>
-        <p class="muted">Filter by focus area. {count} projects across analytics, automation, logistics and research.</p>
+        <p class="muted">Filter by focus area. {count} projects across analytics, automation, logistics, applied ML and research.</p>
       </div>
       <div class="filters" role="group" aria-label="Filter projects by focus area">
         {filters}
