@@ -213,25 +213,131 @@
       "repo_url": "https://github.com/Dimitres-Kisimov/ml-models-lab"
     },
     {
-      "name": "logistics-digital-twin",
-      "slug": "logistics-digital-twin",
-      "tagline": "A warehouse digital twin: 3D bin-packing, slotting optimization and a discrete-event simulation quantifying the legacy-vs-modern operations gap. (In progress.)",
-      "role": "Job#2 analytics",
-      "category": "Logistics & Optimization",
-      "stack": ["Python", "OR-Tools", "SciPy", "Flask", "SVG / Canvas", "matplotlib"],
+      "name": "predictive-maintenance",
+      "slug": "predictive-maintenance",
+      "tagline": "The full predictive-maintenance loop: watch machine sensors, flag drifting machines with two honestly compared detectors, rank urgency, then CP-SAT-schedule scarce crews against a named FIFO baseline.",
+      "role": "applied-ml",
+      "category": "Applied ML & Operations",
+      "stack": ["Python", "NumPy", "PyTorch", "CP-SAT", "matplotlib PDF", "openpyxl"],
       "metrics": [
-        {"label": "3D bin-packing", "value": "in progress"},
-        {"label": "Slotting optimization", "value": "in progress"},
-        {"label": "Discrete-event simulation", "value": "in progress"},
-        {"label": "Status", "value": "under construction"}
+        {"label": "Detection ROC-AUC", "value": "PCA 0.937 vs AE 0.921"},
+        {"label": "Faulty machines caught", "value": "10/10 (mean delay 3.4 days)"},
+        {"label": "CP-SAT vs FIFO weighted delay", "value": "778 vs 1013 (-23.2%)"},
+        {"label": "Schedule optimality", "value": "proven OPTIMAL by the solver"}
       ],
       "impact_eur": null,
       "highlights": [
-        "Models a warehouse as a digital twin to quantify the gap between legacy and modern operations under the same synthetic demand.",
-        "Combines 3D bin-packing and slotting optimization with a discrete-event simulation layer.",
-        "Metrics are marked in progress: the repository is still under construction at the time of writing."
+        "Two detectors trained on healthy-only windows and compared honestly: a numpy PCA-SVD baseline and a small PyTorch autoencoder. The policy was fixed before measuring - recommend the simpler detector unless the other wins by more than 0.03 PR-AUC. The AE lost by 0.017, so PCA is the recommendation.",
+        "CP-SAT turns the urgency list into a 2-crew, 4-day schedule and proves it OPTIMAL: total weighted delay 778 vs 1013 for the FIFO baseline, a 23.2% reduction.",
+        "The 0-100 health index is labelled a heuristic degradation score, not a remaining-useful-life prediction; a leakage test rebuilds features on truncated data and asserts they are identical."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/logistics-digital-twin"
+      "repo_url": "https://github.com/Dimitres-Kisimov/predictive-maintenance"
+    },
+    {
+      "name": "fraud-detection-ops",
+      "slug": "fraud-detection-ops",
+      "tagline": "The model's score is not the product - the decisions are: from-scratch logistic regression, Platt calibration, a cost-swept alert threshold and a constrained analyst review queue, each measured against honest baselines.",
+      "role": "applied-ml",
+      "category": "Applied ML & Operations",
+      "stack": ["Python", "NumPy (from scratch)", "SciPy HiGHS", "matplotlib", "openpyxl", "pytest"],
+      "metrics": [
+        {"label": "PR-AUC (test)", "value": "0.270 vs 0.034 rule baseline"},
+        {"label": "Precision@100", "value": "0.40 at 1.4% prevalence"},
+        {"label": "Calibration ECE", "value": "0.366 -> 0.003 after Platt"},
+        {"label": "Cost vs naive 0.5 threshold", "value": "-43.3% (assumed costs)"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "Everything statistical is from scratch in NumPy - logistic regression, focal loss, Platt scaling, PR-AUC/ROC-AUC/Brier/ECE - unit-tested down to a finite-difference gradient check; the generator's own probabilities give an oracle ceiling (PR-AUC 0.367) reported next to the model's 0.270.",
+        "Calibration is the hinge: raw ECE 0.366 falls to 0.003 after Platt, which is what lets the cost-swept threshold (t* = 0.047, 43.3% cheaper than the 0.5 default under stated assumptions) and the HiGHS review-queue optimizer consume the probabilities.",
+        "Honest that without coverage floors the LP's optimum is exactly top-K by p x amount - verified numerically on every run; the solver earns its keep only when every merchant segment must stay watched (0.6% expected value given up to watch all 8)."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/fraud-detection-ops"
+    },
+    {
+      "name": "energy-demand-forecast",
+      "slug": "energy-demand-forecast",
+      "tagline": "Forecast a plant's hourly load a day ahead with honest rolling-origin CV, then dispatch a battery against the monthly demand-charge peak with a hand-assembled linear program - the timer baseline saves exactly EUR 0.",
+      "role": "applied-ml",
+      "category": "Applied ML & Operations",
+      "stack": ["Python", "NumPy", "SciPy linprog (HiGHS)", "pandas", "matplotlib", "openpyxl"],
+      "metrics": [
+        {"label": "Forecast MASE", "value": "0.497 (naive 1.369), 14/14 folds won"},
+        {"label": "Day-ahead MAPE", "value": "4.8%"},
+        {"label": "Peak reduction (battery LP)", "value": "77.1 kW / 20.9% mean monthly"},
+        {"label": "Modelled saving", "value": "~EUR 11,100/yr at an assumed tariff"}
+      ],
+      "impact_eur": 11100,
+      "highlights": [
+        "Written out from scratch on numpy/scipy/pandas: Holt-Winters as ~30 lines of recursions, the regression as numpy.linalg.lstsq, and the peak-shaving LP as a hand-assembled constraint matrix for HiGHS.",
+        "Reports its own losses: Holt-Winters (MASE 3.040) loses to the seasonal-naive baseline and the README says so; the single Boxing Day fold that inflates the naive's mean (MASE 8.40) is unpacked rather than averaged away.",
+        "The fixed evening-timer baseline saves EUR 0 on this mid-morning-peaking site - when to discharge is the entire product - and the LP's perfect month-ahead foresight is flagged as an upper bound, with the EUR 12/kW-month tariff labelled an assumption."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/energy-demand-forecast"
+    },
+    {
+      "name": "quality-anomaly-vision",
+      "slug": "quality-anomaly-vision",
+      "tagline": "At what point does the neural network beat the boring methods? Three surface-defect detectors on synthetic textures, one shared scoring rule fixed in advance, and a pre-stated complexity rule that picks the winner.",
+      "role": "applied-ml",
+      "category": "Applied ML & Operations",
+      "stack": ["Python", "NumPy", "SciPy ndimage", "PyTorch", "matplotlib", "pytest"],
+      "metrics": [
+        {"label": "Best ROC-AUC", "value": "AE 0.779 vs PCA 0.772"},
+        {"label": "Recommended method", "value": "PCA (pre-stated 0.02 rule)"},
+        {"label": "TPR @ 5% FPR", "value": "PCA 0.407 vs AE 0.393"},
+        {"label": "Dataset", "value": "600 clean train / 300 test, 64x64"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "One shared image-level scoring rule (mean of the hottest 2% of heatmap pixels) fixed before any results, and a pre-stated recommendation rule: the simplest method within 0.02 ROC-AUC of the best wins - so PCA reconstruction beats the 0.007-ahead autoencoder.",
+        "Unexpected finding, reported: training the autoencoder longer made it worse (overall AUC 0.779 -> 0.738 at 30 epochs, blob detection 0.828 -> 0.610) because good reconstruction erases the anomaly signal.",
+        "Texture-breaks split the field: the autoencoder is the only method meaningfully above chance on them (0.609) and nobody can localize them (best mean IoU 0.043 vs 0.011 for random heatmaps); ROC/PR/IoU are implemented from scratch in numpy, no scikit-learn anywhere."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/quality-anomaly-vision"
+    },
+    {
+      "name": "quantum-explainer",
+      "slug": "quantum-explainer",
+      "tagline": "An installable, offline-first web app that teaches one- and two-qubit quantum computing on a real hand-written simulator - and says out loud what quantum computers cannot do.",
+      "role": "teaching",
+      "category": "Education & Simulation",
+      "stack": ["Vanilla JS", "Canvas", "PWA / service worker", "Node test harness", "zero dependencies"],
+      "metrics": [
+        {"label": "Simulator", "value": "~300 lines, zero dependencies"},
+        {"label": "Physics assertions", "value": "42 (plain Node)"},
+        {"label": "Structural / offline checks", "value": "57 (tools/verify.mjs)"},
+        {"label": "Runtime network calls", "value": "0 - installable PWA"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "A hand-written state-vector simulator (sim.js, ~300 lines of pure functions): complex arithmetic, H/X/Y/Z/S/T gates, RX/RY/RZ rotations, CNOT, Born-rule measurement with a seeded PRNG, and an explicit non-factorability entanglement check.",
+        "The two-qubit Bloch view draws each qubit's reduced state, so both arrows visibly collapse to the centre of the sphere when a CNOT entangles the qubits.",
+        "Refuses to hype: a 'What quantum computers are NOT' section covers the parallel-worlds myth, NISQ-era limits, decoherence and error-correction overhead - every physics claim is demonstrated live on the simulator or cited to a real source."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/quantum-explainer",
+      "live_url": "https://dimitres-kisimov.github.io/quantum-explainer/"
+    },
+    {
+      "name": "logistics-flow-studio",
+      "slug": "logistics-flow-studio",
+      "tagline": "WarehouseTwin + LSP Planner: a game-like warehouse digital-twin PWA and a network-planning game - seeded deterministic simulation, an explainable advisor, and a one-click layout optimizer. All five passes shipped.",
+      "role": "Job#2 analytics",
+      "category": "Logistics & Optimization",
+      "stack": ["Vanilla JS", "HTML5 Canvas", "PWA / service worker", "Node verify harness", "Bubblewrap TWA scaffold"],
+      "metrics": [
+        {"label": "Optimizer pick travel", "value": "36.70 -> 18.85 m/order (-48.6%)"},
+        {"label": "ABC 80/20 vs random slotting", "value": "~21% less pick travel"},
+        {"label": "Storage systems modelled", "value": "12"},
+        {"label": "Passes shipped", "value": "P1-P5 (WarehouseTwin + LSP Planner)"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "The one-click golden-zone optimizer previews its proposal as dashed ghosts, then measures it with the real simulation at the same seed: 36.70 -> 18.85 m/order (-48.6%) average pick travel on the starter demo layout - pinned in docs/MEASUREMENTS.md and reproducible headlessly via node measure_optimizer.js.",
+        "Pass 5 zooms out to the network: LSP Planner scores five levels on cost/service/CO2 with base-stock safety stock and square-root risk pooling; a Node harness proves determinism and the pull-beats-push and cross-dock lessons on every run.",
+        "Honest labels throughout: DIN 15185 'informed by, not certified'; the demo/full tier gate is documented as a client-side showcase gate, not DRM; every headline number is pinned with the exact config that reproduces it."
+      ],
+      "repo_url": "https://github.com/Dimikissimov/logistics-flow-studio"
     },
     {
       "name": "3DpicToIFCModeling",

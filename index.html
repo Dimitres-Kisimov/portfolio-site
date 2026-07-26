@@ -18,7 +18,7 @@
       with a fair baseline, an honest evaluation, and a working offline artifact.</p>
       <nav class="hero-links">
         <a class="btn primary" href="https://github.com/Dimitres-Kisimov" rel="noopener">GitHub profile</a>
-        <a class="btn" href="#projects">Browse 12 projects</a>
+        <a class="btn" href="#projects">Browse 17 projects</a>
         <a class="btn" href="#impact">Impact chart</a>
         <a class="btn" href="#approach">Approach</a>
       </nav>
@@ -29,10 +29,10 @@
     <section id="projects" aria-labelledby="projects-h">
       <div class="section-head">
         <h2 id="projects-h">Projects</h2>
-        <p class="muted">Filter by focus area. 12 projects across analytics, automation, logistics and research.</p>
+        <p class="muted">Filter by focus area. 17 projects across analytics, automation, logistics, applied ML and research.</p>
       </div>
       <div class="filters" role="group" aria-label="Filter projects by focus area">
-        <button class="filter is-active" data-filter="all" type="button">All</button><button class="filter" data-filter="flagship" type="button">Flagship</button><button class="filter" data-filter="Job#2 analytics" type="button">Analytics (Job #2)</button><button class="filter" data-filter="Job#1 automation" type="button">Automation (Job #1)</button><button class="filter" data-filter="research" type="button">Research</button>
+        <button class="filter is-active" data-filter="all" type="button">All</button><button class="filter" data-filter="flagship" type="button">Flagship</button><button class="filter" data-filter="Job#2 analytics" type="button">Analytics (Job #2)</button><button class="filter" data-filter="Job#1 automation" type="button">Automation (Job #1)</button><button class="filter" data-filter="applied-ml" type="button">Applied ML &amp; Ops</button><button class="filter" data-filter="research" type="button">Research</button><button class="filter" data-filter="teaching" type="button">Teaching</button>
       </div>
       <div class="grid" id="grid">
         
@@ -216,17 +216,113 @@
           </a>
         </article>
 
+        <article class="card" data-role="applied-ml" data-category="Applied ML &amp; Operations">
+          <header class="card-head">
+            <h3>predictive-maintenance</h3>
+            <span class="badge">Applied ML &amp; Ops</span>
+          </header>
+          <p class="category">Applied ML &amp; Operations</p>
+          <p class="tagline">The full predictive-maintenance loop: watch machine sensors, flag drifting machines with two honestly compared detectors, rank urgency, then CP-SAT-schedule scarce crews against a named FIFO baseline.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">PCA 0.937 vs AE 0.921</span><span class="metric-label">Detection ROC-AUC</span></div><div class="metric"><span class="metric-value">10/10 (mean delay 3.4 days)</span><span class="metric-label">Faulty machines caught</span></div><div class="metric"><span class="metric-value">778 vs 1013 (-23.2%)</span><span class="metric-label">CP-SAT vs FIFO weighted delay</span></div><div class="metric"><span class="metric-value">proven OPTIMAL by the solver</span><span class="metric-label">Schedule optimality</span></div></div>
+          <ul class="highlights"><li>Two detectors trained on healthy-only windows and compared honestly: a numpy PCA-SVD baseline and a small PyTorch autoencoder. The policy was fixed before measuring - recommend the simpler detector unless the other wins by more than 0.03 PR-AUC. The AE lost by 0.017, so PCA is the recommendation.</li><li>CP-SAT turns the urgency list into a 2-crew, 4-day schedule and proves it OPTIMAL: total weighted delay 778 vs 1013 for the FIFO baseline, a 23.2% reduction.</li><li>The 0-100 health index is labelled a heuristic degradation score, not a remaining-useful-life prediction; a leakage test rebuilds features on truncated data and asserts they are identical.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">PyTorch</span><span class="chip">CP-SAT</span><span class="chip">matplotlib PDF</span><span class="chip">openpyxl</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/predictive-maintenance" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="applied-ml" data-category="Applied ML &amp; Operations">
+          <header class="card-head">
+            <h3>fraud-detection-ops</h3>
+            <span class="badge">Applied ML &amp; Ops</span>
+          </header>
+          <p class="category">Applied ML &amp; Operations</p>
+          <p class="tagline">The model&#x27;s score is not the product - the decisions are: from-scratch logistic regression, Platt calibration, a cost-swept alert threshold and a constrained analyst review queue, each measured against honest baselines.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">0.270 vs 0.034 rule baseline</span><span class="metric-label">PR-AUC (test)</span></div><div class="metric"><span class="metric-value">0.40 at 1.4% prevalence</span><span class="metric-label">Precision@100</span></div><div class="metric"><span class="metric-value">0.366 -&gt; 0.003 after Platt</span><span class="metric-label">Calibration ECE</span></div><div class="metric"><span class="metric-value">-43.3% (assumed costs)</span><span class="metric-label">Cost vs naive 0.5 threshold</span></div></div>
+          <ul class="highlights"><li>Everything statistical is from scratch in NumPy - logistic regression, focal loss, Platt scaling, PR-AUC/ROC-AUC/Brier/ECE - unit-tested down to a finite-difference gradient check; the generator&#x27;s own probabilities give an oracle ceiling (PR-AUC 0.367) reported next to the model&#x27;s 0.270.</li><li>Calibration is the hinge: raw ECE 0.366 falls to 0.003 after Platt, which is what lets the cost-swept threshold (t* = 0.047, 43.3% cheaper than the 0.5 default under stated assumptions) and the HiGHS review-queue optimizer consume the probabilities.</li><li>Honest that without coverage floors the LP&#x27;s optimum is exactly top-K by p x amount - verified numerically on every run; the solver earns its keep only when every merchant segment must stay watched (0.6% expected value given up to watch all 8).</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">NumPy (from scratch)</span><span class="chip">SciPy HiGHS</span><span class="chip">matplotlib</span><span class="chip">openpyxl</span><span class="chip">pytest</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/fraud-detection-ops" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="applied-ml" data-category="Applied ML &amp; Operations">
+          <header class="card-head">
+            <h3>energy-demand-forecast</h3>
+            <span class="badge">Applied ML &amp; Ops</span>
+          </header>
+          <p class="category">Applied ML &amp; Operations</p>
+          <p class="tagline">Forecast a plant&#x27;s hourly load a day ahead with honest rolling-origin CV, then dispatch a battery against the monthly demand-charge peak with a hand-assembled linear program - the timer baseline saves exactly EUR 0.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">0.497 (naive 1.369), 14/14 folds won</span><span class="metric-label">Forecast MASE</span></div><div class="metric"><span class="metric-value">4.8%</span><span class="metric-label">Day-ahead MAPE</span></div><div class="metric"><span class="metric-value">77.1 kW / 20.9% mean monthly</span><span class="metric-label">Peak reduction (battery LP)</span></div><div class="metric"><span class="metric-value">~EUR 11,100/yr at an assumed tariff</span><span class="metric-label">Modelled saving</span></div></div>
+          <ul class="highlights"><li>Written out from scratch on numpy/scipy/pandas: Holt-Winters as ~30 lines of recursions, the regression as numpy.linalg.lstsq, and the peak-shaving LP as a hand-assembled constraint matrix for HiGHS.</li><li>Reports its own losses: Holt-Winters (MASE 3.040) loses to the seasonal-naive baseline and the README says so; the single Boxing Day fold that inflates the naive&#x27;s mean (MASE 8.40) is unpacked rather than averaged away.</li><li>The fixed evening-timer baseline saves EUR 0 on this mid-morning-peaking site - when to discharge is the entire product - and the LP&#x27;s perfect month-ahead foresight is flagged as an upper bound, with the EUR 12/kW-month tariff labelled an assumption.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">SciPy linprog (HiGHS)</span><span class="chip">pandas</span><span class="chip">matplotlib</span><span class="chip">openpyxl</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/energy-demand-forecast" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="applied-ml" data-category="Applied ML &amp; Operations">
+          <header class="card-head">
+            <h3>quality-anomaly-vision</h3>
+            <span class="badge">Applied ML &amp; Ops</span>
+          </header>
+          <p class="category">Applied ML &amp; Operations</p>
+          <p class="tagline">At what point does the neural network beat the boring methods? Three surface-defect detectors on synthetic textures, one shared scoring rule fixed in advance, and a pre-stated complexity rule that picks the winner.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">AE 0.779 vs PCA 0.772</span><span class="metric-label">Best ROC-AUC</span></div><div class="metric"><span class="metric-value">PCA (pre-stated 0.02 rule)</span><span class="metric-label">Recommended method</span></div><div class="metric"><span class="metric-value">PCA 0.407 vs AE 0.393</span><span class="metric-label">TPR @ 5% FPR</span></div><div class="metric"><span class="metric-value">600 clean train / 300 test, 64x64</span><span class="metric-label">Dataset</span></div></div>
+          <ul class="highlights"><li>One shared image-level scoring rule (mean of the hottest 2% of heatmap pixels) fixed before any results, and a pre-stated recommendation rule: the simplest method within 0.02 ROC-AUC of the best wins - so PCA reconstruction beats the 0.007-ahead autoencoder.</li><li>Unexpected finding, reported: training the autoencoder longer made it worse (overall AUC 0.779 -&gt; 0.738 at 30 epochs, blob detection 0.828 -&gt; 0.610) because good reconstruction erases the anomaly signal.</li><li>Texture-breaks split the field: the autoencoder is the only method meaningfully above chance on them (0.609) and nobody can localize them (best mean IoU 0.043 vs 0.011 for random heatmaps); ROC/PR/IoU are implemented from scratch in numpy, no scikit-learn anywhere.</li></ul>
+          <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">SciPy ndimage</span><span class="chip">PyTorch</span><span class="chip">matplotlib</span><span class="chip">pytest</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/quality-anomaly-vision" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card" data-role="teaching" data-category="Education &amp; Simulation">
+          <header class="card-head">
+            <h3>quantum-explainer</h3>
+            <span class="badge">Teaching</span>
+          </header>
+          <p class="category">Education &amp; Simulation</p>
+          <p class="tagline">An installable, offline-first web app that teaches one- and two-qubit quantum computing on a real hand-written simulator - and says out loud what quantum computers cannot do.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">~300 lines, zero dependencies</span><span class="metric-label">Simulator</span></div><div class="metric"><span class="metric-value">42 (plain Node)</span><span class="metric-label">Physics assertions</span></div><div class="metric"><span class="metric-value">57 (tools/verify.mjs)</span><span class="metric-label">Structural / offline checks</span></div><div class="metric"><span class="metric-value">0 - installable PWA</span><span class="metric-label">Runtime network calls</span></div></div>
+          <ul class="highlights"><li>A hand-written state-vector simulator (sim.js, ~300 lines of pure functions): complex arithmetic, H/X/Y/Z/S/T gates, RX/RY/RZ rotations, CNOT, Born-rule measurement with a seeded PRNG, and an explicit non-factorability entanglement check.</li><li>The two-qubit Bloch view draws each qubit&#x27;s reduced state, so both arrows visibly collapse to the centre of the sphere when a CNOT entangles the qubits.</li><li>Refuses to hype: a &#x27;What quantum computers are NOT&#x27; section covers the parallel-worlds myth, NISQ-era limits, decoherence and error-correction overhead - every physics claim is demonstrated live on the simulator or cited to a real source.</li></ul>
+          <div class="chips"><span class="chip">Vanilla JS</span><span class="chip">Canvas</span><span class="chip">PWA / service worker</span><span class="chip">Node test harness</span><span class="chip">zero dependencies</span></div>
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/quantum-explainer" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+          <a class="repo-link" href="https://dimitres-kisimov.github.io/quantum-explainer/" rel="noopener">Open the live app
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </article>
+
         <article class="card" data-role="Job#2 analytics" data-category="Logistics &amp; Optimization">
           <header class="card-head">
-            <h3>logistics-digital-twin</h3>
+            <h3>logistics-flow-studio</h3>
             <span class="badge">Analytics (Job #2)</span>
           </header>
           <p class="category">Logistics &amp; Optimization</p>
-          <p class="tagline">A warehouse digital twin: 3D bin-packing, slotting optimization and a discrete-event simulation quantifying the legacy-vs-modern operations gap. (In progress.)</p>
-          <div class="metrics"><div class="metric"><span class="metric-value">in progress</span><span class="metric-label">3D bin-packing</span></div><div class="metric"><span class="metric-value">in progress</span><span class="metric-label">Slotting optimization</span></div><div class="metric"><span class="metric-value">in progress</span><span class="metric-label">Discrete-event simulation</span></div><div class="metric"><span class="metric-value">under construction</span><span class="metric-label">Status</span></div></div>
-          <ul class="highlights"><li>Models a warehouse as a digital twin to quantify the gap between legacy and modern operations under the same synthetic demand.</li><li>Combines 3D bin-packing and slotting optimization with a discrete-event simulation layer.</li><li>Metrics are marked in progress: the repository is still under construction at the time of writing.</li></ul>
-          <div class="chips"><span class="chip">Python</span><span class="chip">OR-Tools</span><span class="chip">SciPy</span><span class="chip">Flask</span><span class="chip">SVG / Canvas</span><span class="chip">matplotlib</span></div>
-          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/logistics-digital-twin" rel="noopener">View repository on GitHub
+          <p class="tagline">WarehouseTwin + LSP Planner: a game-like warehouse digital-twin PWA and a network-planning game - seeded deterministic simulation, an explainable advisor, and a one-click layout optimizer. All five passes shipped.</p>
+          <div class="metrics"><div class="metric"><span class="metric-value">36.70 -&gt; 18.85 m/order (-48.6%)</span><span class="metric-label">Optimizer pick travel</span></div><div class="metric"><span class="metric-value">~21% less pick travel</span><span class="metric-label">ABC 80/20 vs random slotting</span></div><div class="metric"><span class="metric-value">12</span><span class="metric-label">Storage systems modelled</span></div><div class="metric"><span class="metric-value">P1-P5 (WarehouseTwin + LSP Planner)</span><span class="metric-label">Passes shipped</span></div></div>
+          <ul class="highlights"><li>The one-click golden-zone optimizer previews its proposal as dashed ghosts, then measures it with the real simulation at the same seed: 36.70 -&gt; 18.85 m/order (-48.6%) average pick travel on the starter demo layout - pinned in docs/MEASUREMENTS.md and reproducible headlessly via node measure_optimizer.js.</li><li>Pass 5 zooms out to the network: LSP Planner scores five levels on cost/service/CO2 with base-stock safety stock and square-root risk pooling; a Node harness proves determinism and the pull-beats-push and cross-dock lessons on every run.</li><li>Honest labels throughout: DIN 15185 &#x27;informed by, not certified&#x27;; the demo/full tier gate is documented as a client-side showcase gate, not DRM; every headline number is pinned with the exact config that reproduces it.</li></ul>
+          <div class="chips"><span class="chip">Vanilla JS</span><span class="chip">HTML5 Canvas</span><span class="chip">PWA / service worker</span><span class="chip">Node verify harness</span><span class="chip">Bubblewrap TWA scaffold</span></div>
+          <a class="repo-link" href="https://github.com/Dimikissimov/logistics-flow-studio" rel="noopener">View repository on GitHub
             <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
               <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
               <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
@@ -309,7 +405,7 @@
     </div>
   </footer>
 
-  <script id="projects-data" type="application/json">[{"name": "revops-optimizer", "impact_eur": 159966, "role": "Job#2 analytics"}, {"name": "sales-kpi-analytics", "impact_eur": 2600000, "role": "Job#2 analytics"}, {"name": "distributor-intelligence-platform", "impact_eur": 136972, "role": "Job#2 analytics"}, {"name": "route-optimizer", "impact_eur": null, "role": "Job#2 analytics"}, {"name": "agentic-automation-lab", "impact_eur": 625000, "role": "Job#1 automation"}, {"name": "agent-flow-studio", "impact_eur": 47000, "role": "Job#1 automation"}, {"name": "doc-extract-agent", "impact_eur": 110000, "role": "Job#1 automation"}, {"name": "automation-roi-explorer", "impact_eur": 383300, "role": "Job#1 automation"}, {"name": "bio-efficient-ai", "impact_eur": null, "role": "research"}, {"name": "ml-models-lab", "impact_eur": null, "role": "research"}, {"name": "logistics-digital-twin", "impact_eur": null, "role": "Job#2 analytics"}, {"name": "3DpicToIFCModeling", "impact_eur": null, "role": "flagship"}]</script>
+  <script id="projects-data" type="application/json">[{"name": "revops-optimizer", "impact_eur": 159966, "role": "Job#2 analytics"}, {"name": "sales-kpi-analytics", "impact_eur": 2600000, "role": "Job#2 analytics"}, {"name": "distributor-intelligence-platform", "impact_eur": 136972, "role": "Job#2 analytics"}, {"name": "route-optimizer", "impact_eur": null, "role": "Job#2 analytics"}, {"name": "agentic-automation-lab", "impact_eur": 625000, "role": "Job#1 automation"}, {"name": "agent-flow-studio", "impact_eur": 47000, "role": "Job#1 automation"}, {"name": "doc-extract-agent", "impact_eur": 110000, "role": "Job#1 automation"}, {"name": "automation-roi-explorer", "impact_eur": 383300, "role": "Job#1 automation"}, {"name": "bio-efficient-ai", "impact_eur": null, "role": "research"}, {"name": "ml-models-lab", "impact_eur": null, "role": "research"}, {"name": "predictive-maintenance", "impact_eur": null, "role": "applied-ml"}, {"name": "fraud-detection-ops", "impact_eur": null, "role": "applied-ml"}, {"name": "energy-demand-forecast", "impact_eur": 11100, "role": "applied-ml"}, {"name": "quality-anomaly-vision", "impact_eur": null, "role": "applied-ml"}, {"name": "quantum-explainer", "impact_eur": null, "role": "teaching"}, {"name": "logistics-flow-studio", "impact_eur": null, "role": "Job#2 analytics"}, {"name": "3DpicToIFCModeling", "impact_eur": null, "role": "flagship"}]</script>
   <script src="app.js"></script>
 </body>
 </html>
