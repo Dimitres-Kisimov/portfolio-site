@@ -5,9 +5,11 @@ records: what it is, the measured result(s), the visualization(s) it produces (w
 output file names), the use case, and 1–2 honest open improvements.
 
 > **All metrics are measured on synthetic, self-generated data** (except FlyHash, which
-> uses public MNIST). They demonstrate method, not results on any real company's business.
-> The SCS Studio / 3D-to-IFC figures are described from that project's public framing.
-> Mentions of Würth or Schwarz are independent analysis of public information, not
+> uses public MNIST, and `decision-chain`, which runs the real public UCI Online Retail II
+> dataset through a provenance-tagged pipeline — its real and synthetic-assigned quantities
+> are labelled per line). They demonstrate method, not results on any real company's
+> business. The SCS Studio / 3D-to-IFC figures are described from that project's public
+> framing. Mentions of Würth or Schwarz are independent analysis of public information, not
 > affiliated.
 
 Filenames are as reported in each source repository's README; a `—` marks a figure the
@@ -294,7 +296,15 @@ source describes qualitatively rather than as a single number.
   offline, installable, with a seeded deterministic simulation, an explainable rule-based
   advisor, an A/B predictor, a one-click layout optimizer, twelve storage systems,
   material-flow chains, push-vs-pull inventory, and a demo/full tier gate honestly documented
-  as a showcase gate (not DRM). **All five passes shipped (P1–P5).**
+  as a showcase gate (not DRM). **All five passes shipped (P1–P5)**, plus the real-world pass
+  (W3): **import your own article/order CSVs** — 100% in-browser (FileReader, zero network
+  requests), your `weekly_picks` become the real demand velocities, imported orders are
+  **replayed exactly**, validation is row-numbered and a failed import changes nothing, with
+  an honest "Data: yours" vs "Data: synthetic demo" badge (caps: 2,000 articles, 20,000 order
+  lines, 2 MB per file; verified by `node verify_data.js`) — and a **floor-plan image
+  underlay** (≤ 4 MB) with **two-point metric calibration** to trace a real hall onto the 1 m
+  grid. Imported data and the plan image are excluded from share links by default: a share
+  link carries layout + settings only.
 - **Measured results (pinned in `docs/MEASUREMENTS.md`, seed 42, starter demo layout):** the
   golden-zone optimizer cuts average pick travel **36.70 → 18.85 m/order (−48.6%)**,
   reproducible headlessly via `node measure_optimizer.js`; **ABC 80/20 beats random slotting
@@ -329,3 +339,63 @@ source describes qualitatively rather than as a single number.
 - **Open improvements (per its own docs):** (1) look-alike product retrieval proved genuinely
   hard — three graded iterations with a roadmap; (2) geometry-only engine exports carry no
   textures and get per-category material tones instead.
+
+## 18. decision-chain — Flagship (Supply-Chain Integration)
+
+- **What it is:** the integration capstone — **one real dataset** (UCI Online Retail II,
+  **1,067,371 raw rows**, two years of a UK giftware distributor) through the **whole
+  distributor decision chain**: ingest → forecast → inventory → warehouse → transport →
+  costing, closed by a **reconciliation ledger** (stage 6) of machine-checked identity
+  assertions that print both numbers at every seam. Every quantity carries a provenance tag
+  (`real` | `derived` | `synthetic-assigned`); a derived quantity inherits the **weakest**
+  provenance of its inputs.
+- **Measured results (full run, all 13 identities PASS):** cleaned revenue reproduced across
+  two repositories **to the penny — GBP 19,643,861.62**; the ledger's window revenue equal to
+  the cleaned data's to the penny (GBP 1,047,042.41); the cost ledger summing to the cent
+  (253,427.16); every pick (256,787 lines), carton (70,820) and route drop (4,151) conserved.
+  Honest findings kept in the headline: on lumpy demand **nothing beats the one-week naive
+  walk** (MASE 1.782); the exact Hungarian slotting optimum is worth only **−1.6% vs classic
+  ABC** (183.2 → 180.2 m/invoice; the rearrangement-inequality math is explained); OR-Tools
+  CVRP beats 1964 Clarke-Wright by only **−0.2%** (252,713.5 vs 253,201.2 km) and loses 19 of
+  48 days; the synthetic 4-picker crew is **18% utilized**. Every cost rate is INVENTED and
+  labelled — the ledger makes **no profit claims**. **110 tests**; each identity has a
+  deliberate-corruption FAIL path.
+- **Visualizations:** the offline Flask **CHAIN DASHBOARD** (port 5077, no CDNs — guarded by a
+  test): provenance-colored stage flow, the 13-identity reconciliation panel, boundary map,
+  cost-to-serve ledger, slotting bars, CVRP-vs-Clarke-Wright per-day SVG chart;
+  `deliverables/chain_report.pdf` + `chain_ledger.xlsx`, regenerated **byte-identically** from
+  the committed run artifact `artifacts/full_run.json` (sha256 code-fingerprinted; consumers
+  flag it STALE if the code drifts).
+- **Use case:** proving the chain closes — that the forecast, the warehouse and the cost
+  ledger all run on the *same* numbers — which is the integration failure mode real
+  distributors actually have.
+- **Open improvements (its own framing):** (1) stages 4–5 run on a stated representative
+  8-week window, not all 104 weeks (the per-day CVRP stage is slow — the full run is ~51
+  minutes); (2) the physical layers (geometry, coordinates, rates) are synthetic-assigned by
+  design, so the cost side stands on labelled invented inputs and stays a cost-structure
+  view, never a margin statement.
+
+## 19. chain-mcp — Automation (Job #1, agentic integration)
+
+- **What it is:** the agentic-integration layer over the portfolio — a standard-conformant
+  **MCP server** (official `mcp` Python SDK, FastMCP wiring, JSON-RPC over stdio) exposing
+  six real engines as tools an AI assistant (Claude Desktop, Claude Code, any MCP client) can
+  call mid-conversation: `forecast_demand` (decision-chain), `optimize_slotting` and
+  `pack_cartons` (logistics-digital-twin), `route_deliveries` (route-optimizer),
+  `analyze_discount_leakage` (sales-kpi-analytics), `portfolio_status` (portfolio-ops).
+- **Measured results:** **20 tests, including a live JSON-RPC handshake**; every tool
+  validates input and returns structured error results on any failure (bad input, missing
+  source repo, engine error) — the server never crashes on a tool call; source repos are
+  imported read-only with env-overridable paths.
+- **Visualizations:** none of its own — the deliverable is the protocol integration; ships
+  ready-to-paste configs for Claude Desktop (`claude_desktop_config.json`) and Claude Code
+  (`claude mcp add chain-mcp -- python -m chainmcp`), plus six example prompts.
+- **Use case:** the integration work "agentic AI" projects consist of in practice — wiring a
+  language model to real, non-trivial computational engines with honest schemas, provenance
+  labels and graceful failure.
+- **Honesty labels (its own framing):** five tools state via a per-result `data_note` that
+  they run on their repos' deterministic synthetic seeded datasets — real solver outputs on
+  fabricated inputs; `forecast_demand` runs the real UCI Online Retail II pipeline (history
+  `real`, forecasts `derived`), and if naive wins a demand class, naive is what gets
+  reported. Limitations stated: local sibling checkouts only, stdio single-user, first
+  forecast call ~10 s.
