@@ -321,7 +321,7 @@
     {
       "name": "logistics-flow-studio",
       "slug": "logistics-flow-studio",
-      "tagline": "WarehouseTwin + LSP Planner: a game-like warehouse digital-twin PWA and a network-planning game - seeded deterministic simulation, an explainable advisor, and a one-click layout optimizer. All five passes shipped.",
+      "tagline": "WarehouseTwin + LSP Planner: a game-like warehouse digital-twin PWA and a network-planning game - seeded deterministic simulation, an explainable advisor, and a one-click layout optimizer. All five passes shipped, plus the real-world pass: bring-your-own CSV data and a floor-plan underlay.",
       "role": "Job#2 analytics",
       "category": "Logistics & Optimization",
       "stack": ["Vanilla JS", "HTML5 Canvas", "PWA / service worker", "Node verify harness", "Bubblewrap TWA scaffold"],
@@ -329,15 +329,58 @@
         {"label": "Optimizer pick travel", "value": "36.70 -> 18.85 m/order (-48.6%)"},
         {"label": "ABC 80/20 vs random slotting", "value": "~21% less pick travel"},
         {"label": "Storage systems modelled", "value": "12"},
-        {"label": "Passes shipped", "value": "P1-P5 (WarehouseTwin + LSP Planner)"}
+        {"label": "Shipped", "value": "P1-P5 + BYO-data CSV import & floor-plan underlay"}
       ],
       "impact_eur": null,
       "highlights": [
         "The one-click golden-zone optimizer previews its proposal as dashed ghosts, then measures it with the real simulation at the same seed: 36.70 -> 18.85 m/order (-48.6%) average pick travel on the starter demo layout - pinned in docs/MEASUREMENTS.md and reproducible headlessly via node measure_optimizer.js.",
         "Pass 5 zooms out to the network: LSP Planner scores five levels on cost/service/CO2 with base-stock safety stock and square-root risk pooling; a Node harness proves determinism and the pull-beats-push and cross-dock lessons on every run.",
+        "Bring your own warehouse (W3, shipped): import your own article/order CSVs 100% in-browser - your weekly_picks become the real demand velocities, imported orders are replayed exactly, validation is row-numbered and a failed import changes nothing, and the UI badges honestly switch between 'Data: synthetic demo' and 'Data: yours'; plus a floor-plan image underlay with two-point metric calibration to trace a real hall onto the 1 m grid. Your data and plan stay in the browser and are structurally excluded from share links - a share link carries layout + settings only.",
         "Honest labels throughout: DIN 15185 'informed by, not certified'; the demo/full tier gate is documented as a client-side showcase gate, not DRM; every headline number is pinned with the exact config that reproduces it."
       ],
-      "repo_url": "https://github.com/Dimikissimov/logistics-flow-studio"
+      "repo_url": "https://github.com/Dimitres-Kisimov/logistics-flow-studio"
+    },
+    {
+      "name": "decision-chain",
+      "slug": "decision-chain",
+      "tagline": "One real dataset through the whole distributor decision chain - clean, forecast, replenish, slot, pick, route, cost - with a reconciliation ledger that machine-checks every seam and reproduces revenue across two repositories to the penny.",
+      "role": "flagship",
+      "category": "Supply-Chain Integration",
+      "stack": ["Python", "pandas / NumPy", "SciPy (Hungarian assignment)", "OR-Tools CVRP", "heapq DES", "Flask (offline dashboard)", "matplotlib + openpyxl"],
+      "metrics": [
+        {"label": "Reconciliation identities", "value": "13/13 PASS (machine-checked)"},
+        {"label": "Cross-repo revenue match", "value": "GBP 19,643,861.62 - to the penny"},
+        {"label": "Real dataset", "value": "UCI Online Retail II, 1,067,371 raw rows"},
+        {"label": "Tests", "value": "110 (each identity has a corruption FAIL path)"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "Distributors fail at the seams, not inside silos - so stage 6 is the product: a reconciliation ledger of 13 pytest-able identity checks that print both numbers, from cleaned revenue reproduced across two repositories to the penny (GBP 19,643,861.62) and the cost ledger summing to the cent, down to every pick (256,787 lines), carton (70,820) and route drop (4,151) conserved.",
+        "Honest findings kept in the headline: nothing beats the naive walk on lumpy demand (MASE 1.782); the exact Hungarian slotting optimum is worth only 1.6% over classic ABC, with the rearrangement-inequality math explaining why; OR-Tools CVRP beats the 1964 Clarke-Wright baseline by only 0.2% and loses 19 of 48 days; the synthetic picking crew is 18% utilized - measured, not tuned away.",
+        "Measuring is split from presenting: the ~51-minute full run (48 per-day CVRPs) serializes to a committed, code-fingerprinted run artifact; the offline Flask CHAIN DASHBOARD (13-identity reconciliation panel, provenance-colored stage flow) boots from it in seconds and recomputes nothing; PDF + Excel deliverables regenerate from the same artifact byte-for-byte; every quantity carries a provenance tag (real | derived | synthetic-assigned), invented cost rates are labelled INVENTED, and the cost table makes no profit claims."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/decision-chain"
+    },
+    {
+      "name": "chain-mcp",
+      "slug": "chain-mcp",
+      "tagline": "The portfolio's engines as AI-callable tools: a standard-conformant MCP server exposing forecasting, slotting, packing, routing, leakage analytics and a repo auditor to Claude Desktop / Claude Code over the open Model Context Protocol.",
+      "role": "Job#1 automation",
+      "category": "Automation & Agents",
+      "stack": ["Python", "official mcp SDK (FastMCP)", "JSON-RPC over stdio", "NumPy / pandas / SciPy", "OR-Tools", "pytest"],
+      "metrics": [
+        {"label": "Real engines exposed as tools", "value": "6, from 5 source repos"},
+        {"label": "Tests", "value": "20, incl. a live JSON-RPC handshake"},
+        {"label": "Error handling", "value": "structured results - the server never crashes on a tool call"},
+        {"label": "Honesty labels", "value": "per-tool data_note (synthetic seeded vs real UCI)"}
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "Six real engines - per-demand-class forecasting (decision-chain), exact Hungarian slotting and FFD carton packing (logistics-digital-twin), deterministic-limit CVRP vs Clarke-Wright (route-optimizer), discount-leakage drill-down (sales-kpi-analytics), and a read-only repo auditor (portfolio-ops) - are imported read-only from sibling checkouts and declared with typed JSON schemas an MCP client discovers via the protocol handshake.",
+        "Every tool validates its input, and every failure (bad input, missing source repo, engine error) comes back as a structured error result; a missing repo names the path tried and the env var to set, and the server keeps running.",
+        "Honesty is wired into the protocol layer: five tools state via a data_note that they run on deterministic synthetic seeded datasets; forecast_demand runs the real UCI Online Retail II pipeline (history labelled real, forecasts derived) - and if naive wins a demand class, naive is what gets reported. Ships ready-to-paste configs for Claude Desktop and Claude Code."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/chain-mcp"
     },
     {
       "name": "3DpicToIFCModeling",
