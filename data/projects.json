@@ -338,7 +338,9 @@
         "Run it on your own data: a first-class SKU master + order pool with CSV import/export and row-numbered validation; golden-zone storage slotting, occupancy and retrieval; and an editable standards knowledge base where you change the DIN/ASR/EN/VDI/ISO values the compliance check, advisor and generator reason over. The pinned golden-zone optimizer still cuts demo pick travel 36.70 -> 18.85 m/order (-48.6%), reproducible headlessly.",
         "Honest throughout: every figure is synthetic and seeded unless you import your own data, the standards work is 'informed by, not a certification', and the app makes zero network calls - it runs locally via a static server or installs as a PWA. Outputs a consolidated printable WMS Report plus JSON/CSV and a scoped IFC4 export; 23 headless verification harnesses back the documented behaviour."
       ],
-      "repo_url": "https://github.com/Dimikissimov/logistics-flow-studio"
+      "repo_url": "https://github.com/Dimikissimov/logistics-flow-studio",
+      "image": "docs/img/warehousetwin.png",
+      "image_alt": "WarehouseTwin WMS + plant simulator — Cold-chain scenario (synthetic, illustrative)"
     },
     {
       "name": "decision-chain",

@@ -56,6 +56,22 @@ def render_metric(metric: dict) -> str:
     )
 
 
+def render_media(project: dict) -> str:
+    """Optional screenshot preview for projects that ship one.
+
+    The image is a local, relative asset (no external host) so the offline
+    guarantee holds; alt text is required and rendered escaped.
+    """
+    image = project.get("image")
+    if not image:
+        return ""
+    alt = esc(project.get("image_alt", ""))
+    return (
+        f'\n          <img class="card-media" src="{esc(image)}" alt="{alt}"'
+        ' loading="lazy">'
+    )
+
+
 def render_live_link(project: dict) -> str:
     """Optional second anchor for projects that ship a live, hosted app."""
     live_url = project.get("live_url")
@@ -77,6 +93,7 @@ def render_card(project: dict) -> str:
     metrics = "".join(render_metric(m) for m in project["metrics"][:4])
     highlights = "".join(f"<li>{esc(h)}</li>" for h in project["highlights"])
     repo = esc(project["repo_url"])
+    media = render_media(project)
     live_link = render_live_link(project)
     return f"""
         <article class="card" data-role="{esc(role)}" data-category="{esc(project['category'])}">
@@ -85,7 +102,7 @@ def render_card(project: dict) -> str:
             <span class="badge">{esc(role_label)}</span>
           </header>
           <p class="category">{esc(project['category'])}</p>
-          <p class="tagline">{esc(project['tagline'])}</p>
+          <p class="tagline">{esc(project['tagline'])}</p>{media}
           <div class="metrics">{metrics}</div>
           <ul class="highlights">{highlights}</ul>
           <div class="chips">{chips}</div>

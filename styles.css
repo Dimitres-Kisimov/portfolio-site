@@ -112,6 +112,11 @@ section { padding: 44px 0 8px; }
 .category { margin: 4px 0 10px; font-size: .8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 .tagline { margin: 0 0 16px; font-size: .98rem; }
 
+.card-media {
+  display: block; width: 100%; height: auto; margin: 0 0 16px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2);
+}
+
 .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
 .metric { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; }
 .metric-value { display: block; font-weight: 700; font-size: 1.02rem; letter-spacing: -.01em; }
