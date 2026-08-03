@@ -321,24 +321,24 @@
     {
       "name": "logistics-flow-studio",
       "slug": "logistics-flow-studio",
-      "tagline": "WarehouseTwin + LSP Planner: a game-like warehouse digital-twin PWA and a network-planning game - seeded deterministic simulation, an explainable advisor, and a one-click layout optimizer. All five passes shipped, plus the real-world pass: bring-your-own CSV data and a floor-plan underlay.",
+      "tagline": "WarehouseTwin - WMS + Plant Simulator (v1.0): an offline, browser-based warehouse digital twin. Describe a plant in plain keywords and it generates a full layout, then simulate the WMS operation (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs, a live animated material flow, storage/automation modelling and a one-click WMS report. Synthetic unless you import your own CSV; informed by standards, not a certification.",
       "role": "Job#2 analytics",
       "category": "Logistics & Optimization",
       "stack": ["Vanilla JS", "HTML5 Canvas", "PWA / service worker", "Node verify harness", "Bubblewrap TWA scaffold"],
       "metrics": [
         {"label": "Optimizer pick travel", "value": "36.70 -> 18.85 m/order (-48.6%)"},
-        {"label": "ABC 80/20 vs random slotting", "value": "~21% less pick travel"},
-        {"label": "Storage systems modelled", "value": "12"},
-        {"label": "Shipped", "value": "P1-P5 + BYO-data CSV import & floor-plan underlay"}
+        {"label": "Example scenarios", "value": "22 (per-example JSON/CSV export)"},
+        {"label": "WMS operations simulated", "value": "receiving -> shipping, ISO 22400 KPIs"},
+        {"label": "Verification", "value": "23 headless harnesses (v1.0.0)"}
       ],
       "impact_eur": null,
       "highlights": [
-        "The one-click golden-zone optimizer previews its proposal as dashed ghosts, then measures it with the real simulation at the same seed: 36.70 -> 18.85 m/order (-48.6%) average pick travel on the starter demo layout - pinned in docs/MEASUREMENTS.md and reproducible headlessly via node measure_optimizer.js.",
-        "Pass 5 zooms out to the network: LSP Planner scores five levels on cost/service/CO2 with base-stock safety stock and square-root risk pooling; a Node harness proves determinism and the pull-beats-push and cross-dock lessons on every run.",
-        "Bring your own warehouse (W3, shipped): import your own article/order CSVs 100% in-browser - your weekly_picks become the real demand velocities, imported orders are replayed exactly, validation is row-numbered and a failed import changes nothing, and the UI badges honestly switch between 'Data: synthetic demo' and 'Data: yours'; plus a floor-plan image underlay with two-point metric calibration to trace a real hall onto the 1 m grid. Your data and plan stay in the browser and are structurally excluded from share links - a share link carries layout + settings only.",
-        "Honest labels throughout: DIN 15185 'informed by, not certified'; the demo/full tier gate is documented as a client-side showcase gate, not DRM; every headline number is pinned with the exact config that reproduces it."
+        "AI environment generator: describe a plant in keywords and a transparent, deterministic procedural generator builds a full valid layout (RGV/AGV, AS/RS, conveyor), then an offline natural-language parser applies plain-language edits like 'include 2 more RGVs in the picking sector' - a rule/heuristic engine, not a trained black-box model, and unknown phrasing gets an honest 'didn't understand'.",
+        "WMS operations simulation over the layout you drew (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs and the bottleneck stage named, a live animated material flow (boxes through stations, conveyor-path routing, emergent queue congestion) and a live KPI dashboard - all seeded and deterministic, so the same seed reproduces the same result.",
+        "Run it on your own data: a first-class SKU master + order pool with CSV import/export and row-numbered validation; golden-zone storage slotting, occupancy and retrieval; and an editable standards knowledge base where you change the DIN/ASR/EN/VDI/ISO values the compliance check, advisor and generator reason over. The pinned golden-zone optimizer still cuts demo pick travel 36.70 -> 18.85 m/order (-48.6%), reproducible headlessly.",
+        "Honest throughout: every figure is synthetic and seeded unless you import your own data, the standards work is 'informed by, not a certification', and the app makes zero network calls - it runs locally via a static server or installs as a PWA. Outputs a consolidated printable WMS Report plus JSON/CSV and a scoped IFC4 export; 23 headless verification harnesses back the documented behaviour."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/logistics-flow-studio"
+      "repo_url": "https://github.com/Dimikissimov/logistics-flow-studio"
     },
     {
       "name": "decision-chain",

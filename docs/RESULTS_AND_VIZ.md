@@ -289,37 +289,45 @@ source describes qualitatively rather than as a single number.
   three-qubit mode would need a different visual language; (2) lessons could link out to
   exercises, kept offline-first.
 
-## 16. logistics-flow-studio — Logistics & Optimization (WarehouseTwin + LSP Planner)
+## 16. logistics-flow-studio — Logistics & Optimization (WarehouseTwin — WMS + Plant Simulator, v1.0)
 
-- **What it is:** a game-like warehouse digital-twin PWA (WarehouseTwin) plus a network-level
-  planning game (LSP Planner at `lsp/`) — hand-written HTML/CSS/JS, no build step, fully
-  offline, installable, with a seeded deterministic simulation, an explainable rule-based
-  advisor, an A/B predictor, a one-click layout optimizer, twelve storage systems,
-  material-flow chains, push-vs-pull inventory, and a demo/full tier gate honestly documented
-  as a showcase gate (not DRM). **All five passes shipped (P1–P5)**, plus the real-world pass
-  (W3): **import your own article/order CSVs** — 100% in-browser (FileReader, zero network
-  requests), your `weekly_picks` become the real demand velocities, imported orders are
-  **replayed exactly**, validation is row-numbered and a failed import changes nothing, with
-  an honest "Data: yours" vs "Data: synthetic demo" badge (caps: 2,000 articles, 20,000 order
-  lines, 2 MB per file; verified by `node verify_data.js`) — and a **floor-plan image
-  underlay** (≤ 4 MB) with **two-point metric calibration** to trace a real hall onto the 1 m
-  grid. Imported data and the plan image are excluded from share links by default: a share
-  link carries layout + settings only.
+- **What it is:** an offline, browser-based warehouse / WMS digital twin and plant-flow
+  simulator (WarehouseTwin) — hand-written HTML/CSS/JS, no build step, fully offline,
+  installable as a PWA, zero network calls. Describe a plant in plain keywords and a
+  transparent, deterministic **AI environment generator** (`generate.js` + `nlcommands.js`)
+  builds a full valid layout, steerable with plain-language commands (e.g. *"include 2 more
+  RGVs in the picking sector"*) — a rule/heuristic engine with an offline NL parser, **not a
+  trained model**, and unknown phrasing gets an honest "didn't understand". **22 example
+  scenarios**, each synthetic and one-click loadable, with per-example JSON/CSV export. It then
+  **simulates the WMS operation** (`wms.js`: receiving → put-away → replenishment → picking →
+  packing → shipping) with **ISO 22400-grounded KPIs** and the bottleneck stage named, a **live
+  animated material flow** (`flowsim.js`: stations, queues, conveyor-path routing) and a **live
+  KPI dashboard** (`kpicharts.js`). Storage & inventory (golden-zone slotting, occupancy,
+  retrieval), automation modelling (AS/RS, shuttle, RGV, AGV, conveyor), an **editable
+  standards knowledge base** (edit the DIN/ASR/EN/VDI/ISO values the compliance check, advisor
+  and generator use), zoom/pan on a canvas up to **120 × 80 m** and a 2.5D isometric view, plus
+  the real-world pass: **import your own article/order CSVs** (100% in-browser, row-numbered
+  validation, orders replayed exactly, honest "Data: yours" vs "Data: synthetic demo" badge)
+  and a **floor-plan image underlay** with two-point metric calibration. A companion **LSP
+  Planner** (`lsp/`) network-planning game ships alongside.
 - **Measured results (pinned in `docs/MEASUREMENTS.md`, seed 42, starter demo layout):** the
   golden-zone optimizer cuts average pick travel **36.70 → 18.85 m/order (−48.6%)**,
   reproducible headlessly via `node measure_optimizer.js`; **ABC 80/20 beats random slotting
-  by ~21%** (46.71 → 36.70 m/order) — the measurement behind the advisor's suggestion. LSP
-  Planner's `lsp/verify.js` harness proves determinism and the level lessons (L3 pull beats
-  push, L4 a cross-dock pays off) on every run.
-- **Visualizations:** the live canvas floor plan and network map themselves;
-  `docs/img/warehousetwin.png` and `docs/img/lsp-planner.png`; KPI panels, A/B diff panels,
-  optimizer ghost previews.
-- **Use case:** learning warehouse/network trade-offs (selectivity vs density, slotting,
-  push vs pull, risk pooling, FTL vs LTL) by playing with them — a teaching twin, not a WMS.
-- **Open improvements (its own framing):** (1) simulation simplifications are documented in
-  `docs/DOMAIN_NOTES.md` — it charges handling deltas, not a full labour model; (2) the
-  Android path ships as a Bubblewrap/TWA scaffold only — signing and store submission are the
-  owner's steps.
+  by ~21%** (46.71 → 36.70 m/order) — the measurement behind the advisor's suggestion. **23
+  headless verification harnesses** (`test/run-all.mjs`, no stubs) back every documented
+  behaviour.
+- **Visualizations:** the live canvas floor plan, the animated material flow and the KPI
+  cockpit themselves; `docs/img/warehousetwin.png`; compliance highlights, optimizer ghost
+  previews, the pick-travel heatmap and the 2.5D isometric scene.
+- **Use case:** experimenting with warehouse layout, slotting, WMS flow, automation and
+  standards trade-offs before touching a real hall — a teaching-scale WMS twin and plant
+  simulator, **not** a production WMS or a certification.
+- **Outputs & honesty:** a consolidated printable **WMS Report** plus JSON/CSV and a scoped
+  **IFC4** export; every figure is synthetic and seeded unless you import your own data; the
+  standards work (ISO 22400, DIN 15185, ASR, EN, VDI) is **"informed by, not a certification"**;
+  the demo/full tier gate is documented as a client-side showcase gate, not DRM. Runs locally
+  via `python -m http.server` or installs as a PWA; the Android path ships as a Bubblewrap/TWA
+  scaffold only.
 
 ## 17. 3DpicToIFCModeling (SCS Studio) — Flagship (BIM / AEC)
 
