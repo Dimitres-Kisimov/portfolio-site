@@ -8,7 +8,14 @@ What is covered:
   url(http...) asset references (anchor links to github.com / the live-app
   URLs are allowed);
 - HTML escaping: hostile strings in JSON fields cannot inject raw <script>;
-- projects.json schema sanity (required keys on every entry).
+- projects.json schema sanity (required keys on every entry);
+- data-integrity / quality guard (anti-drift for the single source of truth):
+  required fields present AND non-empty, role is one the builder maps,
+  repo_url is a well-formed github.com URL, any live_url is well-formed, and
+  metrics carry a non-empty value + label;
+- license guard: neither the template nor the rendered/committed index.html
+  makes a stale MIT-license self-claim (the site is proprietary / all rights
+  reserved), and the footer keeps that notice.
 """
 
 from __future__ import annotations
@@ -16,6 +23,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 import pytest
 
@@ -190,3 +198,126 @@ def test_project_names_and_slugs_unique(projects):
     slugs = [p["slug"] for p in projects]
     assert len(names) == len(set(names))
     assert len(slugs) == len(set(slugs))
+
+
+# --- Data-integrity & quality guard (anti-drift for the single source of truth)
+
+# Fields the builder relies on for every card (see render_card in build.py):
+# each must be present AND non-empty. (test_projects_json_schema above checks
+# presence + type; this adds the non-empty guarantee.)
+REQUIRED_NONEMPTY = (
+    "name",
+    "role",
+    "category",
+    "tagline",
+    "stack",
+    "metrics",
+    "highlights",
+    "repo_url",
+)
+
+
+def _is_nonempty(value: object) -> bool:
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, (list, dict)):
+        return len(value) > 0
+    return value is not None
+
+
+def test_required_fields_present_and_nonempty(projects):
+    for project in projects:
+        name = project.get("name", "?")
+        for field in REQUIRED_NONEMPTY:
+            assert field in project, f"{name}: missing required field {field!r}"
+            assert _is_nonempty(project[field]), f"{name}: required field {field!r} is empty"
+
+
+def test_role_is_a_known_builder_role(projects):
+    """Every role must be one the builder maps to a label (build.ROLE_LABELS);
+    an unknown role would silently fall back to the raw string on the card and
+    would produce no filter chip."""
+    for project in projects:
+        role = project["role"]
+        assert role in build.ROLE_LABELS, (
+            f"{project['name']}: role {role!r} is not a known builder role "
+            f"{sorted(build.ROLE_LABELS)}"
+        )
+
+
+def _is_well_formed_url(url: str, *, require_host: str | None = None) -> bool:
+    if not isinstance(url, str) or any(ch.isspace() for ch in url):
+        return False
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or not parsed.netloc:
+        return False
+    if require_host is not None and parsed.netloc != require_host:
+        return False
+    return True
+
+
+def test_repo_urls_are_wellformed_github(projects):
+    for project in projects:
+        url = project["repo_url"]
+        assert _is_well_formed_url(url, require_host="github.com"), (
+            f"{project['name']}: repo_url must be a well-formed https github.com URL: {url!r}"
+        )
+        # Must address an owner/repo path, not just the bare host.
+        path = urlparse(url).path.strip("/")
+        assert len(path.split("/")) >= 2, f"{project['name']}: repo_url has no owner/repo path: {url!r}"
+
+
+def test_live_urls_are_wellformed(projects):
+    for project in projects:
+        url = project.get("live_url")
+        if url is None:
+            continue
+        assert _is_well_formed_url(url), (
+            f"{project['name']}: live_url must be a well-formed https URL: {url!r}"
+        )
+
+
+def test_metrics_have_nonempty_value_and_label(projects):
+    for project in projects:
+        assert project["metrics"], f"{project['name']}: metrics must be non-empty"
+        for metric in project["metrics"]:
+            assert set(metric) == {"label", "value"}, (
+                f"{project['name']}: metric keys must be exactly label+value: {metric!r}"
+            )
+            for key in ("label", "value"):
+                assert isinstance(metric[key], str) and metric[key].strip(), (
+                    f"{project['name']}: metric {key!r} must be a non-empty string: {metric!r}"
+                )
+
+
+# --- License guard: proprietary / all rights reserved, never a stale MIT claim
+
+# Matches an MIT-license SELF-CLAIM ("MIT License", "MIT-licensed",
+# "licensed under MIT") while the \bMIT\b word-boundary keeps innocent
+# substrings like "committed", "limits" or "permit" from tripping it.
+MIT_LICENSE_CLAIM = re.compile(
+    r"\bMIT\b[\s-]{0,3}licen[sc]e|licen[sc]ed?\s+under\s+(?:the\s+)?\bMIT\b",
+    re.IGNORECASE,
+)
+
+
+def test_template_has_no_mit_license_claim():
+    assert not MIT_LICENSE_CLAIM.search(build.TEMPLATE), (
+        "build.py TEMPLATE contains a stale MIT-license claim - the site is "
+        "proprietary / all rights reserved"
+    )
+
+
+def test_rendered_and_committed_html_have_no_mit_license_claim(site_html):
+    committed = (ROOT / "index.html").read_text(encoding="utf-8")
+    for label, blob in (("fresh build", site_html), ("committed index.html", committed)):
+        assert not MIT_LICENSE_CLAIM.search(blob), (
+            f"{label} contains a stale MIT-license claim - the footer must remain "
+            "'(c) Dimitres Kisimov, all rights reserved'"
+        )
+
+
+def test_footer_keeps_all_rights_reserved(site_html):
+    assert "all rights reserved" in site_html, (
+        "the footer must keep the proprietary '(c) Dimitres Kisimov, all rights reserved' notice"
+    )
