@@ -215,7 +215,7 @@ TEMPLATE = """<!doctype html>
       <p class="note">Any mention of Wuerth or Schwarz/Lidl/Kaufland is independent analysis of
       public information only - not affiliated with, endorsed by, or using internal data from those
       companies.</p>
-      <p class="muted">Built by Dimitres Kisimov, 2026 &middot; MIT licensed &middot; original
+      <p class="muted">Built by Dimitres Kisimov, 2026 &middot; &copy; Dimitres Kisimov, all rights reserved &middot; original
       hand-written HTML/CSS/JS, system fonts, no CDN, no tracking &middot;
       <a href="https://github.com/Dimitres-Kisimov" rel="noopener">github.com/Dimitres-Kisimov</a></p>
     </div>
