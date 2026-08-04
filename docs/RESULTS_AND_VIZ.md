@@ -289,7 +289,7 @@ source describes qualitatively rather than as a single number.
   three-qubit mode would need a different visual language; (2) lessons could link out to
   exercises, kept offline-first.
 
-## 16. logistics-flow-studio — Logistics & Optimization (WarehouseTwin — WMS + Plant Simulator, v1.0)
+## 16. logistics-flow-studio — Logistics & Optimization (WarehouseTwin — WMS + Plant Simulator, v1.12)
 
 - **What it is:** an offline, browser-based warehouse / WMS digital twin and plant-flow
   simulator (WarehouseTwin) — hand-written HTML/CSS/JS, no build step, fully offline,
@@ -305,7 +305,9 @@ source describes qualitatively rather than as a single number.
   KPI dashboard** (`kpicharts.js`). Storage & inventory (golden-zone slotting, occupancy,
   retrieval), automation modelling (AS/RS, shuttle, RGV, AGV, conveyor), an **editable
   standards knowledge base** (edit the DIN/ASR/EN/VDI/ISO values the compliance check, advisor
-  and generator use), zoom/pan on a canvas up to **120 × 80 m** and a 2.5D isometric view, plus
+  and generator use), zoom/pan on a canvas up to **120 × 80 m**, and **29 equipment types each
+  with a 2D schematic and a 3D representation** (press **P** to switch) rendered in detail down
+  to rack pallets, floor markings and metre rulers, plus
   the real-world pass: **import your own article/order CSVs** (100% in-browser, row-numbered
   validation, orders replayed exactly, honest "Data: yours" vs "Data: synthetic demo" badge)
   and a **floor-plan image underlay** with two-point metric calibration. A companion **LSP
@@ -313,12 +315,12 @@ source describes qualitatively rather than as a single number.
 - **Measured results (pinned in `docs/MEASUREMENTS.md`, seed 42, starter demo layout):** the
   golden-zone optimizer cuts average pick travel **36.70 → 18.85 m/order (−48.6%)**,
   reproducible headlessly via `node measure_optimizer.js`; **ABC 80/20 beats random slotting
-  by ~21%** (46.71 → 36.70 m/order) — the measurement behind the advisor's suggestion. **23
-  headless verification harnesses** (`test/run-all.mjs`, no stubs) back every documented
-  behaviour.
+  by ~21%** (46.71 → 36.70 m/order) — the measurement behind the advisor's suggestion. **~33
+  headless verification harnesses** (`test/run-all.mjs`, no stubs) plus an **in-browser
+  self-test** back every documented behaviour.
 - **Visualizations:** the live canvas floor plan, the animated material flow and the KPI
   cockpit themselves; `docs/img/warehousetwin.png`; compliance highlights, optimizer ghost
-  previews, the pick-travel heatmap and the 2.5D isometric scene.
+  previews, the pick-travel heatmap and the 2D/3D equipment scene (P toggles the 3D view).
 - **Use case:** experimenting with warehouse layout, slotting, WMS flow, automation and
   standards trade-offs before touching a real hall — a teaching-scale WMS twin and plant
   simulator, **not** a production WMS or a certification.

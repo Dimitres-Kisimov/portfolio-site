@@ -321,24 +321,26 @@
     {
       "name": "logistics-flow-studio",
       "slug": "logistics-flow-studio",
-      "tagline": "WarehouseTwin - WMS + Plant Simulator (v1.0): an offline, browser-based warehouse digital twin. Describe a plant in plain keywords and it generates a full layout, then simulate the WMS operation (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs, a live animated material flow, storage/automation modelling and a one-click WMS report. Synthetic unless you import your own CSV; informed by standards, not a certification.",
+      "tagline": "WarehouseTwin - WMS + Plant Simulator (v1.12): an offline, browser-based warehouse management system and plant simulator. Generate a plant from a keyword (a deterministic generator plus an offline natural-language command parser, not a trained model), then simulate the WMS operation (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs, a live animated material flow, and 29 equipment types each with a 2D and a 3D representation (press P to switch) rendered in detail down to rack pallets, floor markings and metre rulers. Storage/slotting, automation, an editable standards knowledge base and a consolidated WMS report; runs fully offline. Synthetic unless you import your own CSV; informed by standards, not a certification.",
       "role": "Job#2 analytics",
       "category": "Logistics & Optimization",
-      "stack": ["Vanilla JS", "HTML5 Canvas", "PWA / service worker", "Node verify harness", "Bubblewrap TWA scaffold"],
+      "stack": ["Vanilla JS", "HTML5 Canvas", "2D + 3D rendering", "PWA / service worker", "Node verify harness", "Bubblewrap TWA scaffold"],
       "metrics": [
         {"label": "Optimizer pick travel", "value": "36.70 -> 18.85 m/order (-48.6%)"},
-        {"label": "Example scenarios", "value": "22 (per-example JSON/CSV export)"},
+        {"label": "Equipment types", "value": "29, each with a 2D + 3D view (press P)"},
         {"label": "WMS operations simulated", "value": "receiving -> shipping, ISO 22400 KPIs"},
-        {"label": "Verification", "value": "23 headless harnesses (v1.0.0)"}
+        {"label": "Verification", "value": "~33 headless harnesses + in-browser self-test"}
       ],
       "impact_eur": null,
       "highlights": [
         "AI environment generator: describe a plant in keywords and a transparent, deterministic procedural generator builds a full valid layout (RGV/AGV, AS/RS, conveyor), then an offline natural-language parser applies plain-language edits like 'include 2 more RGVs in the picking sector' - a rule/heuristic engine, not a trained black-box model, and unknown phrasing gets an honest 'didn't understand'.",
         "WMS operations simulation over the layout you drew (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs and the bottleneck stage named, a live animated material flow (boxes through stations, conveyor-path routing, emergent queue congestion) and a live KPI dashboard - all seeded and deterministic, so the same seed reproduces the same result.",
+        "Detailed twin rendering: every one of 29 equipment types carries both a 2D schematic and a 3D representation you flip between with the P key, and the floor plan is drawn down to individual rack pallets, aisle floor markings and metre rulers - zoom and pan the whole hall on a single canvas.",
         "Run it on your own data: a first-class SKU master + order pool with CSV import/export and row-numbered validation; golden-zone storage slotting, occupancy and retrieval; and an editable standards knowledge base where you change the DIN/ASR/EN/VDI/ISO values the compliance check, advisor and generator reason over. The pinned golden-zone optimizer still cuts demo pick travel 36.70 -> 18.85 m/order (-48.6%), reproducible headlessly.",
-        "Honest throughout: every figure is synthetic and seeded unless you import your own data, the standards work is 'informed by, not a certification', and the app makes zero network calls - it runs locally via a static server or installs as a PWA. Outputs a consolidated printable WMS Report plus JSON/CSV and a scoped IFC4 export; 23 headless verification harnesses back the documented behaviour."
+        "Honest throughout: every figure is synthetic and seeded unless you import your own data, the standards work is 'informed by, not a certification', and the app makes zero network calls - it runs locally via a static server or installs as a PWA. Outputs a consolidated printable WMS Report plus JSON/CSV and a scoped IFC4 export; ~33 headless verification harnesses plus an in-browser self-test back the documented behaviour."
       ],
-      "repo_url": "https://github.com/Dimikissimov/logistics-flow-studio",
+      "repo_url": "https://github.com/Dimitres-Kisimov/logistics-flow-studio",
+      "live_url": "https://dimitres-kisimov.github.io/logistics-flow-studio/",
       "image": "docs/img/warehousetwin.png",
       "image_alt": "WarehouseTwin WMS + plant simulator — Cold-chain scenario (synthetic, illustrative)"
     },
