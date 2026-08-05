@@ -197,7 +197,10 @@ def test_projects_json_schema(projects):
         assert "impact_eur" in project, f"{project['name']}: missing impact_eur (may be null)"
         assert project["repo_url"].startswith("https://github.com/")
         for metric in project["metrics"]:
-            assert set(metric) == {"label", "value"}, f"{project['name']}: malformed metric"
+            # label + value are required; label_de (German) is an allowed extra.
+            assert {"label", "value"} <= set(metric) <= {"label", "value", "label_de"}, (
+                f"{project['name']}: malformed metric {metric!r}"
+            )
 
 
 def test_project_names_and_slugs_unique(projects):
@@ -288,10 +291,12 @@ def test_metrics_have_nonempty_value_and_label(projects):
     for project in projects:
         assert project["metrics"], f"{project['name']}: metrics must be non-empty"
         for metric in project["metrics"]:
-            assert set(metric) == {"label", "value"}, (
-                f"{project['name']}: metric keys must be exactly label+value: {metric!r}"
+            # label + value are required; label_de (German) is an allowed extra.
+            assert {"label", "value"} <= set(metric) <= {"label", "value", "label_de"}, (
+                f"{project['name']}: metric keys must be label+value(+label_de): {metric!r}"
             )
-            for key in ("label", "value"):
+            required_metric_keys = ("label", "value")
+            for key in required_metric_keys:
                 assert isinstance(metric[key], str) and metric[key].strip(), (
                     f"{project['name']}: metric {key!r} must be a non-empty string: {metric!r}"
                 )
@@ -427,3 +432,130 @@ def test_featured_section_has_no_mit_license_claim(site_html):
     assert not MIT_LICENSE_CLAIM.search(_featured_segment(site_html)), (
         "featured section must not carry a stale MIT-license self-claim"
     )
+
+
+# --- Bilingual (EN + DE on the same URL) guard -------------------------------
+# The site is bilingual: every visible string ships in English AND German, and a
+# client-side toggle swaps the active language in place (no reload, no URL
+# change). These tests protect the German source-of-truth fields, the presence
+# of both languages + the toggle in the rendered HTML, the honesty disclaimers
+# in German, and the auto-detect/persistence wiring in app.js.
+
+APP_JS = (ROOT / "app.js").read_text(encoding="utf-8")
+
+
+@pytest.fixture(scope="module")
+def data_obj() -> dict:
+    return json.loads((ROOT / "data" / "projects.json").read_text(encoding="utf-8"))
+
+
+def _nonempty_str(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def test_top_level_german_notes_present(data_obj):
+    for key in ("generated_note_de", "featured_note_de"):
+        assert _nonempty_str(data_obj.get(key)), f"missing/empty top-level {key!r}"
+
+
+def test_every_project_has_nonempty_german_fields(projects):
+    for project in projects:
+        name = project.get("name", "?")
+        assert _nonempty_str(project.get("tagline_de")), f"{name}: empty tagline_de"
+        assert _nonempty_str(project.get("category_de")), f"{name}: empty category_de"
+        h_de = project.get("highlights_de")
+        assert isinstance(h_de, list) and h_de, f"{name}: missing highlights_de"
+        assert len(h_de) == len(project["highlights"]), (
+            f"{name}: highlights_de count must match highlights"
+        )
+        assert all(_nonempty_str(h) for h in h_de), f"{name}: empty German highlight"
+        for metric in project["metrics"]:
+            assert _nonempty_str(metric.get("label_de")), (
+                f"{name}: metric {metric.get('label')!r} missing label_de"
+            )
+
+
+def test_every_featured_has_nonempty_german_fields(featured):
+    for item in featured:
+        assert _nonempty_str(item.get("role_tag_de")), f"{item['slug']}: empty role_tag_de"
+        assert _nonempty_str(item.get("blurb_de")), f"{item['slug']}: empty blurb_de"
+
+
+def test_language_toggle_control_present(site_html):
+    """A keyboard-usable EN/DE toggle with aria-pressed state must render."""
+    assert 'class="lang-toggle"' in site_html
+    assert 'data-lang="en"' in site_html and 'data-lang="de"' in site_html
+    # Both toggle buttons carry an aria-pressed state.
+    assert re.search(r'data-lang="en"[^>]*aria-pressed="true"', site_html) or re.search(
+        r'aria-pressed="true"[^>]*data-lang="en"', site_html
+    ), "EN toggle button must ship with aria-pressed"
+    assert 'aria-pressed="false"' in site_html
+
+
+def test_html_default_lang_is_english(site_html):
+    """The canonical served document is English; JS flips <html lang> client-side."""
+    assert '<html lang="en">' in site_html
+
+
+def test_both_languages_rendered_inline(site_html):
+    """Every translatable element carries paired data-en + data-de text, and the
+    counts match (each pair has both halves)."""
+    en = site_html.count("data-en=")
+    de = site_html.count("data-de=")
+    assert en > 50, "expected many paired bilingual elements"
+    assert en == de, f"data-en ({en}) and data-de ({de}) counts must match"
+
+
+def test_german_ui_strings_render(site_html):
+    for needle in (
+        "Ausgewählte Arbeiten",  # Featured work
+        "Projekte ansehen",  # Browse N projects
+        "Vorgehen &amp; Ehrlichkeit",  # Approach & honesty (escaped &)
+        "Wirkung auf einen Blick",  # Impact at a glance
+    ):
+        assert needle in site_html, f"missing German UI string: {needle!r}"
+
+
+def test_german_honesty_disclaimers_preserved(site_html):
+    """The honesty disclaimers must survive translation - not dropped or softened."""
+    for needle in (
+        "an ISO/DIN orientiert, keine Zertifizierung",  # informed by ISO/DIN, not a certification
+        "modelliert, nicht gemessen",  # modelled, not measured
+        "synthetischen Daten",  # synthetic data
+        "unabhängige Analyse öffentlicher Informationen",  # independent analysis of public info
+    ):
+        assert needle in site_html, f"missing German disclaimer: {needle!r}"
+
+
+def test_german_footer_keeps_rights_reserved(site_html):
+    """The footer's rights notice is kept in German too (translated surround)."""
+    assert "alle Rechte vorbehalten" in site_html
+
+
+def test_no_mit_claim_in_german_content(site_html):
+    """German copy (incl. the common word 'mit') must not trip an MIT self-claim."""
+    assert not MIT_LICENSE_CLAIM.search(site_html)
+
+
+def test_appjs_has_language_detection_and_persistence():
+    """app.js wires auto-detect (navigator.language + ?lang=), persistence
+    (localStorage) and an in-place text swap - all offline, no network."""
+    assert "navigator.language" in APP_JS, "must auto-detect via navigator.language"
+    assert "localStorage" in APP_JS, "explicit choice must persist in localStorage"
+    assert '"lang"' in APP_JS or "'lang'" in APP_JS, "must read the ?lang= query param"
+    assert "URLSearchParams" in APP_JS, "the ?lang= param must be parsed"
+    assert "data-en" in APP_JS and "textContent" in APP_JS, "must swap text in place"
+    assert 'setAttribute("lang"' in APP_JS, "must set <html lang> on switch"
+
+
+def test_appjs_does_not_change_the_url():
+    """The shareable URL must stay plain: no redirect / history rewrite on toggle."""
+    for banned in ("pushState", "replaceState", "location.href =", "location.assign"):
+        assert banned not in APP_JS, f"app.js must not change the URL ({banned})"
+
+
+def test_no_external_urls_introduced_by_german(site_html):
+    """German copy must not smuggle in any non-allowlisted external reference."""
+    assert not re.search(r'src=["\']https?://', site_html)
+    assert "@import" not in site_html
+    assert not re.search(r'url\(\s*["\']?https?://', site_html)

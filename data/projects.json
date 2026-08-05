@@ -12,7 +12,9 @@
       "repo_url": "https://github.com/Dimitres-Kisimov/logistics-flow-studio",
       "live_url": "https://dimitres-kisimov.github.io/logistics-flow-studio/",
       "image": "docs/img/hero-plant-2d.png",
-      "image_alt": "WarehouseTwin plant simulator - 2D warehouse floor with racks, aisles, vehicles and material-flow stations (synthetic, illustrative)"
+      "image_alt": "WarehouseTwin plant simulator - 2D warehouse floor with racks, aisles, vehicles and material-flow stations (synthetic, illustrative)",
+      "role_tag_de": "Vorzeigestück",
+      "blurb_de": "Man kann es bedienen. Ein interaktiver Anlagen- + Lagersimulator, der im Browser läuft, offline, auf einem normalen Laptop: eine Anlage aus einem Stichwort generieren, sie in natürlicher Sprache bearbeiten, zwischen 2D <-> 3D umschalten und dem Materialfluss zusehen: Wareneingang -> Einlagerung -> Kommissionierung -> Verpackung -> Versand. Der emotionale Einstieg – ein echter Betrieb mit Regalen, Fahrzeugen und Toren."
     },
     {
       "slug": "logistics-digital-twin",
@@ -22,7 +24,9 @@
       "blurb": "There is a real engine underneath - not a toy. The reference engine that backs the simulator: 3D carton packing, ABC / golden-zone slotting and a discrete-event simulation, tested (128 tests) and sharing the exact same wt-1 layout format the app uses. The pretty picture is a faithful front-end to real operations research.",
       "repo_url": "https://github.com/Dimitres-Kisimov/logistics-digital-twin",
       "image": "docs/img/warehouse_layout.svg",
-      "image_alt": "logistics-digital-twin engine output - velocity-slotted warehouse layout with A-movers pulled to the golden-zone slots nearest dispatch (synthetic, seeded)"
+      "image_alt": "logistics-digital-twin engine output - velocity-slotted warehouse layout with A-movers pulled to the golden-zone slots nearest dispatch (synthetic, seeded)",
+      "role_tag_de": "Motor",
+      "blurb_de": "Darunter steckt ein echter Motor – kein Spielzeug. Der Referenz-Motor hinter dem Simulator: 3D-Kartonpackung, ABC-/Golden-Zone-Slotting und eine ereignisdiskrete Simulation, getestet (128 Tests) und mit exakt demselben wt-1-Layoutformat, das die App nutzt. Das schöne Bild ist ein originalgetreues Front-End zu echtem Operations Research."
     },
     {
       "slug": "decision-chain",
@@ -31,7 +35,9 @@
       "name": "decision-chain",
       "blurb": "The whole chain reconciles on real data - the hard proof. It takes ONE real dataset (UCI Online Retail II) and runs it through every stage - forecast -> inventory -> slotting -> fulfilment -> routing -> a single reconciled ledger - with 13 cross-stage identities machine-checked to hold, even under demand or cost shocks. The thing no single-silo demo can show: the functions actually agree with each other.",
       "repo_url": "https://github.com/Dimitres-Kisimov/decision-chain",
-      "diagram": "chain"
+      "diagram": "chain",
+      "role_tag_de": "Integrationsnachweis",
+      "blurb_de": "Die gesamte Kette stimmt auf realen Daten überein – der harte Nachweis. Sie nimmt EIN reales Dataset (UCI Online Retail II) und schickt es durch jede Stufe – Prognose -> Bestand -> Slotting -> Auftragsabwicklung -> Routenplanung -> ein einziges abgestimmtes Ledger – wobei 13 stufenübergreifende Identitäten maschinell auf Gültigkeit geprüft werden, selbst unter Nachfrage- oder Kostenschocks. Das, was keine Einzel-Silo-Demo zeigen kann: dass die Funktionen tatsächlich miteinander übereinstimmen."
     },
     {
       "slug": "distributor-intelligence-platform",
@@ -41,7 +47,9 @@
       "blurb": "It scales into a command center - the operator's view. A Flask dashboard that turns the engines into a decision cockpit - forecasting, assortment, routing - with a reconciliation guard so no headline number can silently drift from the code that produced it. What a Wuerth-style MRO distributor would actually sit in front of.",
       "repo_url": "https://github.com/Dimitres-Kisimov/distributor-intelligence-platform",
       "image": "docs/img/command-center.png",
-      "image_alt": "distributor-intelligence-platform command center - forecasting, assortment and routing decision dashboard (synthetic data)"
+      "image_alt": "distributor-intelligence-platform command center - forecasting, assortment and routing decision dashboard (synthetic data)",
+      "role_tag_de": "Kommandozentrale",
+      "blurb_de": "Es skaliert zu einer Kommandozentrale – die Sicht des Betreibers. Ein Flask-Dashboard, das die Engines in ein Entscheidungs-Cockpit verwandelt – Prognose, Sortiment, Routenplanung – mit einer Abstimmungssicherung, damit keine Kennzahl unbemerkt von dem Code abweichen kann, der sie erzeugt hat. Das, wovor ein MRO-Distributor im Stil von Würth tatsächlich sitzen würde."
     }
   ],
   "projects": [
@@ -51,12 +59,36 @@
       "tagline": "A predict-to-optimize revenue engine: forecast, elasticity and decline-risk feed four optimizers into one prescriptive plan with a single euro uplift number.",
       "role": "Job#2 analytics",
       "category": "Analytics & BI",
-      "stack": ["Python", "NumPy", "SciPy", "MILP", "Power BI / DAX", "matplotlib", "openpyxl"],
+      "stack": [
+        "Python",
+        "NumPy",
+        "SciPy",
+        "MILP",
+        "Power BI / DAX",
+        "matplotlib",
+        "openpyxl"
+      ],
       "metrics": [
-        {"label": "Modelled margin uplift", "value": "~EUR 160k / yr"},
-        {"label": "Forecast MASE", "value": "0.75 (beats naive)"},
-        {"label": "Decline-risk ROC-AUC", "value": "0.99"},
-        {"label": "Dataset", "value": "240 SKUs, 8 categories"}
+        {
+          "label": "Modelled margin uplift",
+          "value": "~EUR 160k / yr",
+          "label_de": "Modellierter Margen-Uplift"
+        },
+        {
+          "label": "Forecast MASE",
+          "value": "0.75 (beats naive)",
+          "label_de": "Prognose-MASE"
+        },
+        {
+          "label": "Decline-risk ROC-AUC",
+          "value": "0.99",
+          "label_de": "Abschwungrisiko-ROC-AUC"
+        },
+        {
+          "label": "Dataset",
+          "value": "240 SKUs, 8 categories",
+          "label_de": "Datensatz"
+        }
       ],
       "impact_eur": 159966,
       "highlights": [
@@ -64,7 +96,14 @@
         "Ships a Power BI star schema with real DAX, an executive PDF/PPTX deck, a styled Excel workbook, and a dependency-free offline web dashboard with a what-if slider.",
         "Honest about the MILP-vs-greedy gap: it only opens up when a second (shelf) constraint binds."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/revops-optimizer"
+      "repo_url": "https://github.com/Dimitres-Kisimov/revops-optimizer",
+      "tagline_de": "Eine Predict-to-Optimize-Umsatz-Engine: Prognose, Elastizität und Abschwungrisiko speisen vier Optimierer in einen präskriptiven Plan mit einer einzigen Euro-Uplift-Zahl.",
+      "category_de": "Analytik & BI",
+      "highlights_de": [
+        "Die Predict-to-Optimize-Naht ist das ganze Projekt: Die Prognose ersetzt den rohen Mittelwert im Newsvendor- und Sortiments-MILP; die geschätzte Elastizität steuert die Preisgestaltung; die Abschwungwahrscheinlichkeit stutzt fragile SKUs.",
+        "Liefert ein Power-BI-Sternschema mit echtem DAX, ein Management-PDF/PPTX-Deck, eine gestaltete Excel-Arbeitsmappe und ein abhängigkeitsfreies Offline-Web-Dashboard mit What-if-Schieberegler.",
+        "Ehrlich zum Abstand zwischen MILP und Greedy: Er öffnet sich erst, wenn eine zweite (Regal-)Nebenbedingung bindet."
+      ]
     },
     {
       "name": "sales-kpi-analytics",
@@ -72,12 +111,34 @@
       "tagline": "24 months of B2B wholesale orders turned into the QBR leadership actually acts on: KPIs, margin bridge, ABC-XYZ, RFM, out-of-sample forecast and a replenishment buy-list.",
       "role": "Job#2 analytics",
       "category": "Analytics & BI",
-      "stack": ["Python stdlib", "SQLite", "matplotlib", "openpyxl", "python-pptx"],
+      "stack": [
+        "Python stdlib",
+        "SQLite",
+        "matplotlib",
+        "openpyxl",
+        "python-pptx"
+      ],
       "metrics": [
-        {"label": "Distributor revenue modelled", "value": "EUR 21.8M"},
-        {"label": "Discount-leakage lever found", "value": "EUR 2.6M / yr"},
-        {"label": "Analytics core", "value": "pure stdlib (no pandas/numpy)"},
-        {"label": "Forecast evaluation", "value": "rolling-origin CV, MASE"}
+        {
+          "label": "Distributor revenue modelled",
+          "value": "EUR 21.8M",
+          "label_de": "Modellierter Distributor-Umsatz"
+        },
+        {
+          "label": "Discount-leakage lever found",
+          "value": "EUR 2.6M / yr",
+          "label_de": "Gefundener Rabatt-Leckage-Hebel"
+        },
+        {
+          "label": "Analytics core",
+          "value": "pure stdlib (no pandas/numpy)",
+          "label_de": "Analytik-Kern"
+        },
+        {
+          "label": "Forecast evaluation",
+          "value": "rolling-origin CV, MASE",
+          "label_de": "Prognose-Evaluierung"
+        }
       ],
       "impact_eur": 2600000,
       "highlights": [
@@ -85,7 +146,14 @@
         "A SQL-vs-Python cross-check asserts the revenue rollup equal to the cent, so the two engines cannot silently drift.",
         "Honest that the 24-month series makes seasonal-naive a brutally strong baseline; the point is the honest evaluation, not a hero number."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/sales-kpi-analytics"
+      "repo_url": "https://github.com/Dimitres-Kisimov/sales-kpi-analytics",
+      "tagline_de": "24 Monate B2B-Großhandelsaufträge, verwandelt in das QBR, auf das die Führung tatsächlich reagiert: KPIs, Margenbrücke, ABC-XYZ, RFM, Out-of-Sample-Prognose und eine Nachbestell-Einkaufsliste.",
+      "category_de": "Analytik & BI",
+      "highlights_de": [
+        "Der Analytik-Kern ist bewusst reine Python-Standardbibliothek: MASE, Crostons Methode und Holt-Winters von Grund auf geschrieben, um sie wirklich zu verstehen.",
+        "Ein SQL-gegen-Python-Abgleich stellt die Umsatzsummierung auf den Cent genau sicher, damit die beiden Engines nicht unbemerkt auseinanderdriften.",
+        "Ehrlich, dass die 24-Monats-Reihe Seasonal-Naive zu einer brutal starken Baseline macht; es geht um die ehrliche Evaluierung, nicht um eine Heldenzahl."
+      ]
     },
     {
       "name": "distributor-intelligence-platform",
@@ -93,12 +161,35 @@
       "tagline": "The MRO command center: describe, forecast, and optimize price/assortment/routing behind one API and one dashboard, rolled into a single annual euro uplift.",
       "role": "Job#2 analytics",
       "category": "Analytics & BI",
-      "stack": ["Python", "Flask", "Holt-Winters", "MILP", "OR-Tools CVRP", "Docker"],
+      "stack": [
+        "Python",
+        "Flask",
+        "Holt-Winters",
+        "MILP",
+        "OR-Tools CVRP",
+        "Docker"
+      ],
       "metrics": [
-        {"label": "Expected annual uplift", "value": "EUR 136,972 (4.2% of GM)"},
-        {"label": "Forecast MASE", "value": "0.38 over 9 rolling folds"},
-        {"label": "Routing saving", "value": "140 km / 25% per run"},
-        {"label": "Revenue modelled (24 mo)", "value": "EUR 4.79M"}
+        {
+          "label": "Expected annual uplift",
+          "value": "EUR 136,972 (4.2% of GM)",
+          "label_de": "Erwarteter jährlicher Uplift"
+        },
+        {
+          "label": "Forecast MASE",
+          "value": "0.38 over 9 rolling folds",
+          "label_de": "Prognose-MASE"
+        },
+        {
+          "label": "Routing saving",
+          "value": "140 km / 25% per run",
+          "label_de": "Routen-Einsparung"
+        },
+        {
+          "label": "Revenue modelled (24 mo)",
+          "value": "EUR 4.79M",
+          "label_de": "Modellierter Umsatz (24 Mon.)"
+        }
       ],
       "impact_eur": 136972,
       "highlights": [
@@ -106,7 +197,14 @@
         "Flask caches every expensive computation at boot; only the parameterised optimisers recompute per request.",
         "Honest that the assortment MILP only edges greedy by ~EUR 1k here, and that OTIF is a modelled proxy, not observed service data."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/distributor-intelligence-platform"
+      "repo_url": "https://github.com/Dimitres-Kisimov/distributor-intelligence-platform",
+      "tagline_de": "Die MRO-Kommandozentrale: beschreiben, prognostizieren und Preis/Sortiment/Routenplanung hinter einer API und einem Dashboard optimieren, zusammengefasst in einem einzigen jährlichen Euro-Uplift.",
+      "category_de": "Analytik & BI",
+      "highlights_de": [
+        "Jede präskriptive Engine wird neben einer fairen Baseline ausgeliefert, sodass der Zugewinn stets quantifiziert ist (MILP vs. Greedy, Elastizitätspreisgestaltung vs. Status quo, CVRP vs. Nearest-Neighbour).",
+        "Flask cacht jede aufwändige Berechnung beim Start; nur die parametrisierten Optimierer rechnen pro Anfrage neu.",
+        "Ehrlich, dass das Sortiments-MILP Greedy hier nur um ~EUR 1k übertrifft und dass OTIF ein modellierter Proxy ist, keine beobachteten Servicedaten."
+      ]
     },
     {
       "name": "route-optimizer",
@@ -114,12 +212,34 @@
       "tagline": "Last-mile CVRP: how much does a real optimizer beat the heuristic a dispatcher reaches for by hand? Clarke-Wright savings vs Google OR-Tools, measured.",
       "role": "Job#2 analytics",
       "category": "Logistics & Optimization",
-      "stack": ["Python", "OR-Tools", "NumPy", "matplotlib", "Canvas web map"],
+      "stack": [
+        "Python",
+        "OR-Tools",
+        "NumPy",
+        "matplotlib",
+        "Canvas web map"
+      ],
       "metrics": [
-        {"label": "OR-Tools vs Clarke-Wright", "value": "-4.6% distance"},
-        {"label": "OR-Tools vs naive sweep", "value": "-31% distance"},
-        {"label": "Instance", "value": "60 customers, capacity-50 vans"},
-        {"label": "Solve time", "value": "~8 s on CPU"}
+        {
+          "label": "OR-Tools vs Clarke-Wright",
+          "value": "-4.6% distance",
+          "label_de": "OR-Tools vs. Clarke-Wright"
+        },
+        {
+          "label": "OR-Tools vs naive sweep",
+          "value": "-31% distance",
+          "label_de": "OR-Tools vs. naiver Sweep"
+        },
+        {
+          "label": "Instance",
+          "value": "60 customers, capacity-50 vans",
+          "label_de": "Instanz"
+        },
+        {
+          "label": "Solve time",
+          "value": "~8 s on CPU",
+          "label_de": "Lösungszeit"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -127,7 +247,14 @@
         "Honest headline: ~5% over an already-good baseline, and on the 100-customer instance the gap shrinks to ~1% - shown rather than hidden.",
         "Interactive offline Canvas map: depot, customers and coloured routes with a savings-heuristic overlay toggle."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/route-optimizer"
+      "repo_url": "https://github.com/Dimitres-Kisimov/route-optimizer",
+      "tagline_de": "Last-Mile-CVRP: Um wie viel schlägt ein echter Optimierer die Heuristik, zu der ein Disponent von Hand greift? Clarke-Wright-Savings vs. Google OR-Tools, gemessen.",
+      "category_de": "Logistik & Optimierung",
+      "highlights_de": [
+        "Baseline ist der klassische Clarke-Wright-Savings-Algorithmus von 1964, von Grund auf geschrieben; der Optimierer ist OR-Tools CVRP mit Guided Local Search.",
+        "Ehrliche Schlagzeile: ~5% gegenüber einer bereits guten Baseline, und bei der 100-Kunden-Instanz schrumpft der Abstand auf ~1% – gezeigt statt versteckt.",
+        "Interaktive Offline-Canvas-Karte: Depot, Kunden und farbige Routen mit umschaltbarer Savings-Heuristik-Überlagerung."
+      ]
     },
     {
       "name": "agentic-automation-lab",
@@ -135,12 +262,35 @@
       "tagline": "The same RFQ-intake agent built low-code (n8n) and full-code, driving identical tool logic, then scored on nine dimensions so the trade-off is measured not asserted.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
-      "stack": ["Python", "LLM tool-use loop", "n8n", "Power Automate", "Docker", "pytest"],
+      "stack": [
+        "Python",
+        "LLM tool-use loop",
+        "n8n",
+        "Power Automate",
+        "Docker",
+        "pytest"
+      ],
       "metrics": [
-        {"label": "Modelled time returned", "value": "~EUR 625k / yr"},
-        {"label": "Scorecard (full-code)", "value": "4.44 / 5"},
-        {"label": "Scorecard (n8n)", "value": "3.33 / 5"},
-        {"label": "Scorecard (Power Automate)", "value": "2.33 / 5"}
+        {
+          "label": "Modelled time returned",
+          "value": "~EUR 625k / yr",
+          "label_de": "Modellierte zurückgewonnene Zeit"
+        },
+        {
+          "label": "Scorecard (full-code)",
+          "value": "4.44 / 5",
+          "label_de": "Scorecard (Full-Code)"
+        },
+        {
+          "label": "Scorecard (n8n)",
+          "value": "3.33 / 5",
+          "label_de": "Scorecard (n8n)"
+        },
+        {
+          "label": "Scorecard (Power Automate)",
+          "value": "2.33 / 5",
+          "label_de": "Scorecard (Power Automate)"
+        }
       ],
       "impact_eur": 625000,
       "highlights": [
@@ -148,7 +298,14 @@
         "Full-code and n8n drive the exact same tool functions (imported vs called over HTTP), so it is one logic compared two ways, not two implementations.",
         "Honest that only runtime figures are measured; the 1-5 ratings are reasoned judgements with cited sources."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/agentic-automation-lab"
+      "repo_url": "https://github.com/Dimitres-Kisimov/agentic-automation-lab",
+      "tagline_de": "Derselbe RFQ-Eingangs-Agent, einmal Low-Code (n8n) und einmal Full-Code gebaut, mit identischer Tool-Logik, dann auf neun Dimensionen bewertet, sodass der Kompromiss gemessen statt behauptet wird.",
+      "category_de": "Automatisierung & Agenten",
+      "highlights_de": [
+        "Eine von Grund auf gebaute, anbieterunabhängige Tool-Use-Schleife (Mock oder Claude) analysiert eine RFQ-E-Mail, löst SKUs auf, prüft den Bestand und entwirft ein Angebot – die Anzahl der Tool-Aufrufe variiert je E-Mail, was es wirklich agentisch macht.",
+        "Full-Code und n8n treiben exakt dieselben Tool-Funktionen an (importiert vs. über HTTP aufgerufen), es ist also eine Logik auf zwei Arten verglichen, nicht zwei Implementierungen.",
+        "Ehrlich, dass nur Laufzeitzahlen gemessen werden; die 1-5-Bewertungen sind begründete Einschätzungen mit zitierten Quellen."
+      ]
     },
     {
       "name": "agent-flow-studio",
@@ -156,12 +313,34 @@
       "tagline": "A tiny visual agent-workflow builder that runs entirely in the browser: drag nodes, wire ports, hit Run, watch a mock agent walk the graph and pick tools.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
-      "stack": ["Vanilla JS", "SVG", "Canvas", "Node test runner", "no build step"],
+      "stack": [
+        "Vanilla JS",
+        "SVG",
+        "Canvas",
+        "Node test runner",
+        "no build step"
+      ],
       "metrics": [
-        {"label": "Modelled engineering time freed", "value": "~EUR 47k / yr"},
-        {"label": "Dependencies", "value": "zero (no npm, no CDN)"},
-        {"label": "Engine tests", "value": "16, pure logic"},
-        {"label": "Node types", "value": "Trigger / Agent / Tool / Condition / Output"}
+        {
+          "label": "Modelled engineering time freed",
+          "value": "~EUR 47k / yr",
+          "label_de": "Modellierte freigesetzte Engineering-Zeit"
+        },
+        {
+          "label": "Dependencies",
+          "value": "zero (no npm, no CDN)",
+          "label_de": "Abhängigkeiten"
+        },
+        {
+          "label": "Engine tests",
+          "value": "16, pure logic",
+          "label_de": "Engine-Tests"
+        },
+        {
+          "label": "Node types",
+          "value": "Trigger / Agent / Tool / Condition / Output",
+          "label_de": "Knotentypen"
+        }
       ],
       "impact_eur": 47000,
       "highlights": [
@@ -169,7 +348,14 @@
         "Every connection is a hand-drawn SVG path re-attached as nodes move; a Condition node prunes the dead branch.",
         "Small enough to read in one sitting; deliberately not competing with n8n on features."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/agent-flow-studio"
+      "repo_url": "https://github.com/Dimitres-Kisimov/agent-flow-studio",
+      "tagline_de": "Ein winziger visueller Agenten-Workflow-Builder, der vollständig im Browser läuft: Knoten ziehen, Ports verdrahten, auf Run klicken und einem Mock-Agenten zusehen, wie er den Graphen durchläuft und Tools auswählt.",
+      "category_de": "Automatisierung & Agenten",
+      "highlights_de": [
+        "Eine echte topologische Sortierung (Kahns Algorithmus) mit Zyklenerkennung durchläuft den DAG, hebt jeden Knoten hervor, lässt aktive Verbindungen aufleuchten und streamt eine Ablaufspur; dieselbe engine.js läuft im Browser und in der Testsuite.",
+        "Jede Verbindung ist ein handgezeichneter SVG-Pfad, der beim Verschieben der Knoten neu angeheftet wird; ein Condition-Knoten kappt den toten Zweig.",
+        "Klein genug, um es in einem Zug zu lesen; tritt bewusst nicht im Funktionsumfang gegen n8n an."
+      ]
     },
     {
       "name": "doc-extract-agent",
@@ -177,12 +363,34 @@
       "tagline": "Unstructured business document in, structured record out: a five-stage pipeline that pulls header, line items and cross-checked totals with a confidence gate.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
-      "stack": ["Python stdlib", "regex", "HTTP API", "pytest", "LLMProvider interface"],
+      "stack": [
+        "Python stdlib",
+        "regex",
+        "HTTP API",
+        "pytest",
+        "LLMProvider interface"
+      ],
       "metrics": [
-        {"label": "Modelled AP capacity freed", "value": "~EUR 110k / yr"},
-        {"label": "Per-document handling", "value": "~4 min to under 1 s"},
-        {"label": "Scenario", "value": "~60k documents / yr"},
-        {"label": "Dependencies", "value": "stdlib only, no API key"}
+        {
+          "label": "Modelled AP capacity freed",
+          "value": "~EUR 110k / yr",
+          "label_de": "Modellierte freigesetzte Kreditoren-Kapazität"
+        },
+        {
+          "label": "Per-document handling",
+          "value": "~4 min to under 1 s",
+          "label_de": "Bearbeitung pro Dokument"
+        },
+        {
+          "label": "Scenario",
+          "value": "~60k documents / yr",
+          "label_de": "Szenario"
+        },
+        {
+          "label": "Dependencies",
+          "value": "stdlib only, no API key",
+          "label_de": "Abhängigkeiten"
+        }
       ],
       "impact_eur": 110000,
       "highlights": [
@@ -190,7 +398,14 @@
         "Two real parsing bugs (VAT amount vs percentage, Subtotal read as Total) are now pinned by regression tests; number parsing handles both EU and US decimal conventions.",
         "Built around an LLMProvider interface: set DOCEXTRACT_PROVIDER=anthropic and each stage routes through a real model while the trace/confidence/validation logic stays put."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/doc-extract-agent"
+      "repo_url": "https://github.com/Dimitres-Kisimov/doc-extract-agent",
+      "tagline_de": "Unstrukturiertes Geschäftsdokument rein, strukturierter Datensatz raus: eine fünfstufige Pipeline, die Kopfdaten, Positionen und gegengeprüfte Summen mit einem Konfidenz-Gate extrahiert.",
+      "category_de": "Automatisierung & Agenten",
+      "highlights_de": [
+        "Summen werden gegen die aufsummierten Positionen geprüft; nur Dokumente, die übereinstimmen und ein Konfidenz-Gate passieren, werden automatisch gebucht, der Rest geht an einen Menschen.",
+        "Zwei echte Parsing-Bugs (MwSt.-Betrag vs. Prozentsatz, Zwischensumme als Gesamtsumme gelesen) sind nun durch Regressionstests abgesichert; das Zahlen-Parsing beherrscht sowohl EU- als auch US-Dezimalkonventionen.",
+        "Um eine LLMProvider-Schnittstelle herum gebaut: Setzt man DOCEXTRACT_PROVIDER=anthropic, läuft jede Stufe durch ein echtes Modell, während die Logik für Ablaufspur/Konfidenz/Validierung unverändert bleibt."
+      ]
     },
     {
       "name": "automation-roi-explorer",
@@ -198,12 +413,33 @@
       "tagline": "Which back-office process to automate first, with the math shown: hours saved, euros saved, payback and 3-year ROI, ranked so budget follows value not volume.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
-      "stack": ["Python stdlib", "Canvas charts", "offline HTML dashboard", "pytest"],
+      "stack": [
+        "Python stdlib",
+        "Canvas charts",
+        "offline HTML dashboard",
+        "pytest"
+      ],
       "metrics": [
-        {"label": "Portfolio net saving", "value": "EUR 383,300 / yr"},
-        {"label": "Hours freed", "value": "13,460 / yr"},
-        {"label": "Top pick (invoice matching)", "value": "EUR 171,300/yr, 2.8-mo payback"},
-        {"label": "Discount rate (NPV)", "value": "8%"}
+        {
+          "label": "Portfolio net saving",
+          "value": "EUR 383,300 / yr",
+          "label_de": "Portfolio-Nettoeinsparung"
+        },
+        {
+          "label": "Hours freed",
+          "value": "13,460 / yr",
+          "label_de": "Freigesetzte Stunden"
+        },
+        {
+          "label": "Top pick (invoice matching)",
+          "value": "EUR 171,300/yr, 2.8-mo payback",
+          "label_de": "Top-Wahl (Rechnungsabgleich)"
+        },
+        {
+          "label": "Discount rate (NPV)",
+          "value": "8%",
+          "label_de": "Diskontsatz (Kapitalwert)"
+        }
       ],
       "impact_eur": 383300,
       "highlights": [
@@ -211,7 +447,14 @@
         "Charts are hand-drawn on a Canvas element rather than Chart.js/D3, keeping the whole thing a single double-clickable offline file.",
         "Every assumption (coverage, flat volumes, excluded change-management cost) is out in the open and adjustable - the design, not a corner cut."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/automation-roi-explorer"
+      "repo_url": "https://github.com/Dimitres-Kisimov/automation-roi-explorer",
+      "tagline_de": "Welchen Back-Office-Prozess man zuerst automatisieren sollte, mit offengelegter Rechnung: eingesparte Stunden, eingesparte Euro, Amortisation und 3-Jahres-ROI, so gereiht, dass das Budget dem Wert folgt, nicht dem Volumen.",
+      "category_de": "Automatisierung & Agenten",
+      "highlights_de": [
+        "Das Browser-Dashboard führt exakt dieselbe compute()-Funktion aus wie die Python-CLI, Zeile für Zeile, sodass Schieberegler und CLI nie widersprechen können.",
+        "Diagramme werden auf einem Canvas-Element handgezeichnet statt mit Chart.js/D3, sodass das Ganze eine einzige doppelklickbare Offline-Datei bleibt.",
+        "Jede Annahme (Abdeckung, konstante Volumina, ausgeschlossene Change-Management-Kosten) liegt offen und ist anpassbar – so gewollt, keine Abkürzung."
+      ]
     },
     {
       "name": "bio-efficient-ai",
@@ -219,12 +462,34 @@
       "tagline": "A small honest study: circuits copied from real animal brains can be more efficient than conventional methods on narrow tasks. FlyHash vs LSH, and a liquid CfC cell vs a GRU.",
       "role": "research",
       "category": "Research",
-      "stack": ["Python", "PyTorch", "NumPy", "MNIST", "from-scratch implementations"],
+      "stack": [
+        "Python",
+        "PyTorch",
+        "NumPy",
+        "MNIST",
+        "from-scratch implementations"
+      ],
       "metrics": [
-        {"label": "FlyHash precision@10 (128 bits)", "value": "0.614 vs LSH 0.419"},
-        {"label": "FlyHash precision@10 (4 bits)", "value": "0.152 vs LSH 0.017"},
-        {"label": "Liquid CfC params", "value": "3,233 vs GRU 3,393"},
-        {"label": "CfC clean MSE", "value": "0.0142 vs GRU 0.0147"}
+        {
+          "label": "FlyHash precision@10 (128 bits)",
+          "value": "0.614 vs LSH 0.419",
+          "label_de": "FlyHash Precision@10 (128 Bit)"
+        },
+        {
+          "label": "FlyHash precision@10 (4 bits)",
+          "value": "0.152 vs LSH 0.017",
+          "label_de": "FlyHash Precision@10 (4 Bit)"
+        },
+        {
+          "label": "Liquid CfC params",
+          "value": "3,233 vs GRU 3,393",
+          "label_de": "Liquid-CfC-Parameter"
+        },
+        {
+          "label": "CfC clean MSE",
+          "value": "0.0142 vs GRU 0.0147",
+          "label_de": "CfC MSE (rauschfrei)"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -232,7 +497,14 @@
         "A from-scratch ~32-neuron closed-form continuous-time (CfC) liquid cell matches or beats a parameter-heavier GRU under input noise.",
         "Careful about what it does NOT claim: not beating the brain, not beating HNSW/FAISS, not beating a well-tuned RNN in general - narrow, measured claims only."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/bio-efficient-ai"
+      "repo_url": "https://github.com/Dimitres-Kisimov/bio-efficient-ai",
+      "tagline_de": "Eine kleine, ehrliche Studie: Schaltkreise, die realen Tiergehirnen nachempfunden sind, können bei eng umrissenen Aufgaben effizienter sein als konventionelle Methoden. FlyHash vs. LSH und eine Liquid-CfC-Zelle vs. ein GRU.",
+      "category_de": "Forschung",
+      "highlights_de": [
+        "Reproduziert den Geruchs-Hashing-Trick der Fruchtfliege (Dasgupta, Stevens & Navlakha, Science 2017) und führt den fairen Vergleich bei gleichem Budget auf echtem MNIST über 3 Seeds durch; FlyHash gewinnt bei jeder Hash-Länge.",
+        "Eine von Grund auf gebaute Liquid-Zelle mit ~32 Neuronen in geschlossener Form und kontinuierlicher Zeit (CfC) erreicht oder schlägt ein parameterstärkeres GRU unter Eingangsrauschen.",
+        "Achtsam bei dem, was es NICHT behauptet: das Gehirn nicht zu schlagen, HNSW/FAISS nicht zu schlagen, ein gut abgestimmtes RNN nicht generell zu schlagen – nur eng umrissene, gemessene Aussagen."
+      ]
     },
     {
       "name": "ml-models-lab",
@@ -240,12 +512,33 @@
       "tagline": "Five small models that train locally in seconds: each takes a published method, adds one principled improvement for a B2B distributor use case, and evaluates with the metric that survives imbalance and short series.",
       "role": "research",
       "category": "Research",
-      "stack": ["Python", "PyTorch", "NumPy", "from-scratch cores"],
+      "stack": [
+        "Python",
+        "PyTorch",
+        "NumPy",
+        "from-scratch cores"
+      ],
       "metrics": [
-        {"label": "Models", "value": "5 (forecast, text, anomaly, churn, elasticity)"},
-        {"label": "Recurring metric", "value": "MASE / macro-F1 / PR-AUC (not accuracy)"},
-        {"label": "Training", "value": "seconds-to-minutes on laptop CPU/GPU"},
-        {"label": "Dependencies", "value": "PyTorch + numpy only"}
+        {
+          "label": "Models",
+          "value": "5 (forecast, text, anomaly, churn, elasticity)",
+          "label_de": "Modelle"
+        },
+        {
+          "label": "Recurring metric",
+          "value": "MASE / macro-F1 / PR-AUC (not accuracy)",
+          "label_de": "Wiederkehrende Metrik"
+        },
+        {
+          "label": "Training",
+          "value": "seconds-to-minutes on laptop CPU/GPU",
+          "label_de": "Training"
+        },
+        {
+          "label": "Dependencies",
+          "value": "PyTorch + numpy only",
+          "label_de": "Abhängigkeiten"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -253,7 +546,14 @@
         "Examples: a DeepAR-lite global forecaster with a negative-binomial head for intermittent SKUs; a fastText-core text classifier with regex sub-token splitting for unseen part numbers.",
         "Every spec is grounded in cited literature (DeepAR, N-BEATS, fastText, focal loss, ridge/lasso), deliberately the smallest credible version of each method."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/ml-models-lab"
+      "repo_url": "https://github.com/Dimitres-Kisimov/ml-models-lab",
+      "tagline_de": "Fünf kleine Modelle, die lokal in Sekunden trainieren: Jedes nimmt eine publizierte Methode, ergänzt eine fundierte Verbesserung für einen B2B-Distributor-Anwendungsfall und evaluiert mit der Metrik, die Ungleichgewicht und kurze Reihen übersteht.",
+      "category_de": "Forschung",
+      "highlights_de": [
+        "Der belastbare rote Faden durch alle fünf: den Kern von Grund auf implementieren, eine fundierte Verbesserung ergänzen, mit einer Metrik evaluieren, die Klassenungleichgewicht und Nullen übersteht.",
+        "Beispiele: ein globaler DeepAR-lite-Forecaster mit Negativ-Binomial-Kopf für sporadische SKUs; ein Textklassifikator auf fastText-Basis mit Regex-Subtoken-Zerlegung für unbekannte Teilenummern.",
+        "Jede Spezifikation ist in zitierter Literatur verankert (DeepAR, N-BEATS, fastText, Focal Loss, Ridge/Lasso), bewusst die kleinste glaubwürdige Version jeder Methode."
+      ]
     },
     {
       "name": "predictive-maintenance",
@@ -261,12 +561,35 @@
       "tagline": "The full predictive-maintenance loop: watch machine sensors, flag drifting machines with two honestly compared detectors, rank urgency, then CP-SAT-schedule scarce crews against a named FIFO baseline.",
       "role": "applied-ml",
       "category": "Applied ML & Operations",
-      "stack": ["Python", "NumPy", "PyTorch", "CP-SAT", "matplotlib PDF", "openpyxl"],
+      "stack": [
+        "Python",
+        "NumPy",
+        "PyTorch",
+        "CP-SAT",
+        "matplotlib PDF",
+        "openpyxl"
+      ],
       "metrics": [
-        {"label": "Detection ROC-AUC", "value": "PCA 0.937 vs AE 0.921"},
-        {"label": "Faulty machines caught", "value": "10/10 (mean delay 3.4 days)"},
-        {"label": "CP-SAT vs FIFO weighted delay", "value": "778 vs 1013 (-23.2%)"},
-        {"label": "Schedule optimality", "value": "proven OPTIMAL by the solver"}
+        {
+          "label": "Detection ROC-AUC",
+          "value": "PCA 0.937 vs AE 0.921",
+          "label_de": "Erkennungs-ROC-AUC"
+        },
+        {
+          "label": "Faulty machines caught",
+          "value": "10/10 (mean delay 3.4 days)",
+          "label_de": "Erkannte defekte Maschinen"
+        },
+        {
+          "label": "CP-SAT vs FIFO weighted delay",
+          "value": "778 vs 1013 (-23.2%)",
+          "label_de": "CP-SAT vs. FIFO gewichtete Verzögerung"
+        },
+        {
+          "label": "Schedule optimality",
+          "value": "proven OPTIMAL by the solver",
+          "label_de": "Optimalität des Plans"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -274,7 +597,14 @@
         "CP-SAT turns the urgency list into a 2-crew, 4-day schedule and proves it OPTIMAL: total weighted delay 778 vs 1013 for the FIFO baseline, a 23.2% reduction.",
         "The 0-100 health index is labelled a heuristic degradation score, not a remaining-useful-life prediction; a leakage test rebuilds features on truncated data and asserts they are identical."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/predictive-maintenance"
+      "repo_url": "https://github.com/Dimitres-Kisimov/predictive-maintenance",
+      "tagline_de": "Der vollständige Predictive-Maintenance-Kreislauf: Maschinensensoren überwachen, driftende Maschinen mit zwei ehrlich verglichenen Detektoren markieren, die Dringlichkeit reihen und dann knappe Teams per CP-SAT gegen eine benannte FIFO-Baseline einplanen.",
+      "category_de": "Angewandtes ML & Betrieb",
+      "highlights_de": [
+        "Zwei Detektoren, trainiert nur auf Fenstern gesunder Maschinen und ehrlich verglichen: eine numpy-PCA-SVD-Baseline und ein kleiner PyTorch-Autoencoder. Die Regel stand vor der Messung fest – den einfacheren Detektor empfehlen, sofern der andere nicht um mehr als 0.03 PR-AUC gewinnt. Der AE verlor um 0.017, also lautet die Empfehlung PCA.",
+        "CP-SAT verwandelt die Dringlichkeitsliste in einen Plan für 2 Teams über 4 Tage und beweist ihn als OPTIMAL: gewichtete Gesamtverzögerung 778 vs. 1013 bei der FIFO-Baseline, eine Reduktion um 23.2%.",
+        "Der 0-100-Gesundheitsindex ist als heuristischer Degradationswert gekennzeichnet, nicht als Vorhersage der Restnutzungsdauer; ein Leakage-Test baut die Merkmale auf gekürzten Daten neu auf und stellt sicher, dass sie identisch sind."
+      ]
     },
     {
       "name": "fraud-detection-ops",
@@ -282,12 +612,35 @@
       "tagline": "The model's score is not the product - the decisions are: from-scratch logistic regression, Platt calibration, a cost-swept alert threshold and a constrained analyst review queue, each measured against honest baselines.",
       "role": "applied-ml",
       "category": "Applied ML & Operations",
-      "stack": ["Python", "NumPy (from scratch)", "SciPy HiGHS", "matplotlib", "openpyxl", "pytest"],
+      "stack": [
+        "Python",
+        "NumPy (from scratch)",
+        "SciPy HiGHS",
+        "matplotlib",
+        "openpyxl",
+        "pytest"
+      ],
       "metrics": [
-        {"label": "PR-AUC (test)", "value": "0.270 vs 0.034 rule baseline"},
-        {"label": "Precision@100", "value": "0.40 at 1.4% prevalence"},
-        {"label": "Calibration ECE", "value": "0.366 -> 0.003 after Platt"},
-        {"label": "Cost vs naive 0.5 threshold", "value": "-43.3% (assumed costs)"}
+        {
+          "label": "PR-AUC (test)",
+          "value": "0.270 vs 0.034 rule baseline",
+          "label_de": "PR-AUC (Test)"
+        },
+        {
+          "label": "Precision@100",
+          "value": "0.40 at 1.4% prevalence",
+          "label_de": "Precision@100"
+        },
+        {
+          "label": "Calibration ECE",
+          "value": "0.366 -> 0.003 after Platt",
+          "label_de": "Kalibrierungs-ECE"
+        },
+        {
+          "label": "Cost vs naive 0.5 threshold",
+          "value": "-43.3% (assumed costs)",
+          "label_de": "Kosten vs. naive 0.5-Schwelle"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -295,7 +648,14 @@
         "Calibration is the hinge: raw ECE 0.366 falls to 0.003 after Platt, which is what lets the cost-swept threshold (t* = 0.047, 43.3% cheaper than the 0.5 default under stated assumptions) and the HiGHS review-queue optimizer consume the probabilities.",
         "Honest that without coverage floors the LP's optimum is exactly top-K by p x amount - verified numerically on every run; the solver earns its keep only when every merchant segment must stay watched (0.6% expected value given up to watch all 8)."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/fraud-detection-ops"
+      "repo_url": "https://github.com/Dimitres-Kisimov/fraud-detection-ops",
+      "tagline_de": "Der Score des Modells ist nicht das Produkt – die Entscheidungen sind es: von Grund auf gebaute logistische Regression, Platt-Kalibrierung, eine kostenoptimierte Alarmschwelle und eine kapazitätsbeschränkte Analysten-Prüfwarteschlange, jeweils gegen ehrliche Baselines gemessen.",
+      "category_de": "Angewandtes ML & Betrieb",
+      "highlights_de": [
+        "Alles Statistische ist von Grund auf in NumPy – logistische Regression, Focal Loss, Platt-Skalierung, PR-AUC/ROC-AUC/Brier/ECE – unit-getestet bis hin zu einer Finite-Differenzen-Gradientenprüfung; die eigenen Wahrscheinlichkeiten des Generators liefern eine Orakel-Obergrenze (PR-AUC 0.367), die neben den 0.270 des Modells berichtet wird.",
+        "Die Kalibrierung ist der Angelpunkt: Der rohe ECE 0.366 fällt nach Platt auf 0.003, was erst der kostenoptimierten Schwelle (t* = 0.047, unter den genannten Annahmen 43.3% günstiger als der 0.5-Standard) und dem HiGHS-Optimierer der Prüfwarteschlange erlaubt, die Wahrscheinlichkeiten zu nutzen.",
+        "Ehrlich, dass ohne Abdeckungsuntergrenzen das Optimum des LP exakt Top-K nach p x Betrag ist – bei jedem Lauf numerisch verifiziert; der Solver rechtfertigt sich erst, wenn jedes Händlersegment beobachtet bleiben muss (0.6% erwarteter Wert aufgegeben, um alle 8 zu beobachten)."
+      ]
     },
     {
       "name": "energy-demand-forecast",
@@ -303,12 +663,35 @@
       "tagline": "Forecast a plant's hourly load a day ahead with honest rolling-origin CV, then dispatch a battery against the monthly demand-charge peak with a hand-assembled linear program - the timer baseline saves exactly EUR 0.",
       "role": "applied-ml",
       "category": "Applied ML & Operations",
-      "stack": ["Python", "NumPy", "SciPy linprog (HiGHS)", "pandas", "matplotlib", "openpyxl"],
+      "stack": [
+        "Python",
+        "NumPy",
+        "SciPy linprog (HiGHS)",
+        "pandas",
+        "matplotlib",
+        "openpyxl"
+      ],
       "metrics": [
-        {"label": "Forecast MASE", "value": "0.497 (naive 1.369), 14/14 folds won"},
-        {"label": "Day-ahead MAPE", "value": "4.8%"},
-        {"label": "Peak reduction (battery LP)", "value": "77.1 kW / 20.9% mean monthly"},
-        {"label": "Modelled saving", "value": "~EUR 11,100/yr at an assumed tariff"}
+        {
+          "label": "Forecast MASE",
+          "value": "0.497 (naive 1.369), 14/14 folds won",
+          "label_de": "Prognose-MASE"
+        },
+        {
+          "label": "Day-ahead MAPE",
+          "value": "4.8%",
+          "label_de": "Day-Ahead-MAPE"
+        },
+        {
+          "label": "Peak reduction (battery LP)",
+          "value": "77.1 kW / 20.9% mean monthly",
+          "label_de": "Spitzenreduktion (Batterie-LP)"
+        },
+        {
+          "label": "Modelled saving",
+          "value": "~EUR 11,100/yr at an assumed tariff",
+          "label_de": "Modellierte Einsparung"
+        }
       ],
       "impact_eur": 11100,
       "highlights": [
@@ -316,7 +699,14 @@
         "Reports its own losses: Holt-Winters (MASE 3.040) loses to the seasonal-naive baseline and the README says so; the single Boxing Day fold that inflates the naive's mean (MASE 8.40) is unpacked rather than averaged away.",
         "The fixed evening-timer baseline saves EUR 0 on this mid-morning-peaking site - when to discharge is the entire product - and the LP's perfect month-ahead foresight is flagged as an upper bound, with the EUR 12/kW-month tariff labelled an assumption."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/energy-demand-forecast"
+      "repo_url": "https://github.com/Dimitres-Kisimov/energy-demand-forecast",
+      "tagline_de": "Die stündliche Last einer Anlage einen Tag im Voraus mit ehrlicher Rolling-Origin-CV prognostizieren und dann eine Batterie mit einem von Hand aufgestellten linearen Programm gegen die monatliche Leistungsspitze einsetzen – die Timer-Baseline spart exakt EUR 0.",
+      "category_de": "Angewandtes ML & Betrieb",
+      "highlights_de": [
+        "Von Grund auf mit numpy/scipy/pandas ausgeschrieben: Holt-Winters als ~30 Zeilen Rekursionen, die Regression als numpy.linalg.lstsq und das Peak-Shaving-LP als von Hand aufgestellte Nebenbedingungsmatrix für HiGHS.",
+        "Berichtet die eigenen Niederlagen: Holt-Winters (MASE 3.040) verliert gegen die Seasonal-Naive-Baseline, und die README sagt das auch; der einzelne Boxing-Day-Fold, der den Mittelwert des Naive-Modells aufbläht (MASE 8.40), wird aufgeschlüsselt statt weggemittelt.",
+        "Die feste Abend-Timer-Baseline spart an diesem am späten Vormittag spitzenden Standort EUR 0 – wann entladen wird, ist das ganze Produkt – und die perfekte Monatsvoraussicht des LP ist als Obergrenze gekennzeichnet, wobei der Tarif von EUR 12/kW-Monat als Annahme ausgewiesen ist."
+      ]
     },
     {
       "name": "quality-anomaly-vision",
@@ -324,12 +714,35 @@
       "tagline": "At what point does the neural network beat the boring methods? Three surface-defect detectors on synthetic textures, one shared scoring rule fixed in advance, and a pre-stated complexity rule that picks the winner.",
       "role": "applied-ml",
       "category": "Applied ML & Operations",
-      "stack": ["Python", "NumPy", "SciPy ndimage", "PyTorch", "matplotlib", "pytest"],
+      "stack": [
+        "Python",
+        "NumPy",
+        "SciPy ndimage",
+        "PyTorch",
+        "matplotlib",
+        "pytest"
+      ],
       "metrics": [
-        {"label": "Best ROC-AUC", "value": "AE 0.779 vs PCA 0.772"},
-        {"label": "Recommended method", "value": "PCA (pre-stated 0.02 rule)"},
-        {"label": "TPR @ 5% FPR", "value": "PCA 0.407 vs AE 0.393"},
-        {"label": "Dataset", "value": "600 clean train / 300 test, 64x64"}
+        {
+          "label": "Best ROC-AUC",
+          "value": "AE 0.779 vs PCA 0.772",
+          "label_de": "Beste ROC-AUC"
+        },
+        {
+          "label": "Recommended method",
+          "value": "PCA (pre-stated 0.02 rule)",
+          "label_de": "Empfohlene Methode"
+        },
+        {
+          "label": "TPR @ 5% FPR",
+          "value": "PCA 0.407 vs AE 0.393",
+          "label_de": "TPR @ 5% FPR"
+        },
+        {
+          "label": "Dataset",
+          "value": "600 clean train / 300 test, 64x64",
+          "label_de": "Datensatz"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -337,7 +750,14 @@
         "Unexpected finding, reported: training the autoencoder longer made it worse (overall AUC 0.779 -> 0.738 at 30 epochs, blob detection 0.828 -> 0.610) because good reconstruction erases the anomaly signal.",
         "Texture-breaks split the field: the autoencoder is the only method meaningfully above chance on them (0.609) and nobody can localize them (best mean IoU 0.043 vs 0.011 for random heatmaps); ROC/PR/IoU are implemented from scratch in numpy, no scikit-learn anywhere."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/quality-anomaly-vision"
+      "repo_url": "https://github.com/Dimitres-Kisimov/quality-anomaly-vision",
+      "tagline_de": "Ab wann schlägt das neuronale Netz die langweiligen Methoden? Drei Oberflächenfehler-Detektoren auf synthetischen Texturen, eine gemeinsame, vorab festgelegte Bewertungsregel und eine vorab formulierte Komplexitätsregel, die den Sieger bestimmt.",
+      "category_de": "Angewandtes ML & Betrieb",
+      "highlights_de": [
+        "Eine gemeinsame Bewertungsregel auf Bildebene (Mittel der heißesten 2% der Heatmap-Pixel), festgelegt vor allen Ergebnissen, und eine vorab formulierte Empfehlungsregel: Die einfachste Methode innerhalb von 0.02 ROC-AUC zur besten gewinnt – so schlägt die PCA-Rekonstruktion den um 0.007 führenden Autoencoder.",
+        "Unerwarteter Befund, berichtet: Längeres Training des Autoencoders verschlechterte ihn (Gesamt-AUC 0.779 -> 0.738 bei 30 Epochen, Blob-Erkennung 0.828 -> 0.610), weil gute Rekonstruktion das Anomaliesignal auslöscht.",
+        "Texturbrüche spalten das Feld: Der Autoencoder ist die einzige Methode, die bei ihnen nennenswert über dem Zufall liegt (0.609), und niemand kann sie lokalisieren (bester mittlerer IoU 0.043 vs. 0.011 bei zufälligen Heatmaps); ROC/PR/IoU sind von Grund auf in numpy implementiert, nirgends scikit-learn."
+      ]
     },
     {
       "name": "quantum-explainer",
@@ -345,12 +765,34 @@
       "tagline": "An installable, offline-first web app that teaches one- and two-qubit quantum computing on a real hand-written simulator - and says out loud what quantum computers cannot do.",
       "role": "teaching",
       "category": "Education & Simulation",
-      "stack": ["Vanilla JS", "Canvas", "PWA / service worker", "Node test harness", "zero dependencies"],
+      "stack": [
+        "Vanilla JS",
+        "Canvas",
+        "PWA / service worker",
+        "Node test harness",
+        "zero dependencies"
+      ],
       "metrics": [
-        {"label": "Simulator", "value": "~300 lines, zero dependencies"},
-        {"label": "Physics assertions", "value": "42 (plain Node)"},
-        {"label": "Structural / offline checks", "value": "57 (tools/verify.mjs)"},
-        {"label": "Runtime network calls", "value": "0 - installable PWA"}
+        {
+          "label": "Simulator",
+          "value": "~300 lines, zero dependencies",
+          "label_de": "Simulator"
+        },
+        {
+          "label": "Physics assertions",
+          "value": "42 (plain Node)",
+          "label_de": "Physik-Assertions"
+        },
+        {
+          "label": "Structural / offline checks",
+          "value": "57 (tools/verify.mjs)",
+          "label_de": "Struktur-/Offline-Prüfungen"
+        },
+        {
+          "label": "Runtime network calls",
+          "value": "0 - installable PWA",
+          "label_de": "Netzwerkaufrufe zur Laufzeit"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -359,7 +801,14 @@
         "Refuses to hype: a 'What quantum computers are NOT' section covers the parallel-worlds myth, NISQ-era limits, decoherence and error-correction overhead - every physics claim is demonstrated live on the simulator or cited to a real source."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/quantum-explainer",
-      "live_url": "https://dimitres-kisimov.github.io/quantum-explainer/"
+      "live_url": "https://dimitres-kisimov.github.io/quantum-explainer/",
+      "tagline_de": "Eine installierbare, offline-first Web-App, die Ein- und Zwei-Qubit-Quantencomputing an einem echten, handgeschriebenen Simulator vermittelt – und laut ausspricht, was Quantencomputer nicht können.",
+      "category_de": "Bildung & Simulation",
+      "highlights_de": [
+        "Ein handgeschriebener Zustandsvektor-Simulator (sim.js, ~300 Zeilen reiner Funktionen): komplexe Arithmetik, H/X/Y/Z/S/T-Gatter, RX/RY/RZ-Rotationen, CNOT, Messung nach der Bornschen Regel mit geseedetem PRNG und eine explizite Verschränkungsprüfung über Nicht-Faktorisierbarkeit.",
+        "Die Zwei-Qubit-Bloch-Ansicht zeichnet den reduzierten Zustand jedes Qubits, sodass beide Pfeile sichtbar zum Kugelmittelpunkt kollabieren, wenn ein CNOT die Qubits verschränkt.",
+        "Verweigert den Hype: Ein Abschnitt 'Was Quantencomputer NICHT sind' behandelt den Parallelwelten-Mythos, die Grenzen der NISQ-Ära, Dekohärenz und den Overhead der Fehlerkorrektur – jede physikalische Aussage wird live am Simulator demonstriert oder mit einer echten Quelle belegt."
+      ]
     },
     {
       "name": "logistics-flow-studio",
@@ -367,12 +816,35 @@
       "tagline": "WarehouseTwin - WMS + Plant Simulator (v2.0.0): an offline, browser-based warehouse management system and plant simulator. Generate a plant from a keyword (a deterministic generator plus an offline natural-language command parser, not a trained model), then simulate the WMS operation (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs, a live animated material flow, and 29 equipment types each with a 2D and a 3D representation (press P to switch) rendered in detail down to rack pallets, floor markings and metre rulers. Storage/slotting, automation, a user-definable object library, a guided Story Mode tour, an editable standards knowledge base and a consolidated WMS report; runs fully offline. Synthetic unless you import your own CSV; informed by standards, not a certification.",
       "role": "Job#2 analytics",
       "category": "Logistics & Optimization",
-      "stack": ["Vanilla JS", "HTML5 Canvas", "2D + 3D rendering", "PWA / service worker", "Node verify harness", "Bubblewrap TWA scaffold"],
+      "stack": [
+        "Vanilla JS",
+        "HTML5 Canvas",
+        "2D + 3D rendering",
+        "PWA / service worker",
+        "Node verify harness",
+        "Bubblewrap TWA scaffold"
+      ],
       "metrics": [
-        {"label": "Optimizer pick travel", "value": "36.70 -> 18.85 m/order (-48.6%)"},
-        {"label": "Equipment types", "value": "29, each with a 2D + 3D view (press P)"},
-        {"label": "WMS operations simulated", "value": "receiving -> shipping, ISO 22400 KPIs"},
-        {"label": "Verification", "value": "35 headless harnesses + 57/57 in-browser self-test"}
+        {
+          "label": "Optimizer pick travel",
+          "value": "36.70 -> 18.85 m/order (-48.6%)",
+          "label_de": "Optimierer-Kommissionierweg"
+        },
+        {
+          "label": "Equipment types",
+          "value": "29, each with a 2D + 3D view (press P)",
+          "label_de": "Gerätetypen"
+        },
+        {
+          "label": "WMS operations simulated",
+          "value": "receiving -> shipping, ISO 22400 KPIs",
+          "label_de": "Simulierte WMS-Abläufe"
+        },
+        {
+          "label": "Verification",
+          "value": "35 headless harnesses + 57/57 in-browser self-test",
+          "label_de": "Verifikation"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -385,7 +857,16 @@
       "repo_url": "https://github.com/Dimitres-Kisimov/logistics-flow-studio",
       "live_url": "https://dimitres-kisimov.github.io/logistics-flow-studio/",
       "image": "docs/img/warehousetwin.png",
-      "image_alt": "WarehouseTwin WMS + plant simulator — Cold-chain scenario (synthetic, illustrative)"
+      "image_alt": "WarehouseTwin WMS + plant simulator — Cold-chain scenario (synthetic, illustrative)",
+      "tagline_de": "WarehouseTwin – WMS + Anlagensimulator (v2.0.0): ein offline, browserbasiertes Lagerverwaltungssystem und ein Anlagensimulator. Eine Anlage aus einem Stichwort generieren (ein deterministischer Generator plus ein Offline-Parser für Befehle in natürlicher Sprache, kein trainiertes Modell), dann den WMS-Betrieb simulieren (Wareneingang -> Einlagerung -> Nachschub -> Kommissionierung -> Verpackung -> Versand) mit an ISO 22400 orientierten KPIs, einem live animierten Materialfluss und 29 Gerätetypen, jeder mit einer 2D- und einer 3D-Darstellung (P drücken zum Umschalten), detailliert gerendert bis hin zu Regalpaletten, Bodenmarkierungen und Meter-Linealen. Lagerung/Slotting, Automatisierung, eine benutzerdefinierbare Objektbibliothek, eine geführte Story-Mode-Tour, eine editierbare Standards-Wissensdatenbank und ein konsolidierter WMS-Bericht; läuft vollständig offline. Synthetisch, sofern Sie nicht Ihre eigene CSV importieren; an Standards orientiert, keine Zertifizierung.",
+      "category_de": "Logistik & Optimierung",
+      "highlights_de": [
+        "KI-Umgebungsgenerator: Eine Anlage in Stichworten beschreiben, und ein transparenter, deterministischer prozeduraler Generator baut ein vollständiges, gültiges Layout (RGV/AGV, AS/RS, Förderer), dann wendet ein Offline-Parser für natürliche Sprache Änderungen in Alltagssprache an wie 'füge 2 weitere RGVs im Kommissionierbereich hinzu' – eine Regel-/Heuristik-Engine, kein trainiertes Black-Box-Modell, und unbekannte Formulierungen erhalten ein ehrliches 'nicht verstanden'.",
+        "Simulation des WMS-Betriebs über dem von Ihnen gezeichneten Layout (Wareneingang -> Einlagerung -> Nachschub -> Kommissionierung -> Verpackung -> Versand) mit an ISO 22400 orientierten KPIs und benannter Engpassstufe, ein live animierter Materialfluss (Kartons durch Stationen, Förderweg-Routing, entstehender Warteschlangenstau) und ein Live-KPI-Dashboard – alles geseedet und deterministisch, sodass derselbe Seed dasselbe Ergebnis reproduziert.",
+        "Detailliertes Twin-Rendering: Jeder der 29 Gerätetypen trägt sowohl ein 2D-Schema als auch eine 3D-Darstellung, zwischen denen Sie mit der P-Taste wechseln, und der Grundriss ist bis hin zu einzelnen Regalpaletten, Gangbodenmarkierungen und Meter-Linealen gezeichnet – die ganze Halle auf einer einzigen Canvas zoomen und schwenken.",
+        "Mit eigenen Daten betreiben: ein vollwertiger SKU-Stamm + Auftragspool mit CSV-Import/-Export und zeilennummerierter Validierung; Golden-Zone-Lagerslotting, Belegung und Auslagerung; und eine editierbare Standards-Wissensdatenbank, in der Sie die DIN-/ASR-/EN-/VDI-/ISO-Werte ändern, über die Compliance-Prüfung, Berater und Generator schließen. Der fixierte Golden-Zone-Optimierer senkt den Demo-Kommissionierweg weiterhin von 36.70 -> 18.85 m/Auftrag (-48.6%), headless reproduzierbar.",
+        "Durchgehend ehrlich: Jede Zahl ist synthetisch und geseedet, sofern Sie nicht Ihre eigenen Daten importieren, die Standards-Arbeit ist 'orientiert an, keine Zertifizierung', und die App macht null Netzwerkaufrufe – sie läuft lokal über einen statischen Server oder installiert sich als PWA. Erzeugt einen konsolidierten druckbaren WMS-Bericht plus JSON/CSV und einen abgegrenzten IFC4-Export; 35 Headless-Verifikationsharnische plus ein 57/57-In-Browser-Selbsttest belegen das dokumentierte Verhalten."
+      ]
     },
     {
       "name": "decision-chain",
@@ -393,12 +874,36 @@
       "tagline": "One real dataset through the whole distributor decision chain - clean, forecast, replenish, slot, pick, route, cost - with a reconciliation ledger that machine-checks every seam and reproduces revenue across two repositories to the penny.",
       "role": "flagship",
       "category": "Supply-Chain Integration",
-      "stack": ["Python", "pandas / NumPy", "SciPy (Hungarian assignment)", "OR-Tools CVRP", "heapq DES", "Flask (offline dashboard)", "matplotlib + openpyxl"],
+      "stack": [
+        "Python",
+        "pandas / NumPy",
+        "SciPy (Hungarian assignment)",
+        "OR-Tools CVRP",
+        "heapq DES",
+        "Flask (offline dashboard)",
+        "matplotlib + openpyxl"
+      ],
       "metrics": [
-        {"label": "Reconciliation identities", "value": "13/13 PASS (machine-checked)"},
-        {"label": "Cross-repo revenue match", "value": "GBP 19,643,861.62 - to the penny"},
-        {"label": "Real dataset", "value": "UCI Online Retail II, 1,067,371 raw rows"},
-        {"label": "Tests", "value": "110 (each identity has a corruption FAIL path)"}
+        {
+          "label": "Reconciliation identities",
+          "value": "13/13 PASS (machine-checked)",
+          "label_de": "Abstimmungsidentitäten"
+        },
+        {
+          "label": "Cross-repo revenue match",
+          "value": "GBP 19,643,861.62 - to the penny",
+          "label_de": "Repo-übergreifende Umsatzübereinstimmung"
+        },
+        {
+          "label": "Real dataset",
+          "value": "UCI Online Retail II, 1,067,371 raw rows",
+          "label_de": "Reales Dataset"
+        },
+        {
+          "label": "Tests",
+          "value": "110 (each identity has a corruption FAIL path)",
+          "label_de": "Tests"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -406,7 +911,14 @@
         "Honest findings kept in the headline: nothing beats the naive walk on lumpy demand (MASE 1.782); the exact Hungarian slotting optimum is worth only 1.6% over classic ABC, with the rearrangement-inequality math explaining why; OR-Tools CVRP beats the 1964 Clarke-Wright baseline by only 0.2% and loses 19 of 48 days; the synthetic picking crew is 18% utilized - measured, not tuned away.",
         "Measuring is split from presenting: the ~51-minute full run (48 per-day CVRPs) serializes to a committed, code-fingerprinted run artifact; the offline Flask CHAIN DASHBOARD (13-identity reconciliation panel, provenance-colored stage flow) boots from it in seconds and recomputes nothing; PDF + Excel deliverables regenerate from the same artifact byte-for-byte; every quantity carries a provenance tag (real | derived | synthetic-assigned), invented cost rates are labelled INVENTED, and the cost table makes no profit claims."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/decision-chain"
+      "repo_url": "https://github.com/Dimitres-Kisimov/decision-chain",
+      "tagline_de": "Ein reales Dataset durch die gesamte Distributor-Entscheidungskette – bereinigen, prognostizieren, nachbestellen, slotten, kommissionieren, routen, kalkulieren – mit einem Abstimmungs-Ledger, das jede Naht maschinell prüft und den Umsatz über zwei Repositories auf den Penny genau reproduziert.",
+      "category_de": "Supply-Chain-Integration",
+      "highlights_de": [
+        "Distributoren scheitern an den Nähten, nicht in den Silos – deshalb ist Stufe 6 das Produkt: ein Abstimmungs-Ledger aus 13 pytest-fähigen Identitätsprüfungen, die beide Zahlen ausgeben, vom über zwei Repositories auf den Penny reproduzierten bereinigten Umsatz (GBP 19,643,861.62) bis zum auf den Cent aufgehenden Kosten-Ledger, hinunter zu jedem erhaltenen Pick (256,787 Zeilen), Karton (70,820) und Routen-Stopp (4,151).",
+        "Ehrliche Befunde in der Schlagzeile behalten: Nichts schlägt den naiven Walk bei unregelmäßiger Nachfrage (MASE 1.782); das exakte ungarische Slotting-Optimum ist nur 1.6% mehr wert als klassisches ABC, wobei die Rearrangement-Ungleichung erklärt, warum; OR-Tools CVRP schlägt die Clarke-Wright-Baseline von 1964 nur um 0.2% und verliert an 19 von 48 Tagen; die synthetische Kommissioniercrew ist zu 18% ausgelastet – gemessen, nicht weggetunt.",
+        "Messen ist vom Präsentieren getrennt: Der ~51-minütige Vollauf (48 CVRPs pro Tag) serialisiert zu einem committeten, code-fingerabgedruckten Run-Artefakt; das Offline-Flask-CHAIN-DASHBOARD (Abstimmungs-Panel mit 13 Identitäten, herkunftsgefärbter Stufenfluss) startet daraus in Sekunden und rechnet nichts neu; PDF- + Excel-Deliverables regenerieren aus demselben Artefakt byte-für-byte; jede Menge trägt ein Herkunfts-Tag (real | abgeleitet | synthetisch-zugewiesen), erfundene Kostensätze sind als INVENTED gekennzeichnet, und die Kostentabelle erhebt keine Gewinnbehauptungen."
+      ]
     },
     {
       "name": "chain-mcp",
@@ -414,12 +926,35 @@
       "tagline": "The portfolio's engines as AI-callable tools: a standard-conformant MCP server exposing forecasting, slotting, packing, routing, leakage analytics and a repo auditor to Claude Desktop / Claude Code over the open Model Context Protocol.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
-      "stack": ["Python", "official mcp SDK (FastMCP)", "JSON-RPC over stdio", "NumPy / pandas / SciPy", "OR-Tools", "pytest"],
+      "stack": [
+        "Python",
+        "official mcp SDK (FastMCP)",
+        "JSON-RPC over stdio",
+        "NumPy / pandas / SciPy",
+        "OR-Tools",
+        "pytest"
+      ],
       "metrics": [
-        {"label": "Real engines exposed as tools", "value": "6, from 5 source repos"},
-        {"label": "Tests", "value": "20, incl. a live JSON-RPC handshake"},
-        {"label": "Error handling", "value": "structured results - the server never crashes on a tool call"},
-        {"label": "Honesty labels", "value": "per-tool data_note (synthetic seeded vs real UCI)"}
+        {
+          "label": "Real engines exposed as tools",
+          "value": "6, from 5 source repos",
+          "label_de": "Als Tools bereitgestellte echte Engines"
+        },
+        {
+          "label": "Tests",
+          "value": "20, incl. a live JSON-RPC handshake",
+          "label_de": "Tests"
+        },
+        {
+          "label": "Error handling",
+          "value": "structured results - the server never crashes on a tool call",
+          "label_de": "Fehlerbehandlung"
+        },
+        {
+          "label": "Honesty labels",
+          "value": "per-tool data_note (synthetic seeded vs real UCI)",
+          "label_de": "Ehrlichkeits-Labels"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -427,7 +962,14 @@
         "Every tool validates its input, and every failure (bad input, missing source repo, engine error) comes back as a structured error result; a missing repo names the path tried and the env var to set, and the server keeps running.",
         "Honesty is wired into the protocol layer: five tools state via a data_note that they run on deterministic synthetic seeded datasets; forecast_demand runs the real UCI Online Retail II pipeline (history labelled real, forecasts derived) - and if naive wins a demand class, naive is what gets reported. Ships ready-to-paste configs for Claude Desktop and Claude Code."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/chain-mcp"
+      "repo_url": "https://github.com/Dimitres-Kisimov/chain-mcp",
+      "tagline_de": "Die Engines des Portfolios als KI-aufrufbare Tools: ein standardkonformer MCP-Server, der Prognose, Slotting, Packen, Routenplanung, Leckage-Analytik und einen Repo-Auditor über das offene Model Context Protocol für Claude Desktop / Claude Code bereitstellt.",
+      "category_de": "Automatisierung & Agenten",
+      "highlights_de": [
+        "Sechs echte Engines – Prognose je Nachfrageklasse (decision-chain), exaktes ungarisches Slotting und FFD-Kartonpackung (logistics-digital-twin), CVRP mit deterministischem Limit vs. Clarke-Wright (route-optimizer), Rabatt-Leckage-Drill-down (sales-kpi-analytics) und ein schreibgeschützter Repo-Auditor (portfolio-ops) – werden schreibgeschützt aus Nachbar-Checkouts importiert und mit typisierten JSON-Schemata deklariert, die ein MCP-Client über den Protokoll-Handshake entdeckt.",
+        "Jedes Tool validiert seine Eingabe, und jeder Fehler (fehlerhafte Eingabe, fehlendes Quell-Repo, Engine-Fehler) kommt als strukturiertes Fehlerergebnis zurück; ein fehlendes Repo nennt den versuchten Pfad und die zu setzende Umgebungsvariable, und der Server läuft weiter.",
+        "Ehrlichkeit ist in die Protokollschicht eingebaut: Fünf Tools geben über eine data_note an, dass sie auf deterministischen, synthetischen, geseedeten Datensätzen laufen; forecast_demand durchläuft die reale UCI-Online-Retail-II-Pipeline (Historie als real gekennzeichnet, Prognosen als abgeleitet) – und wenn Naive eine Nachfrageklasse gewinnt, wird Naive berichtet. Liefert einfügefertige Konfigurationen für Claude Desktop und Claude Code."
+      ]
     },
     {
       "name": "3DpicToIFCModeling",
@@ -435,12 +977,36 @@
       "tagline": "SCS Studio: one photo in, a furnished German-workplace-law-compliant BIM building out. Photo to 3D to ergonomic room and whole-building layout, exported as optimized IFC4.",
       "role": "flagship",
       "category": "BIM / AEC",
-      "stack": ["Node/Express", "Vanilla JS + xeokit", "Python", "OR-Tools CP-SAT", "TripoSR/TripoSG", "DINOv2 + FAISS", "IfcOpenShell"],
+      "stack": [
+        "Node/Express",
+        "Vanilla JS + xeokit",
+        "Python",
+        "OR-Tools CP-SAT",
+        "TripoSR/TripoSG",
+        "DINOv2 + FAISS",
+        "IfcOpenShell"
+      ],
       "metrics": [
-        {"label": "Solver-placed pieces (tower)", "value": "805 across 8 storeys"},
-        {"label": "Engine benchmark", "value": "5 engines on 187 photos (F-score)"},
-        {"label": "Measured ROI (fleet)", "value": "95.9% time saved"},
-        {"label": "Standards", "value": "IFC4, German ASR, DIN 277"}
+        {
+          "label": "Solver-placed pieces (tower)",
+          "value": "805 across 8 storeys",
+          "label_de": "Vom Solver platzierte Objekte (Turm)"
+        },
+        {
+          "label": "Engine benchmark",
+          "value": "5 engines on 187 photos (F-score)",
+          "label_de": "Engine-Benchmark"
+        },
+        {
+          "label": "Measured ROI (fleet)",
+          "value": "95.9% time saved",
+          "label_de": "Gemessener ROI (Flotte)"
+        },
+        {
+          "label": "Standards",
+          "value": "IFC4, German ASR, DIN 277",
+          "label_de": "Standards"
+        }
       ],
       "impact_eur": null,
       "highlights": [
@@ -448,7 +1014,16 @@
         "Five image-to-3D engines benchmarked on 187 photos against ground-truth meshes; DINOv2 + FAISS retrieval over the ABO library; a written record of what did NOT work.",
         "IFC4 round-trips that survive Revit, DIN 277 room classification in four languages, validated across a 15-building fleet; shipped through four tagged releases."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/3DpicToIFCModeling"
+      "repo_url": "https://github.com/Dimitres-Kisimov/3DpicToIFCModeling",
+      "tagline_de": "SCS Studio: ein Foto rein, ein möbliertes, dem deutschen Arbeitsstättenrecht entsprechendes BIM-Gebäude raus. Foto zu 3D zu ergonomischem Raum und Gesamtgebäude-Layout, exportiert als optimiertes IFC4.",
+      "category_de": "BIM / AEC",
+      "highlights_de": [
+        "Ein personenbewusster CP-SAT-Solver platziert Möbel gemäß echtem deutschem ASR-Arbeitsstättenrecht (Bewegungsflächen, Verkehrswegbreiten, geschützter Zugang) unter Nennung des Gesetzestextes – oder verweigert je Objekt ehrlich, wenn nicht genügend Platz vorhanden ist.",
+        "Fünf Bild-zu-3D-Engines auf 187 Fotos gegen Ground-Truth-Meshes gebenchmarkt; DINOv2-+-FAISS-Retrieval über die ABO-Bibliothek; eine schriftliche Aufzeichnung dessen, was NICHT funktioniert hat.",
+        "IFC4-Roundtrips, die Revit überstehen, DIN-277-Raumklassifikation in vier Sprachen, validiert über eine Flotte von 15 Gebäuden; ausgeliefert über vier getaggte Releases."
+      ]
     }
-  ]
+  ],
+  "generated_note_de": "Alle folgenden Kennzahlen werden – sofern nicht anders angegeben – auf synthetischen, selbst generierten Daten gemessen. Sie demonstrieren die Methode, nicht Ergebnisse aus dem Geschäft eines realen Unternehmens.",
+  "featured_note_de": "Ein Bogen durch die Arbeiten: Vorhersage -> Entscheidung -> Betrieb -> Nachweis. Synthetische/generierte Daten, sofern kein reales öffentliches Dataset genannt ist; Ergebnisse sind modelliert, nicht gemessen; Standards sind an ISO/DIN orientiert, keine Zertifizierung."
 }

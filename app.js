@@ -1,16 +1,32 @@
 /* Portfolio site - original hand-written vanilla JS.
-   No dependencies, no external requests. Two jobs:
+   No dependencies, no external requests. Three jobs:
    1. filter the project grid by focus area (role)
    2. build the "impact at a glance" bar chart from inline JSON data
+   3. drive the EN <-> DE language toggle (same URL, no reload)
    The site works fully offline; this script only reads inline data + the DOM. */
 
 (function () {
   "use strict";
 
-  // ---- 1. Project filter ------------------------------------------------
+  var STORAGE_KEY = "portfolio-lang";
+  var SUPPORTED = { en: true, de: true };
+
+  // Strings the JS itself injects (the chart) - shipped inline, no network.
+  var I18N = {
+    perYear: { en: " / yr", de: " / Jahr" },
+    noImpact: {
+      en: "No impact figures available.",
+      de: "Keine Impact-Zahlen verfügbar."
+    }
+  };
+
+  var currentLang = "en";
+
   var filters = document.querySelectorAll(".filter");
   var cards = document.querySelectorAll(".card");
+  var langButtons = document.querySelectorAll(".lang-btn");
 
+  // ---- 1. Project filter ------------------------------------------------
   function applyFilter(value) {
     cards.forEach(function (card) {
       var match = value === "all" || card.getAttribute("data-role") === value;
@@ -29,7 +45,62 @@
     });
   });
 
-  // ---- 2. Hand-built bar chart -----------------------------------------
+  // ---- 2. Language toggle (EN <-> DE, same URL, no reload) --------------
+  function pickLang(value) {
+    return value === "de" || value === "en" ? value : null;
+  }
+
+  // Precedence: ?lang= wins for THIS visit; else the user's persisted choice;
+  // else navigator.language ("de*" -> German, otherwise English). The canonical
+  // shareable URL stays plain - we never redirect or touch the URL.
+  function detectLang() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var q = pickLang(params.get("lang"));
+      if (q) return q;
+    } catch (e) { /* URLSearchParams missing: fall through */ }
+    try {
+      var stored = pickLang(window.localStorage.getItem(STORAGE_KEY));
+      if (stored) return stored;
+    } catch (e) { /* localStorage blocked: fall through */ }
+    var nav = (navigator.language || navigator.userLanguage || "").toLowerCase();
+    return nav.indexOf("de") === 0 ? "de" : "en";
+  }
+
+  function applyLang(lang) {
+    if (!SUPPORTED[lang]) lang = "en";
+    currentLang = lang;
+    document.documentElement.setAttribute("lang", lang);
+
+    // Swap every paired element's text in place.
+    var nodes = document.querySelectorAll("[data-en]");
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      var val = el.getAttribute("data-" + lang);
+      if (val !== null) el.textContent = val;
+    }
+
+    langButtons.forEach(function (btn) {
+      var on = btn.getAttribute("data-lang") === lang;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+
+    // The JS-built chart carries a translated unit suffix, so rebuild it.
+    buildChart();
+  }
+
+  langButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var lang = pickLang(btn.getAttribute("data-lang")) || "en";
+      try {
+        window.localStorage.setItem(STORAGE_KEY, lang);
+      } catch (e) { /* persistence is best-effort */ }
+      applyLang(lang);
+    });
+  });
+
+  // ---- 3. Hand-built bar chart -----------------------------------------
   function readData() {
     var node = document.getElementById("projects-data");
     if (!node) return [];
@@ -55,11 +126,12 @@
       .sort(function (a, b) { return b.impact_eur - a.impact_eur; });
 
     if (!rows.length) {
-      chart.textContent = "No impact figures available.";
+      chart.textContent = I18N.noImpact[currentLang] || I18N.noImpact.en;
       return;
     }
 
     var max = rows[0].impact_eur;
+    var suffix = I18N.perYear[currentLang] || I18N.perYear.en;
     var frag = document.createDocumentFragment();
 
     rows.forEach(function (p) {
@@ -80,7 +152,7 @@
 
       var val = document.createElement("div");
       val.className = "bar-val";
-      val.textContent = euro(p.impact_eur) + " / yr";
+      val.textContent = euro(p.impact_eur) + suffix;
 
       row.appendChild(name);
       row.appendChild(track);
@@ -92,9 +164,8 @@
     chart.appendChild(frag);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", buildChart);
-  } else {
-    buildChart();
-  }
+  // ---- init -------------------------------------------------------------
+  // app.js is loaded at the end of <body>, so the DOM is ready here.
+  // applyLang() also builds the chart, so no separate initial call is needed.
+  applyLang(detectLang());
 })();
