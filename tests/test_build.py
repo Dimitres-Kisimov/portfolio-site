@@ -51,6 +51,12 @@ def projects() -> list[dict]:
     return data["projects"]
 
 
+@pytest.fixture(scope="module")
+def featured() -> list[dict]:
+    data = json.loads((ROOT / "data" / "projects.json").read_text(encoding="utf-8"))
+    return data.get("featured", [])
+
+
 def test_build_runs_and_produces_nonempty_html(tmp_path, monkeypatch):
     out = tmp_path / "index.html"
     monkeypatch.setattr(build, "OUT", out)
@@ -117,11 +123,12 @@ def test_offline_no_css_import_or_remote_url(site_html):
         assert not re.search(r'url\(\s*["\']?https?://', blob)
 
 
-def test_external_anchors_limited_to_allowlist(site_html, projects):
+def test_external_anchors_limited_to_allowlist(site_html, projects, featured):
     """Every absolute http(s) URL in the page is a github.com repo/profile
-    anchor or one of the declared live-app URLs - nothing else."""
+    anchor or one of the declared live-app URLs (grid or featured) - nothing else."""
     allowed_prefixes = ["https://github.com/"]
     allowed_exact = {p["live_url"] for p in projects if p.get("live_url")}
+    allowed_exact |= {f["live_url"] for f in featured if f.get("live_url")}
     for url in re.findall(r'https?://[^"\'<>\s]+', site_html):
         ok = url in allowed_exact or any(url.startswith(p) for p in allowed_prefixes)
         assert ok, f"unexpected external URL in output: {url}"
@@ -320,4 +327,103 @@ def test_rendered_and_committed_html_have_no_mit_license_claim(site_html):
 def test_footer_keeps_all_rights_reserved(site_html):
     assert "all rights reserved" in site_html, (
         "the footer must keep the proprietary '(c) Dimitres Kisimov, all rights reserved' notice"
+    )
+
+
+# --- Featured-work guard (the four crown jewels, in the narrative arc) --------
+
+# Spine order (see PORTFOLIO_STORY.md): showpiece -> engine -> integration proof
+# -> command center. This is the exact set and order the featured section shows.
+EXPECTED_FEATURED_ORDER = [
+    "logistics-flow-studio",
+    "logistics-digital-twin",
+    "decision-chain",
+    "distributor-intelligence-platform",
+]
+FEATURED_REQUIRED_KEYS = ("slug", "arc_step", "role_tag", "name", "blurb", "repo_url")
+
+
+def _featured_segment(site_html: str) -> str:
+    """The rendered HTML between the featured section start and the grid."""
+    start = site_html.index('id="featured"')
+    end = site_html.index('id="projects"')
+    assert start < end, "the featured section must render ABOVE the projects grid"
+    return site_html[start:end]
+
+
+def test_featured_section_present(site_html):
+    assert 'id="featured"' in site_html
+    assert "Featured work" in site_html
+
+
+def test_featured_is_the_four_jewels_in_arc_order(featured, site_html):
+    slugs = [f["slug"] for f in featured]
+    assert slugs == EXPECTED_FEATURED_ORDER, (
+        f"featured must be the four crown jewels in spine order, got {slugs}"
+    )
+    # ...and they render in that same order in the HTML.
+    rendered = re.findall(r'class="feature" data-slug="([^"]+)"', site_html)
+    assert rendered == EXPECTED_FEATURED_ORDER, f"featured cards render out of order: {rendered}"
+
+
+def test_featured_entries_schema(featured):
+    assert len(featured) == 4, "expected exactly four featured entries"
+    seen: set[str] = set()
+    for item in featured:
+        for key in FEATURED_REQUIRED_KEYS:
+            assert key in item and str(item[key]).strip(), f"featured missing {key!r}: {item}"
+        assert item["slug"] not in seen, f"duplicate featured slug: {item['slug']}"
+        seen.add(item["slug"])
+        # Every card must carry a LOCAL visual: a screenshot image OR the diagram.
+        assert item.get("image") or item.get("diagram"), (
+            f"featured entry {item['slug']} has no visual (image or diagram)"
+        )
+
+
+def test_featured_names_role_tags_and_arc_steps_render(featured, site_html):
+    seg = _featured_segment(site_html)
+    for item in featured:
+        assert build.esc(item["name"]) in seg, f"featured name missing: {item['name']}"
+        assert build.esc(item["role_tag"]) in seg, f"featured role tag missing: {item['role_tag']}"
+        assert f'feature-step">{build.esc(item["arc_step"])}</span>' in seg, (
+            f"featured arc step missing: {item['arc_step']}"
+        )
+
+
+def test_featured_images_are_local_relative_and_exist_on_disk(featured):
+    for item in featured:
+        image = item.get("image")
+        if not image:
+            continue
+        # GitHub Pages only serves THIS repo, so the asset must be a relative,
+        # in-repo path - never a scheme, protocol-relative or root-absolute URL.
+        assert "://" not in image and not image.startswith(("/", "http", "data:")), (
+            f"featured image must be a local relative path: {image!r}"
+        )
+        assert (ROOT / image).is_file(), f"featured image missing on disk: {image!r}"
+
+
+def test_featured_media_has_no_external_reference(site_html):
+    seg = _featured_segment(site_html)
+    assert not re.search(r'src=["\']https?://', seg), "external image src in featured section"
+    assert not re.search(r'src=["\']//', seg), "protocol-relative image src in featured section"
+
+
+def test_featured_repo_urls_are_wellformed_github(featured):
+    for item in featured:
+        assert _is_well_formed_url(item["repo_url"], require_host="github.com"), (
+            f"{item['slug']}: featured repo_url must be a well-formed github.com URL"
+        )
+
+
+def test_featured_live_urls_are_wellformed(featured):
+    for item in featured:
+        url = item.get("live_url")
+        if url:
+            assert _is_well_formed_url(url), f"{item['slug']}: featured live_url malformed"
+
+
+def test_featured_section_has_no_mit_license_claim(site_html):
+    assert not MIT_LICENSE_CLAIM.search(_featured_segment(site_html)), (
+        "featured section must not carry a stale MIT-license self-claim"
     )

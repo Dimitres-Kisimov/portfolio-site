@@ -1,6 +1,49 @@
 {
   "owner": "Dimitres-Kisimov",
   "generated_note": "All metrics below are measured on synthetic, self-generated data unless otherwise stated. They demonstrate method, not results on any real company's business.",
+  "featured_note": "One arc through the work: prediction -> decision -> operation -> proof. Synthetic/generated data unless a real public dataset is named; results are modelled, not measured; standards are informed by ISO/DIN, not a certification.",
+  "featured": [
+    {
+      "slug": "logistics-flow-studio",
+      "arc_step": "01",
+      "role_tag": "Showpiece",
+      "name": "WarehouseTwin (logistics-flow-studio)",
+      "blurb": "You can operate it. An interactive plant + warehouse simulator that runs in a browser, offline, on a normal laptop: generate a plant from a keyword, edit it in plain language, switch 2D <-> 3D, and watch material flow receiving -> put-away -> pick -> pack -> ship. The emotional entry point - a real operation with racks, vehicles and dock doors.",
+      "repo_url": "https://github.com/Dimitres-Kisimov/logistics-flow-studio",
+      "live_url": "https://dimitres-kisimov.github.io/logistics-flow-studio/",
+      "image": "docs/img/hero-plant-2d.png",
+      "image_alt": "WarehouseTwin plant simulator - 2D warehouse floor with racks, aisles, vehicles and material-flow stations (synthetic, illustrative)"
+    },
+    {
+      "slug": "logistics-digital-twin",
+      "arc_step": "02",
+      "role_tag": "Engine",
+      "name": "logistics-digital-twin",
+      "blurb": "There is a real engine underneath - not a toy. The reference engine that backs the simulator: 3D carton packing, ABC / golden-zone slotting and a discrete-event simulation, tested (128 tests) and sharing the exact same wt-1 layout format the app uses. The pretty picture is a faithful front-end to real operations research.",
+      "repo_url": "https://github.com/Dimitres-Kisimov/logistics-digital-twin",
+      "image": "docs/img/warehouse_layout.svg",
+      "image_alt": "logistics-digital-twin engine output - velocity-slotted warehouse layout with A-movers pulled to the golden-zone slots nearest dispatch (synthetic, seeded)"
+    },
+    {
+      "slug": "decision-chain",
+      "arc_step": "03",
+      "role_tag": "Integration proof",
+      "name": "decision-chain",
+      "blurb": "The whole chain reconciles on real data - the hard proof. It takes ONE real dataset (UCI Online Retail II) and runs it through every stage - forecast -> inventory -> slotting -> fulfilment -> routing -> a single reconciled ledger - with 13 cross-stage identities machine-checked to hold, even under demand or cost shocks. The thing no single-silo demo can show: the functions actually agree with each other.",
+      "repo_url": "https://github.com/Dimitres-Kisimov/decision-chain",
+      "diagram": "chain"
+    },
+    {
+      "slug": "distributor-intelligence-platform",
+      "arc_step": "04",
+      "role_tag": "Command center",
+      "name": "distributor-intelligence-platform",
+      "blurb": "It scales into a command center - the operator's view. A Flask dashboard that turns the engines into a decision cockpit - forecasting, assortment, routing - with a reconciliation guard so no headline number can silently drift from the code that produced it. What a Wuerth-style MRO distributor would actually sit in front of.",
+      "repo_url": "https://github.com/Dimitres-Kisimov/distributor-intelligence-platform",
+      "image": "docs/img/command-center.png",
+      "image_alt": "distributor-intelligence-platform command center - forecasting, assortment and routing decision dashboard (synthetic data)"
+    }
+  ],
   "projects": [
     {
       "name": "revops-optimizer",

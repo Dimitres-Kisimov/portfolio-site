@@ -17,7 +17,8 @@
       automation on one side, BI / forecasting / optimization on the other - each project shipped
       with a fair baseline, an honest evaluation, and a working offline artifact.</p>
       <nav class="hero-links">
-        <a class="btn primary" href="https://github.com/Dimitres-Kisimov" rel="noopener">GitHub profile</a>
+        <a class="btn primary" href="#featured">Featured work</a>
+        <a class="btn" href="https://github.com/Dimitres-Kisimov" rel="noopener">GitHub profile</a>
         <a class="btn" href="#projects">Browse 19 projects</a>
         <a class="btn" href="#impact">Impact chart</a>
         <a class="btn" href="#approach">Approach</a>
@@ -26,6 +27,84 @@
   </header>
 
   <main class="wrap">
+    <section id="featured" aria-labelledby="featured-h">
+      <div class="section-head">
+        <h2 id="featured-h">Featured work</h2>
+        <p class="muted">One arc through the work: prediction -&gt; decision -&gt; operation -&gt; proof. Synthetic/generated data unless a real public dataset is named; results are modelled, not measured; standards are informed by ISO/DIN, not a certification.</p>
+      </div>
+      <div class="featured-stack">
+        
+        <article class="feature" data-slug="logistics-flow-studio">
+          <div class="feature-visual"><img class="feature-media" src="docs/img/hero-plant-2d.png" alt="WarehouseTwin plant simulator - 2D warehouse floor with racks, aisles, vehicles and material-flow stations (synthetic, illustrative)" loading="lazy"></div>
+          <div class="feature-body">
+            <p class="feature-eyebrow"><span class="feature-step">01</span>Showpiece</p>
+            <h3>WarehouseTwin (logistics-flow-studio)</h3>
+            <p class="feature-blurb">You can operate it. An interactive plant + warehouse simulator that runs in a browser, offline, on a normal laptop: generate a plant from a keyword, edit it in plain language, switch 2D &lt;-&gt; 3D, and watch material flow receiving -&gt; put-away -&gt; pick -&gt; pack -&gt; ship. The emotional entry point - a real operation with racks, vehicles and dock doors.</p>
+            <div class="feature-links">
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/logistics-flow-studio" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></a>
+          <a class="repo-link" href="https://dimitres-kisimov.github.io/logistics-flow-studio/" rel="noopener">Open the live app
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="feature" data-slug="logistics-digital-twin">
+          <div class="feature-visual"><img class="feature-media" src="docs/img/warehouse_layout.svg" alt="logistics-digital-twin engine output - velocity-slotted warehouse layout with A-movers pulled to the golden-zone slots nearest dispatch (synthetic, seeded)" loading="lazy"></div>
+          <div class="feature-body">
+            <p class="feature-eyebrow"><span class="feature-step">02</span>Engine</p>
+            <h3>logistics-digital-twin</h3>
+            <p class="feature-blurb">There is a real engine underneath - not a toy. The reference engine that backs the simulator: 3D carton packing, ABC / golden-zone slotting and a discrete-event simulation, tested (128 tests) and sharing the exact same wt-1 layout format the app uses. The pretty picture is a faithful front-end to real operations research.</p>
+            <div class="feature-links">
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/logistics-digital-twin" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="feature" data-slug="decision-chain">
+          <div class="feature-visual"><div class="feature-diagram"><svg class="chain-svg" viewBox="0 0 300 340" role="img" aria-labelledby="chain-title"><title id="chain-title">decision-chain: one real dataset flows through six stages into a single reconciled ledger where every identity check passes</title><line class="chain-arrow" x1="150" y1="40" x2="150" y2="54" stroke-width="2"/><path class="chain-arrow-head" d="M146 48 L154 48 L150 54 Z"/><line class="chain-arrow" x1="150" y1="86" x2="150" y2="100" stroke-width="2"/><path class="chain-arrow-head" d="M146 94 L154 94 L150 100 Z"/><line class="chain-arrow" x1="150" y1="132" x2="150" y2="146" stroke-width="2"/><path class="chain-arrow-head" d="M146 140 L154 140 L150 146 Z"/><line class="chain-arrow" x1="150" y1="178" x2="150" y2="192" stroke-width="2"/><path class="chain-arrow-head" d="M146 186 L154 186 L150 192 Z"/><line class="chain-arrow" x1="150" y1="224" x2="150" y2="238" stroke-width="2"/><path class="chain-arrow-head" d="M146 232 L154 232 L150 238 Z"/><line class="chain-arrow" x1="150" y1="270" x2="150" y2="284" stroke-width="2"/><path class="chain-arrow-head" d="M146 278 L154 278 L150 284 Z"/><rect class="chain-box" x="30" y="8" width="240" height="32" rx="8"/><text class="chain-text" x="150" y="28" text-anchor="middle" font-size="13">Clean</text><rect class="chain-box" x="30" y="54" width="240" height="32" rx="8"/><text class="chain-text" x="150" y="74" text-anchor="middle" font-size="13">Forecast</text><rect class="chain-box" x="30" y="100" width="240" height="32" rx="8"/><text class="chain-text" x="150" y="120" text-anchor="middle" font-size="13">Inventory</text><rect class="chain-box" x="30" y="146" width="240" height="32" rx="8"/><text class="chain-text" x="150" y="166" text-anchor="middle" font-size="13">Slotting</text><rect class="chain-box" x="30" y="192" width="240" height="32" rx="8"/><text class="chain-text" x="150" y="212" text-anchor="middle" font-size="13">Fulfilment</text><rect class="chain-box" x="30" y="238" width="240" height="32" rx="8"/><text class="chain-text" x="150" y="258" text-anchor="middle" font-size="13">Routing</text><rect class="chain-box-final" x="30" y="284" width="240" height="44" rx="8"/><text class="chain-text-final" x="150" y="303" text-anchor="middle" font-size="13" font-weight="700">Reconciled ledger</text><text class="chain-sub-final" x="150" y="319" text-anchor="middle" font-size="11">13/13 identities PASS</text></svg></div></div>
+          <div class="feature-body">
+            <p class="feature-eyebrow"><span class="feature-step">03</span>Integration proof</p>
+            <h3>decision-chain</h3>
+            <p class="feature-blurb">The whole chain reconciles on real data - the hard proof. It takes ONE real dataset (UCI Online Retail II) and runs it through every stage - forecast -&gt; inventory -&gt; slotting -&gt; fulfilment -&gt; routing -&gt; a single reconciled ledger - with 13 cross-stage identities machine-checked to hold, even under demand or cost shocks. The thing no single-silo demo can show: the functions actually agree with each other.</p>
+            <div class="feature-links">
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/decision-chain" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="feature" data-slug="distributor-intelligence-platform">
+          <div class="feature-visual"><img class="feature-media" src="docs/img/command-center.png" alt="distributor-intelligence-platform command center - forecasting, assortment and routing decision dashboard (synthetic data)" loading="lazy"></div>
+          <div class="feature-body">
+            <p class="feature-eyebrow"><span class="feature-step">04</span>Command center</p>
+            <h3>distributor-intelligence-platform</h3>
+            <p class="feature-blurb">It scales into a command center - the operator&#x27;s view. A Flask dashboard that turns the engines into a decision cockpit - forecasting, assortment, routing - with a reconciliation guard so no headline number can silently drift from the code that produced it. What a Wuerth-style MRO distributor would actually sit in front of.</p>
+            <div class="feature-links">
+          <a class="repo-link" href="https://github.com/Dimitres-Kisimov/distributor-intelligence-platform" rel="noopener">View repository on GitHub
+            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg></a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section id="projects" aria-labelledby="projects-h">
       <div class="section-head">
         <h2 id="projects-h">Projects</h2>

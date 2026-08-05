@@ -43,6 +43,17 @@ def esc(text: str) -> str:
     return html.escape(str(text), quote=True)
 
 
+# Small external-link glyph reused by every repo/live anchor.
+ARROW_ICON = (
+    '\n            <svg class="icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">'
+    '\n              <path d="M4.5 3.5h6a1 1 0 0 1 1 1v6" fill="none" stroke="currentColor"'
+    ' stroke-width="1.4" stroke-linecap="round"/>'
+    '\n              <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor"'
+    ' stroke-width="1.4" stroke-linecap="round"/>'
+    "\n            </svg>"
+)
+
+
 def render_chip(text: str) -> str:
     return f'<span class="chip">{esc(text)}</span>'
 
@@ -84,6 +95,117 @@ def render_live_link(project: dict) -> str:
               <path d="M11 5 4.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
             </svg>
           </a>"""
+
+
+def chain_diagram_svg() -> str:
+    """Hand-built, theme-aware inline SVG for the decision-chain feature card.
+
+    decision-chain ships no screenshot (it is a clickable Flask dashboard), so
+    its visual is a small stage-pipeline diagram drawn from CSS design tokens -
+    fully local, no external asset, honest (no invented numbers beyond the
+    13/13 reconciliation identity count the repo actually machine-checks).
+    """
+    stages = ["Clean", "Forecast", "Inventory", "Slotting", "Fulfilment", "Routing"]
+    final_label = "Reconciled ledger"
+    final_sub = "13/13 identities PASS"
+    box_x, box_w, box_h, step, top = 30, 240, 32, 46, 8
+    cx = box_x + box_w / 2  # horizontal centre (150)
+    n = len(stages)
+    parts = [
+        # No xmlns: this SVG is inlined in an HTML5 document, so the HTML parser
+        # assigns the SVG namespace. Emitting the xmlns URL would also trip the
+        # site's own external-URL guard for no benefit.
+        '<svg class="chain-svg" viewBox="0 0 300 340" role="img"'
+        ' aria-labelledby="chain-title">',
+        '<title id="chain-title">decision-chain: one real dataset flows through six stages'
+        " into a single reconciled ledger where every identity check passes</title>",
+    ]
+    # Connectors + arrowheads (each box down into the next, ending in the ledger).
+    for i in range(n):
+        y_from = top + i * step + box_h
+        y_to = top + (i + 1) * step
+        parts.append(
+            f'<line class="chain-arrow" x1="{cx:g}" y1="{y_from}" x2="{cx:g}"'
+            f' y2="{y_to}" stroke-width="2"/>'
+        )
+        parts.append(
+            f'<path class="chain-arrow-head" d="M{cx - 4:g} {y_to - 6} L{cx + 4:g}'
+            f' {y_to - 6} L{cx:g} {y_to} Z"/>'
+        )
+    # Regular stage boxes.
+    for i, label in enumerate(stages):
+        y = top + i * step
+        parts.append(
+            f'<rect class="chain-box" x="{box_x}" y="{y}" width="{box_w}"'
+            f' height="{box_h}" rx="8"/>'
+        )
+        parts.append(
+            f'<text class="chain-text" x="{cx:g}" y="{y + box_h / 2 + 4:g}"'
+            f' text-anchor="middle" font-size="13">{esc(label)}</text>'
+        )
+    # Final, highlighted ledger box (taller, two lines).
+    fy = top + n * step
+    parts.append(
+        f'<rect class="chain-box-final" x="{box_x}" y="{fy}" width="{box_w}"'
+        ' height="44" rx="8"/>'
+    )
+    parts.append(
+        f'<text class="chain-text-final" x="{cx:g}" y="{fy + 19:g}" text-anchor="middle"'
+        f' font-size="13" font-weight="700">{esc(final_label)}</text>'
+    )
+    parts.append(
+        f'<text class="chain-sub-final" x="{cx:g}" y="{fy + 35:g}" text-anchor="middle"'
+        f' font-size="11">{esc(final_sub)}</text>'
+    )
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def render_featured_media(item: dict) -> str:
+    """Visual for a featured card: a local screenshot, or the inline diagram.
+
+    Screenshots are local, relative assets (offline guarantee); the only card
+    without one (decision-chain) gets the hand-built inline SVG pipeline.
+    """
+    image = item.get("image")
+    if image:
+        alt = esc(item.get("image_alt", ""))
+        return f'<img class="feature-media" src="{esc(image)}" alt="{alt}" loading="lazy">'
+    if item.get("diagram") == "chain":
+        return f'<div class="feature-diagram">{chain_diagram_svg()}</div>'
+    return ""
+
+
+def render_featured_links(item: dict) -> str:
+    repo = esc(item["repo_url"])
+    links = [
+        f'<a class="repo-link" href="{repo}" rel="noopener">View repository on GitHub'
+        f"{ARROW_ICON}</a>"
+    ]
+    live_url = item.get("live_url")
+    if live_url:
+        links.append(
+            f'<a class="repo-link" href="{esc(live_url)}" rel="noopener">Open the live app'
+            f"{ARROW_ICON}</a>"
+        )
+    return "\n          ".join(links)
+
+
+def render_feature(item: dict) -> str:
+    media = render_featured_media(item)
+    links = render_featured_links(item)
+    return f"""
+        <article class="feature" data-slug="{esc(item['slug'])}">
+          <div class="feature-visual">{media}</div>
+          <div class="feature-body">
+            <p class="feature-eyebrow"><span class="feature-step">{esc(item['arc_step'])}</span>{esc(item['role_tag'])}</p>
+            <h3>{esc(item['name'])}</h3>
+            <p class="feature-blurb">{esc(item['blurb'])}</p>
+            <div class="feature-links">
+          {links}
+            </div>
+          </div>
+        </article>"""
 
 
 def render_card(project: dict) -> str:
@@ -144,7 +266,8 @@ TEMPLATE = """<!doctype html>
       automation on one side, BI / forecasting / optimization on the other - each project shipped
       with a fair baseline, an honest evaluation, and a working offline artifact.</p>
       <nav class="hero-links">
-        <a class="btn primary" href="https://github.com/Dimitres-Kisimov" rel="noopener">GitHub profile</a>
+        <a class="btn primary" href="#featured">Featured work</a>
+        <a class="btn" href="https://github.com/Dimitres-Kisimov" rel="noopener">GitHub profile</a>
         <a class="btn" href="#projects">Browse {count} projects</a>
         <a class="btn" href="#impact">Impact chart</a>
         <a class="btn" href="#approach">Approach</a>
@@ -153,6 +276,16 @@ TEMPLATE = """<!doctype html>
   </header>
 
   <main class="wrap">
+    <section id="featured" aria-labelledby="featured-h">
+      <div class="section-head">
+        <h2 id="featured-h">Featured work</h2>
+        <p class="muted">{featured_note}</p>
+      </div>
+      <div class="featured-stack">
+        {featured}
+      </div>
+    </section>
+
     <section id="projects" aria-labelledby="projects-h">
       <div class="section-head">
         <h2 id="projects-h">Projects</h2>
@@ -236,6 +369,7 @@ def build() -> int:
 
     cards = "\n".join(render_card(p) for p in projects)
     filters = render_filters(roles)
+    featured = "\n".join(render_feature(f) for f in data.get("featured", []))
 
     # Only expose what the client needs (name + impact) to the chart script.
     chart_data = [
@@ -250,6 +384,8 @@ def build() -> int:
     page = TEMPLATE.format(
         count=len(projects),
         filters=filters,
+        featured=featured,
+        featured_note=esc(data.get("featured_note", "")),
         cards=cards,
         generated_note=esc(data.get("generated_note", "")),
         data_json=data_json,
