@@ -22,13 +22,13 @@
       "arc_step": "02",
       "role_tag": "Engine",
       "name": "logistics-digital-twin",
-      "blurb": "There is a real engine underneath - not a toy. The reference engine that backs the simulator: 3D carton packing, ABC / golden-zone slotting and a discrete-event simulation, tested (128 tests) and sharing the exact same wt-1 layout format the app uses. The pretty picture is a faithful front-end to real operations research.",
+      "blurb": "There is a real engine underneath - not a toy. The reference engine that backs the simulator: 3D carton packing, ABC / golden-zone slotting, pick-path routing scored against the exact optimum (the best policy comes within +3.0% of it), and a discrete-event simulation - sharing the exact same wt-1 layout format the app uses. Holding the routing policy fixed, the velocity-optimized layout routes ~46% shorter than the legacy layout (51.4 -> 27.5 m/order): the pretty picture is a faithful front-end to real operations research.",
       "repo_url": "https://github.com/Dimitres-Kisimov/logistics-digital-twin",
       "image": "docs/img/warehouse_layout.svg",
       "image_alt": "logistics-digital-twin engine output - velocity-slotted warehouse layout with A-movers pulled to the golden-zone slots nearest dispatch (synthetic, seeded)",
       "image_alt_de": "logistics-digital-twin Engine-Ausgabe - Lagerlayout mit Slotting nach Umschlagshäufigkeit, A-Artikel auf den Golden-Zone-Stellplätzen nahe dem Warenausgang (synthetisch, geseedet)",
       "role_tag_de": "Motor",
-      "blurb_de": "Darunter steckt ein echter Motor – kein Spielzeug. Der Referenz-Motor hinter dem Simulator: 3D-Kartonpackung, ABC-/Golden-Zone-Slotting und eine ereignisdiskrete Simulation, getestet (128 Tests) und mit exakt demselben wt-1-Layoutformat, das die App nutzt. Das schöne Bild ist ein originalgetreues Front-End zu echtem Operations Research."
+      "blurb_de": "Darunter steckt ein echter Motor – kein Spielzeug. Der Referenz-Motor hinter dem Simulator: 3D-Kartonpackung, ABC-/Golden-Zone-Slotting, Kommissionierweg-Routing, das gegen das exakte Optimum bewertet wird (die beste Strategie kommt bis auf +3.0% heran), und eine ereignisdiskrete Simulation – mit exakt demselben wt-1-Layoutformat, das die App nutzt. Bei fixierter Routing-Strategie liegen die Wege im geschwindigkeitsoptimierten Layout ~46% kürzer als im Legacy-Layout (51.4 -> 27.5 m/Auftrag): Das schöne Bild ist ein originalgetreues Front-End zu echtem Operations Research."
     },
     {
       "slug": "decision-chain",
@@ -59,7 +59,7 @@
     {
       "name": "revops-optimizer",
       "slug": "revops-optimizer",
-      "tagline": "A predict-to-optimize revenue engine: forecast, elasticity and decline-risk feed four optimizers into one prescriptive plan with a single euro uplift number.",
+      "tagline": "A predict-to-optimize revenue engine: forecast, elasticity and decline-risk feed four optimizers into one prescriptive plan whose euro uplift ships with a Monte-Carlo confidence band and a sensitivity tornado.",
       "role": "Job#2 analytics",
       "category": "Analytics & BI",
       "stack": [
@@ -88,30 +88,30 @@
           "label_de": "Abschwungrisiko-ROC-AUC"
         },
         {
-          "label": "Dataset",
-          "value": "240 SKUs, 8 categories",
-          "label_de": "Datensatz"
+          "label": "Monte-Carlo band (P10-P90)",
+          "value": "EUR 145,091-170,723 / yr (256 draws)",
+          "label_de": "Monte-Carlo-Band (P10–P90)"
         }
       ],
       "impact_eur": 159966,
       "highlights": [
         "The predict-to-optimize seam is the whole project: forecast replaces the raw average in the newsvendor and assortment MILP; estimated elasticity drives pricing; decline probability haircuts fragile SKUs.",
-        "Ships a Power BI star schema with real DAX, an executive PDF/PPTX deck, a styled Excel workbook, and a dependency-free offline web dashboard with a what-if slider.",
+        "The euro headline is stress-tested two ways: a one-way tornado ranks the eight drivers (the capital budget swings the uplift most, EUR 41,935; the promo budget barely EUR 138), and a joint fixed-seed Monte-Carlo puts the P10-P90 band at EUR 145,091-170,723 with only a ~43% chance of clearing the EUR 159,966 point estimate - reported, not hidden.",
         "Honest about the MILP-vs-greedy gap: it only opens up when a second (shelf) constraint binds."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/revops-optimizer",
-      "tagline_de": "Eine Predict-to-Optimize-Umsatz-Engine: Prognose, Elastizität und Abschwungrisiko speisen vier Optimierer in einen präskriptiven Plan mit einer einzigen Euro-Uplift-Zahl.",
+      "tagline_de": "Eine Predict-to-Optimize-Umsatz-Engine: Prognose, Elastizität und Abschwungrisiko speisen vier Optimierer in einen präskriptiven Plan, dessen Euro-Uplift mit einem Monte-Carlo-Konfidenzband und einem Sensitivitäts-Tornado ausgeliefert wird.",
       "category_de": "Analytik & BI",
       "highlights_de": [
         "Die Predict-to-Optimize-Naht ist das ganze Projekt: Die Prognose ersetzt den rohen Mittelwert im Newsvendor- und Sortiments-MILP; die geschätzte Elastizität steuert die Preisgestaltung; die Abschwungwahrscheinlichkeit stutzt fragile SKUs.",
-        "Liefert ein Power-BI-Sternschema mit echtem DAX, ein Management-PDF/PPTX-Deck, eine gestaltete Excel-Arbeitsmappe und ein abhängigkeitsfreies Offline-Web-Dashboard mit What-if-Schieberegler.",
+        "Die Euro-Schlagzeile wird auf zwei Arten belastungsgetestet: Ein One-Way-Tornado reiht die acht Treiber (das Kapitalbudget bewegt den Uplift am stärksten, EUR 41,935; das Promo-Budget kaum EUR 138), und ein gemeinsames Monte-Carlo mit fixem Seed legt das P10–P90-Band auf EUR 145,091–170,723 – mit nur ~43% Wahrscheinlichkeit, die Punktschätzung von EUR 159,966 zu übertreffen. Berichtet, nicht versteckt.",
         "Ehrlich zum Abstand zwischen MILP und Greedy: Er öffnet sich erst, wenn eine zweite (Regal-)Nebenbedingung bindet."
       ]
     },
     {
       "name": "sales-kpi-analytics",
       "slug": "sales-kpi-analytics",
-      "tagline": "24 months of B2B wholesale orders turned into the QBR leadership actually acts on: KPIs, margin bridge, ABC-XYZ, RFM, out-of-sample forecast and a replenishment buy-list.",
+      "tagline": "24 months of B2B wholesale orders turned into the QBR leadership actually acts on: KPIs, margin bridge, ABC-XYZ, RFM, pacing to plan, out-of-sample forecast and a replenishment buy-list.",
       "role": "Job#2 analytics",
       "category": "Analytics & BI",
       "stack": [
@@ -138,30 +138,32 @@
           "label_de": "Analytik-Kern"
         },
         {
-          "label": "Forecast evaluation",
-          "value": "rolling-origin CV, MASE",
-          "label_de": "Prognose-Evaluierung"
+          "label": "Pacing back-check (80% interval)",
+          "value": "projected 95.7% of plan; realised 98.9%",
+          "label_de": "Pacing-Rückprüfung (80%-Intervall)"
         }
       ],
       "impact_eur": 2600000,
       "highlights": [
         "Analytics core is pure Python standard library on purpose: MASE, Croston's method and Holt-Winters written from scratch to actually understand them.",
         "A SQL-vs-Python cross-check asserts the revenue rollup equal to the cent, so the two engines cannot silently drift.",
+        "Pacing to plan with an empirical prediction interval: the run-rate projection (EUR 10.91M, 95.7% of the assumed plan) carries an 80% interval built from the model's own backtest errors - and the module shows the back-check, the realised year landing at 98.9% of plan just above the band: an honest miss an 80% interval is expected to make about one year in five.",
         "Honest that the 24-month series makes seasonal-naive a brutally strong baseline; the point is the honest evaluation, not a hero number."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/sales-kpi-analytics",
-      "tagline_de": "24 Monate B2B-Großhandelsaufträge, verwandelt in das QBR, auf das die Führung tatsächlich reagiert: KPIs, Margenbrücke, ABC-XYZ, RFM, Out-of-Sample-Prognose und eine Nachbestell-Einkaufsliste.",
+      "tagline_de": "24 Monate B2B-Großhandelsaufträge, verwandelt in das QBR, auf das die Führung tatsächlich reagiert: KPIs, Margenbrücke, ABC-XYZ, RFM, Pacing zum Plan, Out-of-Sample-Prognose und eine Nachbestell-Einkaufsliste.",
       "category_de": "Analytik & BI",
       "highlights_de": [
         "Der Analytik-Kern ist bewusst reine Python-Standardbibliothek: MASE, Crostons Methode und Holt-Winters von Grund auf geschrieben, um sie wirklich zu verstehen.",
         "Ein SQL-gegen-Python-Abgleich stellt die Umsatzsummierung auf den Cent genau sicher, damit die beiden Engines nicht unbemerkt auseinanderdriften.",
+        "Pacing zum Plan mit einem empirischen Prognoseintervall: Die Run-Rate-Projektion (EUR 10.91M, 95.7% des angenommenen Plans) trägt ein 80%-Intervall, das aus den eigenen Backtest-Fehlern des Modells gebaut ist – und das Modul zeigt die Rückprüfung: Das realisierte Jahr landete mit 98.9% des Plans knapp über dem Band, ein ehrlicher Fehlgriff, den ein 80%-Intervall etwa in einem von fünf Jahren machen soll.",
         "Ehrlich, dass die 24-Monats-Reihe Seasonal-Naive zu einer brutal starken Baseline macht; es geht um die ehrliche Evaluierung, nicht um eine Heldenzahl."
       ]
     },
     {
       "name": "distributor-intelligence-platform",
       "slug": "distributor-intelligence-platform",
-      "tagline": "The MRO command center: describe, forecast, and optimize price/assortment/routing behind one API and one dashboard, rolled into a single annual euro uplift.",
+      "tagline": "The MRO command center: describe, forecast, and optimize price/assortment/inventory/routing behind one API and one dashboard, rolled into a single annual euro uplift.",
       "role": "Job#2 analytics",
       "category": "Analytics & BI",
       "stack": [
@@ -175,7 +177,7 @@
       "metrics": [
         {
           "label": "Expected annual uplift",
-          "value": "EUR 136,972 (4.2% of GM)",
+          "value": "EUR 136,972 (8.4% of annual GM)",
           "label_de": "Erwarteter jährlicher Uplift"
         },
         {
@@ -189,30 +191,132 @@
           "label_de": "Routen-Einsparung"
         },
         {
-          "label": "Revenue modelled (24 mo)",
-          "value": "EUR 4.79M",
-          "label_de": "Modellierter Umsatz (24 Mon.)"
+          "label": "Inventory policy (ROP/EOQ, 200 SKUs)",
+          "value": "99.9% fill rate, 5.5x turns",
+          "label_de": "Bestandspolitik (ROP/EOQ, 200 SKUs)"
         }
       ],
       "impact_eur": 136972,
       "highlights": [
         "Every prescriptive engine ships next to a fair baseline so the lift is always quantified (MILP vs greedy, elasticity pricing vs status quo, CVRP vs nearest-neighbour).",
-        "Flask caches every expensive computation at boot; only the parameterised optimisers recompute per request.",
+        "A continuous-review inventory policy prices safety stock from an ABC-XYZ service matrix (A/X lines protected to 98%, long-tail C/Z to 88%): reorder point and EOQ per SKU roll up to EUR 127,421 working capital, 5.5x turns and a 99.9% demand-weighted fill rate - with the 25%/yr carrying rate and EUR 50 order cost stated as planning assumptions.",
         "Honest that the assortment MILP only edges greedy by ~EUR 1k here, and that OTIF is a modelled proxy, not observed service data."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/distributor-intelligence-platform",
-      "tagline_de": "Die MRO-Kommandozentrale: beschreiben, prognostizieren und Preis/Sortiment/Routenplanung hinter einer API und einem Dashboard optimieren, zusammengefasst in einem einzigen jährlichen Euro-Uplift.",
+      "tagline_de": "Die MRO-Kommandozentrale: beschreiben, prognostizieren und Preis/Sortiment/Bestand/Routenplanung hinter einer API und einem Dashboard optimieren, zusammengefasst in einem einzigen jährlichen Euro-Uplift.",
       "category_de": "Analytik & BI",
       "highlights_de": [
         "Jede präskriptive Engine wird neben einer fairen Baseline ausgeliefert, sodass der Zugewinn stets quantifiziert ist (MILP vs. Greedy, Elastizitätspreisgestaltung vs. Status quo, CVRP vs. Nearest-Neighbour).",
-        "Flask cacht jede aufwändige Berechnung beim Start; nur die parametrisierten Optimierer rechnen pro Anfrage neu.",
+        "Eine Continuous-Review-Bestandspolitik bemisst den Sicherheitsbestand aus einer ABC-XYZ-Servicematrix (A/X-Linien auf 98% abgesichert, Long-Tail-C/Z auf 88%): Bestellpunkt und EOQ je SKU summieren sich zu EUR 127,421 Working Capital, 5.5x Lagerumschlag und einer nachfragegewichteten Fill Rate von 99.9% – mit dem Lagerhaltungssatz von 25%/Jahr und EUR 50 Bestellkosten als ausgewiesenen Planungsannahmen.",
         "Ehrlich, dass das Sortiments-MILP Greedy hier nur um ~EUR 1k übertrifft und dass OTIF ein modellierter Proxy ist, keine beobachteten Servicedaten."
+      ]
+    },
+    {
+      "name": "retail-analytics-real",
+      "slug": "retail-analytics-real",
+      "tagline": "The real-data counterpart to the synthetic portfolio: 1,067,371 genuine UCI Online Retail II rows through cleaning, RFM, cohorts, BG/NBD CLV, forecasting, baskets and returns - with the mess kept in view instead of averaged away.",
+      "role": "Job#2 analytics",
+      "category": "Analytics & BI",
+      "stack": [
+        "Python",
+        "pandas / NumPy / SciPy only",
+        "from-scratch BG/NBD + Gamma-Gamma",
+        "Apriori + FP-growth",
+        "matplotlib",
+        "openpyxl"
+      ],
+      "metrics": [
+        {
+          "label": "Real rows analyzed (UCI dataset)",
+          "value": "1,067,371 (94.0% retained), GBP 19.6M",
+          "label_de": "Analysierte reale Zeilen (UCI-Datensatz)"
+        },
+        {
+          "label": "Returns (reverse logistics)",
+          "value": "3.65% of gross value, 4.18% of units",
+          "label_de": "Retouren (Reverse-Logistik)"
+        },
+        {
+          "label": "Returns matched to a prior purchase",
+          "value": "95.0% of returned value (median 10 days)",
+          "label_de": "Retouren einem früheren Kauf zugeordnet"
+        },
+        {
+          "label": "CLV holdout back-test",
+          "value": "7,594 predicted vs 7,562 actual (0.4% over)",
+          "label_de": "CLV-Holdout-Backtest"
+        }
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "Returns are treated as a first-class reverse-logistics stream on real data: 3.65% of gross value (GBP 716,426) across 17,914 return lines, with 95.0% of returned value matched to a prior purchase at a median of 10 days to return - and the famous 80,995-unit same-day cancellation surfaces exactly where it should.",
+        "From-scratch BG/NBD + Gamma-Gamma CLV is back-tested out of sample: 7,594 predicted holdout transactions against an actual 7,562 (0.4% over), per-customer correlation 0.85 - and CLV is labelled gross revenue, not profit.",
+        "The honest headline stays up front: seasonal-naive wins the forecasting bake-off (mean MASE 1.094 vs 1.187 for Holt-Winters), 22.77% of rows have no CustomerID and are flagged rather than dropped, and the data-quality report card (raw C -> cleaned A) is labelled a heuristic scorecard with stated weights, not a certification of data correctness."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/retail-analytics-real",
+      "tagline_de": "Das Real-Daten-Gegenstück zum synthetischen Portfolio: 1,067,371 echte Zeilen aus UCI Online Retail II durch Bereinigung, RFM, Kohorten, BG/NBD-CLV, Prognose, Warenkörbe und Retouren – wobei die Datenunordnung sichtbar bleibt, statt weggemittelt zu werden.",
+      "category_de": "Analytik & BI",
+      "highlights_de": [
+        "Retouren werden auf realen Daten als vollwertiger Reverse-Logistik-Strom behandelt: 3.65% des Bruttowerts (GBP 716,426) über 17,914 Retourenzeilen, wobei 95.0% des retournierten Werts einem früheren Kauf zugeordnet werden, bei einem Median von 10 Tagen bis zur Retoure – und die bekannte, am selben Tag stornierte Order über 80,995 Einheiten taucht genau dort auf, wo sie soll.",
+        "Von Grund auf gebautes BG/NBD-+-Gamma-Gamma-CLV wird out-of-sample rückgeprüft: 7,594 vorhergesagte Holdout-Transaktionen gegen tatsächlich 7,562 (0.4% darüber), Korrelation je Kunde 0.85 – und CLV ist als Bruttoumsatz gekennzeichnet, nicht als Gewinn.",
+        "Die ehrliche Schlagzeile bleibt vorn: Seasonal-Naive gewinnt den Prognosevergleich (mittlere MASE 1.094 vs. 1.187 für Holt-Winters), 22.77% der Zeilen haben keine CustomerID und werden markiert statt verworfen, und die Datenqualitäts-Scorecard (roh C -> bereinigt A) ist als heuristische Bewertung mit ausgewiesenen Gewichten gekennzeichnet, nicht als Zertifizierung der Datenkorrektheit."
+      ]
+    },
+    {
+      "name": "market-basket-analysis",
+      "slug": "market-basket-analysis",
+      "tagline": "Market-basket mining and cross-sell for a B2B maintenance & construction supplies distributor: from-scratch Apriori confirmed by an independent FP-growth, rules back-tested against a popularity baseline, and a category affinity network that finds the structure.",
+      "role": "Job#2 analytics",
+      "category": "Analytics & BI",
+      "stack": [
+        "Python",
+        "numpy / pandas (no mining libraries)",
+        "from-scratch Apriori + FP-growth",
+        "k-means (k-means++)",
+        "openpyxl",
+        "Docker"
+      ],
+      "metrics": [
+        {
+          "label": "Affinity network (greedy modularity)",
+          "value": "14 categories, 27 edges, 3 communities @ 0.58",
+          "label_de": "Affinitätsnetzwerk (Greedy-Modularität)"
+        },
+        {
+          "label": "Recommender vs popularity baseline",
+          "value": "hit@3 60.2% vs 34.4% (1.75x)",
+          "label_de": "Recommender vs. Popularitäts-Baseline"
+        },
+        {
+          "label": "Rules kept (conf >= 30%, lift >= 1.10)",
+          "value": "254, from 224 frequent itemsets",
+          "label_de": "Beibehaltene Regeln (Konf. >= 30%, Lift >= 1.10)"
+        },
+        {
+          "label": "Cross-check",
+          "value": "FP-growth reproduces Apriori exactly",
+          "label_de": "Gegenprüfung"
+        }
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "The category affinity network is the deliverable a category manager can read: 14 categories connect through 27 lift-weighted edges and split into 3 communities at weighted modularity 0.58 (greedy modularity maximisation, Newman 2004) - fabrication-, construction- and MRO-shaped - with 4 bridge edges between them, and the communities mirror the three k-means segments found independently.",
+        "Mining is verified, not trusted: a from-scratch Apriori finds 224 frequent itemsets and 254 rules, an independent FP-growth implementation returns the exact same itemsets and supports, all six planted ground-truth bundles are recovered at lift >= 1.5, and the rule recommender beats the popularity baseline 60.2% vs 34.4% hit@3 in a back-test.",
+        "Honest by construction: everything runs on seeded synthetic data (no real customer data), lift is labelled co-purchase frequency rather than causation, rules on fewer than 30 orders are flagged thin_support, and the cross-sell euro uplift is called an ESTIMATE with a stated assumption."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/market-basket-analysis",
+      "tagline_de": "Warenkorbanalyse und Cross-Selling für einen B2B-Distributor von Wartungs- und Baubedarf: Apriori von Grund auf, bestätigt durch ein unabhängiges FP-growth, Regeln gegen eine Popularitäts-Baseline rückgeprüft, und ein Kategorie-Affinitätsnetzwerk, das die Struktur findet.",
+      "category_de": "Analytik & BI",
+      "highlights_de": [
+        "Das Kategorie-Affinitätsnetzwerk ist das Deliverable, das ein Category Manager lesen kann: 14 Kategorien verbinden sich über 27 lift-gewichtete Kanten und teilen sich in 3 Communities bei gewichteter Modularität 0.58 (Greedy-Modularitätsmaximierung, Newman 2004) – fertigungs-, bau- und MRO-geprägt – mit 4 Brückenkanten dazwischen, und die Communities spiegeln die drei unabhängig gefundenen k-means-Segmente.",
+        "Das Mining wird verifiziert, nicht geglaubt: Ein Apriori von Grund auf findet 224 häufige Itemsets und 254 Regeln, eine unabhängige FP-growth-Implementierung liefert exakt dieselben Itemsets und Supports, alle sechs eingepflanzten Ground-Truth-Bundles werden mit Lift >= 1.5 wiedergefunden, und der Regel-Recommender schlägt die Popularitäts-Baseline im Backtest mit 60.2% vs. 34.4% Hit@3.",
+        "Ehrlich per Konstruktion: Alles läuft auf geseedeten synthetischen Daten (keine realen Kundendaten), Lift ist als Kaufhäufigkeits-Korrelation gekennzeichnet, nicht als Kausalität, Regeln mit weniger als 30 Aufträgen werden als thin_support markiert, und der Cross-Sell-Euro-Uplift heißt ausdrücklich ESTIMATE mit ausgewiesener Annahme."
       ]
     },
     {
       "name": "route-optimizer",
       "slug": "route-optimizer",
-      "tagline": "Last-mile CVRP: how much does a real optimizer beat the heuristic a dispatcher reaches for by hand? Clarke-Wright savings vs Google OR-Tools, measured.",
+      "tagline": "Last-mile CVRP: how much does a real optimizer beat the heuristic a dispatcher reaches for by hand? Clarke-Wright savings vs Google OR-Tools, measured - then stress-tested through 200 seeded demand scenarios.",
       "role": "Job#2 analytics",
       "category": "Logistics & Optimization",
       "stack": [
@@ -239,24 +343,77 @@
           "label_de": "Instanz"
         },
         {
-          "label": "Solve time",
-          "value": "~8 s on CPU",
-          "label_de": "Lösungszeit"
+          "label": "5% capacity headroom",
+          "value": "failures 96% -> 44% for +3.0% km",
+          "label_de": "5% Kapazitätspuffer"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "Baseline is the classic 1964 Clarke-Wright savings algorithm written from scratch; the optimizer is OR-Tools CVRP with guided local search.",
         "Honest headline: ~5% over an already-good baseline, and on the 100-customer instance the gap shrinks to ~1% - shown rather than hidden.",
+        "A robustness stress test drives each plan through 200 seeded demand scenarios (a labelled ±15% noise assumption): both zero-buffer plans hit a capacity failure in ~96% of them, and the optimizer stays ahead by recovering cheaper (117 vs 178 km expected recourse per day); re-planning with just 5% capacity headroom costs +3.0% planned km but cuts failing scenarios to 44% - the cheapest expected day in the sweep.",
         "Interactive offline Canvas map: depot, customers and coloured routes with a savings-heuristic overlay toggle."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/route-optimizer",
-      "tagline_de": "Last-Mile-CVRP: Um wie viel schlägt ein echter Optimierer die Heuristik, zu der ein Disponent von Hand greift? Clarke-Wright-Savings vs. Google OR-Tools, gemessen.",
+      "tagline_de": "Last-Mile-CVRP: Um wie viel schlägt ein echter Optimierer die Heuristik, zu der ein Disponent von Hand greift? Clarke-Wright-Savings vs. Google OR-Tools, gemessen – und anschließend in 200 geseedeten Nachfrageszenarien belastungsgetestet.",
       "category_de": "Logistik & Optimierung",
       "highlights_de": [
         "Baseline ist der klassische Clarke-Wright-Savings-Algorithmus von 1964, von Grund auf geschrieben; der Optimierer ist OR-Tools CVRP mit Guided Local Search.",
         "Ehrliche Schlagzeile: ~5% gegenüber einer bereits guten Baseline, und bei der 100-Kunden-Instanz schrumpft der Abstand auf ~1% – gezeigt statt versteckt.",
+        "Ein Robustheits-Stresstest schickt jeden Plan durch 200 geseedete Nachfrageszenarien (eine ausgewiesene ±15%-Rauschannahme): Beide Pläne ohne Puffer erleiden in ~96% der Szenarien einen Kapazitätsfehlschlag, und der Optimierer bleibt vorn, weil er günstiger nachsteuert (117 vs. 178 km erwartete Zusatzstrecke pro Tag); eine Neuplanung mit nur 5% Kapazitätspuffer kostet +3.0% geplante km, senkt die fehlschlagenden Szenarien aber auf 44% – der günstigste erwartete Tag im Sweep.",
         "Interaktive Offline-Canvas-Karte: Depot, Kunden und farbige Routen mit umschaltbarer Savings-Heuristik-Überlagerung."
+      ]
+    },
+    {
+      "name": "supply-network-opt",
+      "slug": "supply-network-opt",
+      "tagline": "Three classic supply-network questions wired together on one seeded dataset: where to put the DCs (MILP), how product should flow (min-cost flow, cross-checked), and how much safety stock each tier needs - with a service-level frontier that prices every extra point of service.",
+      "role": "Job#2 analytics",
+      "category": "Logistics & Optimization",
+      "stack": [
+        "Python",
+        "OR-Tools (CBC MILP, min-cost flow, GLOP)",
+        "SciPy HiGHS",
+        "NumPy",
+        "matplotlib PDF",
+        "openpyxl"
+      ],
+      "metrics": [
+        {
+          "label": "Facility MILP vs greedy baseline",
+          "value": "$310,666 vs $394,216 (-21.2%)",
+          "label_de": "Standort-MILP vs. Greedy-Baseline"
+        },
+        {
+          "label": "Service frontier (diminishing returns)",
+          "value": "97.5 -> 99%: $14,750/yr per point (6.3x)",
+          "label_de": "Service-Frontier (abnehmende Erträge)"
+        },
+        {
+          "label": "Risk pooling at 95% service",
+          "value": "23,168 -> 7,946 units (-65.7%)",
+          "label_de": "Risk Pooling bei 95% Service"
+        },
+        {
+          "label": "Flow cross-check (graph vs LP)",
+          "value": "two solvers agree to $0.00",
+          "label_de": "Fluss-Gegenprüfung (Graph vs. LP)"
+        }
+      ],
+      "impact_eur": null,
+      "highlights": [
+        "A capacitated facility-location MILP (OR-Tools CBC) opens 3 of 8 candidate DCs for $310,666 total cost - measured against a named greedy baseline ($394,216, opens 4), not against 'the best anyone could do' - and the plant-to-DC-to-customer min-cost flow is solved twice, as a graph and as a HiGHS transportation LP, agreeing to $0.00.",
+        "The inventory service-level frontier makes diminishing returns concrete: lifting service from 97.5% to 99.0% costs about $14,750/yr per service point - roughly 6.3x the cost per point of the first increment - while pooling the decentralized network's 23,168 safety-stock units into the 3 opened DCs cuts them 65.7% at the same 95% service target.",
+        "Honest to the tails and the labels: all data is synthetic and seeded (seed 42), the CO2 factors and the $50/unit carrying economics are labelled illustrative rather than certified, the N-1 screen reports that the cost-optimal 3-DC network is not resilient (every opened DC is critical), and the 'same inventory buys more service' read is flagged as deep in the normal tail - a direction, not an SLA."
+      ],
+      "repo_url": "https://github.com/Dimitres-Kisimov/supply-network-opt",
+      "tagline_de": "Drei klassische Fragen des Liefernetzwerks, auf einem geseedeten Datensatz zusammengeschaltet: wo die Distributionszentren stehen sollen (MILP), wie das Produkt fließen soll (Min-Cost-Flow, gegengeprüft) und wie viel Sicherheitsbestand jede Stufe braucht – mit einer Service-Level-Frontier, die jeden zusätzlichen Servicepunkt bepreist.",
+      "category_de": "Logistik & Optimierung",
+      "highlights_de": [
+        "Ein kapazitiertes Standort-MILP (OR-Tools CBC) öffnet 3 von 8 DC-Kandidaten für $310,666 Gesamtkosten – gemessen an einer benannten Greedy-Baseline ($394,216, öffnet 4), nicht an 'dem Besten, das irgendjemand könnte' – und der Min-Cost-Flow Werk -> DC -> Kunde wird zweimal gelöst, als Graph und als HiGHS-Transport-LP, mit Übereinstimmung auf $0.00.",
+        "Die Service-Level-Frontier des Bestands macht abnehmende Erträge konkret: Den Service von 97.5% auf 99.0% zu heben kostet etwa $14,750/Jahr je Servicepunkt – rund das 6.3-Fache des ersten Inkrements – während das Poolen der 23,168 Sicherheitsbestandseinheiten des dezentralen Netzes in die 3 geöffneten DCs sie beim selben 95%-Serviceziel um 65.7% senkt.",
+        "Ehrlich bis in die Verteilungsränder und Labels: Alle Daten sind synthetisch und geseedet (Seed 42), die CO2-Faktoren und die $50/Einheit-Kostenannahmen sind als illustrativ, nicht als zertifiziert gekennzeichnet, der N-1-Check meldet, dass das kostenoptimale 3-DC-Netz nicht ausfallsicher ist (jedes geöffnete DC ist kritisch), und die Aussage 'derselbe Bestand kauft mehr Service' ist als tief im Rand der Normalverteilung liegend markiert – eine Richtung, kein SLA."
       ]
     },
     {
@@ -290,15 +447,16 @@
           "label_de": "Scorecard (n8n)"
         },
         {
-          "label": "Scorecard (Power Automate)",
-          "value": "2.33 / 5",
-          "label_de": "Scorecard (Power Automate)"
+          "label": "Token cost @ ~104k runs/yr",
+          "value": "~$846 (Haiku) to ~$4,232 (Opus)",
+          "label_de": "Token-Kosten bei ~104k Läufen/Jahr"
         }
       ],
       "impact_eur": 625000,
       "highlights": [
         "A from-scratch, provider-agnostic tool-use loop (mock or Claude) parses an RFQ email, resolves SKUs, checks stock and drafts a quote - number of tool calls varies per email, which is what makes it genuinely agentic.",
         "Full-code and n8n drive the exact same tool functions (imported vs called over HTTP), so it is one logic compared two ways, not two implementations.",
+        "A token & cost model prices the same nine task fixtures against a dated per-model sheet: at the ~104,000-email annual volume the flagship agent costs ~$846/yr on Claude Haiku 4.5 (~$4,232 on Opus 4.8) next to the ~EUR 625k of labour the business case says it offsets - with tokens from the deterministic mock's chars/4 estimate, an order-of-magnitude planning model, not a bill.",
         "Honest that only runtime figures are measured; the 1-5 ratings are reasoned judgements with cited sources."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/agentic-automation-lab",
@@ -307,6 +465,7 @@
       "highlights_de": [
         "Eine von Grund auf gebaute, anbieterunabhängige Tool-Use-Schleife (Mock oder Claude) analysiert eine RFQ-E-Mail, löst SKUs auf, prüft den Bestand und entwirft ein Angebot – die Anzahl der Tool-Aufrufe variiert je E-Mail, was es wirklich agentisch macht.",
         "Full-Code und n8n treiben exakt dieselben Tool-Funktionen an (importiert vs. über HTTP aufgerufen), es ist also eine Logik auf zwei Arten verglichen, nicht zwei Implementierungen.",
+        "Ein Token- & Kostenmodell bepreist dieselben neun Task-Fixtures gegen eine datierte Preistabelle je Modell: Beim jährlichen Volumen von ~104,000 E-Mails kostet der Flaggschiff-Agent ~$846/Jahr auf Claude Haiku 4.5 (~$4,232 auf Opus 4.8) – neben den ~EUR 625k an Arbeitszeit, die er laut Business Case freisetzt; die Tokens stammen aus der chars/4-Schätzung des deterministischen Mocks, ein Planungsmodell in der Größenordnung, keine Rechnung.",
         "Ehrlich, dass nur Laufzeitzahlen gemessen werden; die 1-5-Bewertungen sind begründete Einschätzungen mit zitierten Quellen."
       ]
     },
@@ -335,9 +494,9 @@
           "label_de": "Abhängigkeiten"
         },
         {
-          "label": "Engine tests",
-          "value": "16, pure logic",
-          "label_de": "Engine-Tests"
+          "label": "Tests",
+          "value": "60: engine, undo, linter, analyzer",
+          "label_de": "Tests"
         },
         {
           "label": "Node types",
@@ -349,6 +508,7 @@
       "highlights": [
         "A real topological sort (Kahn's algorithm) with cycle detection walks the DAG, highlights each node, lights live wires and streams a trace; the same engine.js runs in the browser and the test suite.",
         "Every connection is a hand-drawn SVG path re-attached as nodes move; a Condition node prunes the dead branch.",
+        "A static data-dependency / provenance analyzer (analysis.js, node-tested) computes each node's upstream/downstream closure, the parallelisable stages, the critical path and which Trigger's payload can reach every Output - honest that it describes the data flow the wiring permits, not the single path one input takes, and it withholds order-dependent fields when the graph is not a DAG.",
         "Small enough to read in one sitting; deliberately not competing with n8n on features."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/agent-flow-studio",
@@ -357,13 +517,14 @@
       "highlights_de": [
         "Eine echte topologische Sortierung (Kahns Algorithmus) mit Zyklenerkennung durchläuft den DAG, hebt jeden Knoten hervor, lässt aktive Verbindungen aufleuchten und streamt eine Ablaufspur; dieselbe engine.js läuft im Browser und in der Testsuite.",
         "Jede Verbindung ist ein handgezeichneter SVG-Pfad, der beim Verschieben der Knoten neu angeheftet wird; ein Condition-Knoten kappt den toten Zweig.",
+        "Ein statischer Datenabhängigkeits-/Provenienz-Analysator (analysis.js, node-getestet) berechnet für jeden Knoten die vollständige Upstream-/Downstream-Hülle, die parallelisierbaren Stufen, den kritischen Pfad und welcher Trigger-Payload jeden Output erreichen kann – ehrlich darin, dass er den Datenfluss beschreibt, den die Verdrahtung zulässt, nicht den einen Pfad einer konkreten Eingabe, und ordnungsabhängige Felder zurückhält, wenn der Graph kein DAG ist.",
         "Klein genug, um es in einem Zug zu lesen; tritt bewusst nicht im Funktionsumfang gegen n8n an."
       ]
     },
     {
       "name": "doc-extract-agent",
       "slug": "doc-extract-agent",
-      "tagline": "Unstructured business document in, structured record out: a five-stage pipeline that pulls header, line items and cross-checked totals with a confidence gate.",
+      "tagline": "Unstructured business document in, structured record out: a five-stage pipeline that pulls header, line items and cross-checked totals, gated by confidence and business-rule validation.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
       "stack": [
@@ -385,9 +546,9 @@
           "label_de": "Bearbeitung pro Dokument"
         },
         {
-          "label": "Scenario",
-          "value": "~60k documents / yr",
-          "label_de": "Szenario"
+          "label": "Combined-gate auto-post precision",
+          "value": "70% -> 87.5% (confidence + rules)",
+          "label_de": "Präzision des kombinierten Gates"
         },
         {
           "label": "Dependencies",
@@ -397,15 +558,15 @@
       ],
       "impact_eur": 110000,
       "highlights": [
-        "Totals are cross-checked against summed line items; only documents that reconcile and clear a confidence gate post automatically, the rest route to a human.",
+        "Only documents that reconcile against their summed line items, clear the confidence gate and pass a business-rule validation layer post automatically - the rest route to a human. Requiring the rules as well as the gate lifts measured auto-post precision from 70% to 87.5%, and the README says plainly that 87.5% is not 100%, naming the multicurrency case it still misses.",
         "Two real parsing bugs (VAT amount vs percentage, Subtotal read as Total) are now pinned by regression tests; number parsing handles both EU and US decimal conventions.",
         "Built around an LLMProvider interface: set DOCEXTRACT_PROVIDER=anthropic and each stage routes through a real model while the trace/confidence/validation logic stays put."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/doc-extract-agent",
-      "tagline_de": "Unstrukturiertes Geschäftsdokument rein, strukturierter Datensatz raus: eine fünfstufige Pipeline, die Kopfdaten, Positionen und gegengeprüfte Summen mit einem Konfidenz-Gate extrahiert.",
+      "tagline_de": "Unstrukturiertes Geschäftsdokument rein, strukturierter Datensatz raus: eine fünfstufige Pipeline, die Kopfdaten, Positionen und gegengeprüfte Summen extrahiert – abgesichert durch ein Konfidenz-Gate und eine Geschäftsregel-Validierung.",
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
-        "Summen werden gegen die aufsummierten Positionen geprüft; nur Dokumente, die übereinstimmen und ein Konfidenz-Gate passieren, werden automatisch gebucht, der Rest geht an einen Menschen.",
+        "Automatisch gebucht wird nur, was gegen die aufsummierten Positionen abstimmt, das Konfidenz-Gate passiert und eine Geschäftsregel-Validierung besteht – der Rest geht an einen Menschen. Verlangt man die Regeln zusätzlich zum Gate, steigt die gemessene Auto-Buchungs-Präzision von 70% auf 87.5%, und die README sagt klar, dass 87.5% nicht 100% sind, und benennt den Multiwährungsfall, den sie weiterhin übersieht.",
         "Zwei echte Parsing-Bugs (MwSt.-Betrag vs. Prozentsatz, Zwischensumme als Gesamtsumme gelesen) sind nun durch Regressionstests abgesichert; das Zahlen-Parsing beherrscht sowohl EU- als auch US-Dezimalkonventionen.",
         "Um eine LLMProvider-Schnittstelle herum gebaut: Setzt man DOCEXTRACT_PROVIDER=anthropic, läuft jede Stufe durch ein echtes Modell, während die Logik für Ablaufspur/Konfidenz/Validierung unverändert bleibt."
       ]
@@ -439,14 +600,15 @@
           "label_de": "Top-Wahl (Rechnungsabgleich)"
         },
         {
-          "label": "Discount rate (NPV)",
-          "value": "8%",
-          "label_de": "Diskontsatz (Kapitalwert)"
+          "label": "Ramp-adjusted payback (6-mo ramp)",
+          "value": "month 6 vs 2.8 idealised",
+          "label_de": "Rampenbereinigte Amortisation (6-Mon.-Rampe)"
         }
       ],
       "impact_eur": 383300,
       "highlights": [
         "The browser dashboard runs the exact same compute() as the Python CLI, line for line, so the slider and the CLI can never disagree.",
+        "A phased-rollout module lays the same compute() economics onto a monthly timeline: a 6-month linear adoption ramp pushes the top pick's payback from an idealised 2.8 months to month 6 and forgoes ~EUR 37,200 of 3-year net benefit (EUR 436,700 ramped vs 473,900) - with the linear ramp labelled an illustrative assumption, not a measured adoption curve.",
         "Charts are hand-drawn on a Canvas element rather than Chart.js/D3, keeping the whole thing a single double-clickable offline file.",
         "Every assumption (coverage, flat volumes, excluded change-management cost) is out in the open and adjustable - the design, not a corner cut."
       ],
@@ -455,6 +617,7 @@
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
         "Das Browser-Dashboard führt exakt dieselbe compute()-Funktion aus wie die Python-CLI, Zeile für Zeile, sodass Schieberegler und CLI nie widersprechen können.",
+        "Ein Phased-Rollout-Modul legt dieselbe compute()-Ökonomie auf eine Monats-Zeitachse: Eine lineare Einführungsrampe über 6 Monate verschiebt die Amortisation des Spitzenkandidaten von idealisierten 2.8 Monaten auf Monat 6 und lässt ~EUR 37,200 des 3-Jahres-Nettonutzens liegen (EUR 436,700 mit Rampe vs. 473,900 idealisiert) – wobei die lineare Rampe als illustrative Annahme gekennzeichnet ist, nicht als gemessene Einführungskurve.",
         "Diagramme werden auf einem Canvas-Element handgezeichnet statt mit Chart.js/D3, sodass das Ganze eine einzige doppelklickbare Offline-Datei bleibt.",
         "Jede Annahme (Abdeckung, konstante Volumina, ausgeschlossene Change-Management-Kosten) liegt offen und ist anpassbar – so gewollt, keine Abkürzung."
       ]
@@ -533,19 +696,20 @@
           "label_de": "Wiederkehrende Metrik"
         },
         {
-          "label": "Training",
-          "value": "seconds-to-minutes on laptop CPU/GPU",
-          "label_de": "Training"
+          "label": "Bootstrap 95% CI (churn skill)",
+          "value": "+0.457 [+0.381, +0.528]",
+          "label_de": "Bootstrap-95%-KI (Churn-Skill)"
         },
         {
-          "label": "Dependencies",
-          "value": "PyTorch + numpy only",
-          "label_de": "Abhängigkeiten"
+          "label": "Model cores",
+          "value": "from scratch in numpy or plain PyTorch",
+          "label_de": "Modellkerne"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "The defensible thread across all five: implement the core from scratch, add one principled improvement, evaluate with a metric that survives class imbalance and zeros.",
+        "A non-parametric percentile bootstrap puts 95% confidence intervals on the skill scores of the two numpy models - churn +0.457 [+0.381, +0.528], elasticity-RMSE +0.918 [+0.904, +0.934], both entirely above zero - covering only the deterministic numpy models on purpose, so the intervals are bit-reproducible and CI-verifiable.",
         "Examples: a DeepAR-lite global forecaster with a negative-binomial head for intermittent SKUs; a fastText-core text classifier with regex sub-token splitting for unseen part numbers.",
         "Every spec is grounded in cited literature (DeepAR, N-BEATS, fastText, focal loss, ridge/lasso), deliberately the smallest credible version of each method."
       ],
@@ -554,6 +718,7 @@
       "category_de": "Forschung",
       "highlights_de": [
         "Der belastbare rote Faden durch alle fünf: den Kern von Grund auf implementieren, eine fundierte Verbesserung ergänzen, mit einer Metrik evaluieren, die Klassenungleichgewicht und Nullen übersteht.",
+        "Ein nichtparametrischer Perzentil-Bootstrap legt 95%-Konfidenzintervalle auf die Skill-Scores der beiden numpy-Modelle – Churn +0.457 [+0.381, +0.528], Elastizitäts-RMSE +0.918 [+0.904, +0.934], beide vollständig über null – und deckt bewusst nur die deterministischen numpy-Modelle ab, damit die Intervalle bit-reproduzierbar und CI-verifizierbar sind.",
         "Beispiele: ein globaler DeepAR-lite-Forecaster mit Negativ-Binomial-Kopf für sporadische SKUs; ein Textklassifikator auf fastText-Basis mit Regex-Subtoken-Zerlegung für unbekannte Teilenummern.",
         "Jede Spezifikation ist in zitierter Literatur verankert (DeepAR, N-BEATS, fastText, Focal Loss, Ridge/Lasso), bewusst die kleinste glaubwürdige Version jeder Methode."
       ]
@@ -589,14 +754,15 @@
           "label_de": "CP-SAT vs. FIFO gewichtete Verzögerung"
         },
         {
-          "label": "Schedule optimality",
-          "value": "proven OPTIMAL by the solver",
-          "label_de": "Optimalität des Plans"
+          "label": "Age-replacement policy (Weibull)",
+          "value": "T* 44.4 d, -51.7% vs run-to-failure",
+          "label_de": "Altersaustausch-Politik (Weibull)"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "Two detectors trained on healthy-only windows and compared honestly: a numpy PCA-SVD baseline and a small PyTorch autoencoder. The policy was fixed before measuring - recommend the simpler detector unless the other wins by more than 0.03 PR-AUC. The AE lost by 0.017, so PCA is the recommendation.",
+        "A two-parameter Weibull fitted by censored maximum likelihood on 6 observed failures and 14 suspensions (shape 4.81 - wear-out) prices three maintenance policies per machine-day: age replacement at T* = 44.4 days cuts modelled cost 51.7% vs run-to-failure, and the optimizer's own base-case check reports that for memoryless lifetimes no finite replacement age beats run-to-failure.",
         "CP-SAT turns the urgency list into a 2-crew, 4-day schedule and proves it OPTIMAL: total weighted delay 778 vs 1013 for the FIFO baseline, a 23.2% reduction.",
         "The 0-100 health index is labelled a heuristic degradation score, not a remaining-useful-life prediction; a leakage test rebuilds features on truncated data and asserts they are identical."
       ],
@@ -605,6 +771,7 @@
       "category_de": "Angewandtes ML & Betrieb",
       "highlights_de": [
         "Zwei Detektoren, trainiert nur auf Fenstern gesunder Maschinen und ehrlich verglichen: eine numpy-PCA-SVD-Baseline und ein kleiner PyTorch-Autoencoder. Die Regel stand vor der Messung fest – den einfacheren Detektor empfehlen, sofern der andere nicht um mehr als 0.03 PR-AUC gewinnt. Der AE verlor um 0.017, also lautet die Empfehlung PCA.",
+        "Eine zweiparametrige Weibull-Verteilung, per zensierter Maximum-Likelihood auf 6 beobachteten Ausfällen und 14 Suspensionen gefittet (Formparameter 4.81 – Verschleiß), bepreist drei Instandhaltungsstrategien je Maschinentag: Altersaustausch bei T* = 44.4 Tagen senkt die modellierten Kosten um 51.7% gegenüber Run-to-Failure, und die eigene Basisfall-Prüfung des Optimierers meldet, dass bei gedächtnislosen Lebensdauern kein endliches Austauschalter Run-to-Failure schlägt.",
         "CP-SAT verwandelt die Dringlichkeitsliste in einen Plan für 2 Teams über 4 Tage und beweist ihn als OPTIMAL: gewichtete Gesamtverzögerung 778 vs. 1013 bei der FIFO-Baseline, eine Reduktion um 23.2%.",
         "Der 0-100-Gesundheitsindex ist als heuristischer Degradationswert gekennzeichnet, nicht als Vorhersage der Restnutzungsdauer; ein Leakage-Test baut die Merkmale auf gekürzten Daten neu auf und stellt sicher, dass sie identisch sind."
       ]
@@ -630,9 +797,9 @@
           "label_de": "PR-AUC (Test)"
         },
         {
-          "label": "Precision@100",
-          "value": "0.40 at 1.4% prevalence",
-          "label_de": "Precision@100"
+          "label": "Challenger promotion (5 gates)",
+          "value": "PROMOTE - swap-set net -2.4% cost",
+          "label_de": "Challenger-Beförderung (5 Gates)"
         },
         {
           "label": "Calibration ECE",
@@ -649,7 +816,8 @@
       "highlights": [
         "Everything statistical is from scratch in NumPy - logistic regression, focal loss, Platt scaling, PR-AUC/ROC-AUC/Brier/ECE - unit-tested down to a finite-difference gradient check; the generator's own probabilities give an oracle ceiling (PR-AUC 0.367) reported next to the model's 0.270.",
         "Calibration is the hinge: raw ECE 0.366 falls to 0.003 after Platt, which is what lets the cost-swept threshold (t* = 0.047, 43.3% cheaper than the 0.5 default under stated assumptions) and the HiGHS review-queue optimizer consume the probabilities.",
-        "Honest that without coverage floors the LP's optimum is exactly top-K by p x amount - verified numerically on every run; the solver earns its keep only when every merchant segment must stay watched (0.6% expected value given up to watch all 8)."
+        "Honest that without coverage floors the LP's optimum is exactly top-K by p x amount - verified numerically on every run; the solver earns its keep only when every merchant segment must stay watched (0.6% expected value given up to watch all 8).",
+        "A champion/challenger retrain on a rolling window is judged by a swap-set analysis, not headline metrics alone: the challenger swaps in just 2 alerts and catches 4 fewer frauds - it wins by shedding 139 low-yield alerts, a net $210 (2.4%) cheaper - and five pre-declared gates (labelled policy knobs, not statistical laws) all pass, so the measured verdict is PROMOTE."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/fraud-detection-ops",
       "tagline_de": "Der Score des Modells ist nicht das Produkt – die Entscheidungen sind es: von Grund auf gebaute logistische Regression, Platt-Kalibrierung, eine kostenoptimierte Alarmschwelle und eine kapazitätsbeschränkte Analysten-Prüfwarteschlange, jeweils gegen ehrliche Baselines gemessen.",
@@ -657,7 +825,8 @@
       "highlights_de": [
         "Alles Statistische ist von Grund auf in NumPy – logistische Regression, Focal Loss, Platt-Skalierung, PR-AUC/ROC-AUC/Brier/ECE – unit-getestet bis hin zu einer Finite-Differenzen-Gradientenprüfung; die eigenen Wahrscheinlichkeiten des Generators liefern eine Orakel-Obergrenze (PR-AUC 0.367), die neben den 0.270 des Modells berichtet wird.",
         "Die Kalibrierung ist der Angelpunkt: Der rohe ECE 0.366 fällt nach Platt auf 0.003, was erst der kostenoptimierten Schwelle (t* = 0.047, unter den genannten Annahmen 43.3% günstiger als der 0.5-Standard) und dem HiGHS-Optimierer der Prüfwarteschlange erlaubt, die Wahrscheinlichkeiten zu nutzen.",
-        "Ehrlich, dass ohne Abdeckungsuntergrenzen das Optimum des LP exakt Top-K nach p x Betrag ist – bei jedem Lauf numerisch verifiziert; der Solver rechtfertigt sich erst, wenn jedes Händlersegment beobachtet bleiben muss (0.6% erwarteter Wert aufgegeben, um alle 8 zu beobachten)."
+        "Ehrlich, dass ohne Abdeckungsuntergrenzen das Optimum des LP exakt Top-K nach p x Betrag ist – bei jedem Lauf numerisch verifiziert; der Solver rechtfertigt sich erst, wenn jedes Händlersegment beobachtet bleiben muss (0.6% erwarteter Wert aufgegeben, um alle 8 zu beobachten).",
+        "Ein Champion/Challenger-Retrain auf rollierendem Fenster wird per Swap-Set-Analyse beurteilt, nicht allein nach Schlagzeilen-Metriken: Der Challenger tauscht nur 2 Alarme ein und fängt 4 Betrugsfälle weniger – er gewinnt, indem er 139 ertragsschwache Alarme abwirft, netto $210 (2.4%) günstiger – und fünf vorab deklarierte Gates (als Policy-Stellschrauben gekennzeichnet, nicht als statistische Gesetze) bestehen alle, das gemessene Urteil lautet PROMOTE."
       ]
     },
     {
@@ -681,9 +850,9 @@
           "label_de": "Prognose-MASE"
         },
         {
-          "label": "Day-ahead MAPE",
-          "value": "4.8%",
-          "label_de": "Day-Ahead-MAPE"
+          "label": "Causal dispatch capture",
+          "value": "72.7% of the LP bound (EUR 8,066/yr)",
+          "label_de": "Kausale Dispatch-Ausbeute"
         },
         {
           "label": "Peak reduction (battery LP)",
@@ -700,7 +869,7 @@
       "highlights": [
         "Written out from scratch on numpy/scipy/pandas: Holt-Winters as ~30 lines of recursions, the regression as numpy.linalg.lstsq, and the peak-shaving LP as a hand-assembled constraint matrix for HiGHS.",
         "Reports its own losses: Holt-Winters (MASE 3.040) loses to the seasonal-naive baseline and the README says so; the single Boxing Day fold that inflates the naive's mean (MASE 8.40) is unpacked rather than averaged away.",
-        "The fixed evening-timer baseline saves EUR 0 on this mid-morning-peaking site - when to discharge is the entire product - and the LP's perfect month-ahead foresight is flagged as an upper bound, with the EUR 12/kW-month tariff labelled an assumption."
+        "The fixed evening-timer baseline saves EUR 0 on this mid-morning-peaking site - when to discharge is the entire product - and the perfect-foresight LP is kept as an explicit upper bound: a causal, forecast-driven dispatch backtest measures 72.7% capture (EUR 8,066 of the EUR 11,100 bound), decomposed into EUR 2,054/yr lost to forecast error and EUR 980/yr to the one-day horizon, with the EUR 12/kW-month tariff still labelled an assumption."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/energy-demand-forecast",
       "tagline_de": "Die stündliche Last einer Anlage einen Tag im Voraus mit ehrlicher Rolling-Origin-CV prognostizieren und dann eine Batterie mit einem von Hand aufgestellten linearen Programm gegen die monatliche Leistungsspitze einsetzen – die Timer-Baseline spart exakt EUR 0.",
@@ -708,7 +877,7 @@
       "highlights_de": [
         "Von Grund auf mit numpy/scipy/pandas ausgeschrieben: Holt-Winters als ~30 Zeilen Rekursionen, die Regression als numpy.linalg.lstsq und das Peak-Shaving-LP als von Hand aufgestellte Nebenbedingungsmatrix für HiGHS.",
         "Berichtet die eigenen Niederlagen: Holt-Winters (MASE 3.040) verliert gegen die Seasonal-Naive-Baseline, und die README sagt das auch; der einzelne Boxing-Day-Fold, der den Mittelwert des Naive-Modells aufbläht (MASE 8.40), wird aufgeschlüsselt statt weggemittelt.",
-        "Die feste Abend-Timer-Baseline spart an diesem am späten Vormittag spitzenden Standort EUR 0 – wann entladen wird, ist das ganze Produkt – und die perfekte Monatsvoraussicht des LP ist als Obergrenze gekennzeichnet, wobei der Tarif von EUR 12/kW-Monat als Annahme ausgewiesen ist."
+        "Die feste Abend-Timer-Baseline spart an diesem am späten Vormittag spitzenden Standort EUR 0 – wann entladen wird, ist das ganze Produkt – und das LP mit perfekter Voraussicht bleibt eine explizite Obergrenze: Ein kausaler, prognosegetriebener Dispatch-Backtest misst 72.7% Ausbeute (EUR 8,066 der EUR 11,100-Obergrenze), zerlegt in EUR 2,054/Jahr durch Prognosefehler und EUR 980/Jahr durch den Ein-Tages-Horizont, wobei der Tarif von EUR 12/kW-Monat weiterhin als Annahme ausgewiesen ist."
       ]
     },
     {
@@ -742,14 +911,15 @@
           "label_de": "TPR @ 5% FPR"
         },
         {
-          "label": "Dataset",
-          "value": "600 clean train / 300 test, 64x64",
-          "label_de": "Datensatz"
+          "label": "SPC p-chart (Western Electric)",
+          "value": "1.5% -> 2.5% shift caught at subgroup 43",
+          "label_de": "SPC-p-Karte (Western Electric)"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "One shared image-level scoring rule (mean of the hottest 2% of heatmap pixels) fixed before any results, and a pre-stated recommendation rule: the simplest method within 0.02 ROC-AUC of the best wins - so PCA reconstruction beats the 0.007-ahead autoencoder.",
+        "The screening output feeds an SPC p-chart with limits frozen from Phase I (center line 1.31%, UCL 2.07%) and the four Western Electric run rules: a true 1.5% -> 2.5% defect-rate shift is caught at subgroup 43 by a run rule while the naked 3-sigma rule never fires in the monitored window, and a camera-brightness drift with an unchanged true defect rate still alarms - the cost of that sensitivity stated as in-control ARL ~92 vs ~370 for 3-sigma alone.",
         "Unexpected finding, reported: training the autoencoder longer made it worse (overall AUC 0.779 -> 0.738 at 30 epochs, blob detection 0.828 -> 0.610) because good reconstruction erases the anomaly signal.",
         "Texture-breaks split the field: the autoencoder is the only method meaningfully above chance on them (0.609) and nobody can localize them (best mean IoU 0.043 vs 0.011 for random heatmaps); ROC/PR/IoU are implemented from scratch in numpy, no scikit-learn anywhere."
       ],
@@ -758,6 +928,7 @@
       "category_de": "Angewandtes ML & Betrieb",
       "highlights_de": [
         "Eine gemeinsame Bewertungsregel auf Bildebene (Mittel der heißesten 2% der Heatmap-Pixel), festgelegt vor allen Ergebnissen, und eine vorab formulierte Empfehlungsregel: Die einfachste Methode innerhalb von 0.02 ROC-AUC zur besten gewinnt – so schlägt die PCA-Rekonstruktion den um 0.007 führenden Autoencoder.",
+        "Die Screening-Ausgabe speist eine SPC-p-Karte mit in Phase I eingefrorenen Grenzen (Mittellinie 1.31%, OEG 2.07%) und den vier Western-Electric-Laufregeln: Ein echter Sprung der Fehlerrate von 1.5% auf 2.5% wird bei Untergruppe 43 von einer Laufregel erkannt, während die nackte 3-Sigma-Regel im überwachten Fenster nie auslöst, und eine Kamera-Helligkeitsdrift bei unveränderter wahrer Fehlerrate alarmiert trotzdem – der Preis dieser Empfindlichkeit ist als In-Control-ARL von ~92 vs. ~370 bei 3-Sigma allein ausgewiesen.",
         "Unerwarteter Befund, berichtet: Längeres Training des Autoencoders verschlechterte ihn (Gesamt-AUC 0.779 -> 0.738 bei 30 Epochen, Blob-Erkennung 0.828 -> 0.610), weil gute Rekonstruktion das Anomaliesignal auslöscht.",
         "Texturbrüche spalten das Feld: Der Autoencoder ist die einzige Methode, die bei ihnen nennenswert über dem Zufall liegt (0.609), und niemand kann sie lokalisieren (bester mittlerer IoU 0.043 vs. 0.011 bei zufälligen Heatmaps); ROC/PR/IoU sind von Grund auf in numpy implementiert, nirgends scikit-learn."
       ]
@@ -782,13 +953,13 @@
           "label_de": "Simulator"
         },
         {
-          "label": "Physics assertions",
-          "value": "42 (plain Node)",
-          "label_de": "Physik-Assertions"
+          "label": "Physics / behaviour assertions",
+          "value": "107 (plain Node)",
+          "label_de": "Physik-/Verhaltens-Assertions"
         },
         {
           "label": "Structural / offline checks",
-          "value": "57 (tools/verify.mjs)",
+          "value": "79 (tools/verify.mjs) + 39 self-test",
           "label_de": "Struktur-/Offline-Prüfungen"
         },
         {
@@ -801,6 +972,7 @@
       "highlights": [
         "A hand-written state-vector simulator (sim.js, ~300 lines of pure functions): complex arithmetic, H/X/Y/Z/S/T gates, RX/RY/RZ rotations, CNOT, Born-rule measurement with a seeded PRNG, and an explicit non-factorability entanglement check.",
         "The two-qubit Bloch view draws each qubit's reduced state, so both arrows visibly collapse to the centre of the sphere when a CNOT entangles the qubits.",
+        "A Deutsch's-algorithm lesson shows the smallest circuit with a genuine (if modest) quantum advantage: the suite checks all four oracles - a single query yields the correct constant/balanced verdict with certainty, and the oracle leaves the state a product state (concurrence 0) - phase kickback, not entanglement, even when the oracle is a CNOT.",
         "Refuses to hype: a 'What quantum computers are NOT' section covers the parallel-worlds myth, NISQ-era limits, decoherence and error-correction overhead - every physics claim is demonstrated live on the simulator or cited to a real source."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/quantum-explainer",
@@ -810,6 +982,7 @@
       "highlights_de": [
         "Ein handgeschriebener Zustandsvektor-Simulator (sim.js, ~300 Zeilen reiner Funktionen): komplexe Arithmetik, H/X/Y/Z/S/T-Gatter, RX/RY/RZ-Rotationen, CNOT, Messung nach der Bornschen Regel mit geseedetem PRNG und eine explizite Verschränkungsprüfung über Nicht-Faktorisierbarkeit.",
         "Die Zwei-Qubit-Bloch-Ansicht zeichnet den reduzierten Zustand jedes Qubits, sodass beide Pfeile sichtbar zum Kugelmittelpunkt kollabieren, wenn ein CNOT die Qubits verschränkt.",
+        "Eine Lektion zu Deutschs Algorithmus zeigt die kleinste Schaltung mit echtem (wenn auch bescheidenem) Quantenvorteil: Die Testsuite prüft alle vier Orakel – eine einzige Abfrage liefert das korrekte Konstant/Balanciert-Urteil mit Sicherheit, und das Orakel hinterlässt einen Produktzustand (Concurrence 0) – Phase Kickback, keine Verschränkung, selbst wenn das Orakel ein CNOT ist.",
         "Verweigert den Hype: Ein Abschnitt 'Was Quantencomputer NICHT sind' behandelt den Parallelwelten-Mythos, die Grenzen der NISQ-Ära, Dekohärenz und den Overhead der Fehlerkorrektur – jede physikalische Aussage wird live am Simulator demonstriert oder mit einer echten Quelle belegt."
       ]
     },
@@ -890,7 +1063,7 @@
       "metrics": [
         {
           "label": "Reconciliation identities",
-          "value": "13/13 PASS (machine-checked)",
+          "value": "13/13 artifact PASS + 2 additive",
           "label_de": "Abstimmungsidentitäten"
         },
         {
@@ -904,14 +1077,15 @@
           "label_de": "Reales Dataset"
         },
         {
-          "label": "Tests",
-          "value": "110 (each identity has a corruption FAIL path)",
-          "label_de": "Tests"
+          "label": "Forecast-error containment (identity o)",
+          "value": "cost elasticity == holding share == 0.0580",
+          "label_de": "Prognosefehler-Eindämmung (Identität o)"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "Distributors fail at the seams, not inside silos - so stage 6 is the product: a reconciliation ledger of 13 pytest-able identity checks that print both numbers, from cleaned revenue reproduced across two repositories to the penny (GBP 19,643,861.62) and the cost ledger summing to the cent, down to every pick (256,787 lines), carton (70,820) and route drop (4,151) conserved.",
+        "Inter-stage sensitivity closes in closed form: a 15th identity proves the arc-elasticity of total cost to a forecast surge equals the holding-cost share exactly - 0.0580 on the committed full run, so a doubling of forecast demand would raise modelled cost-to-serve by 5.80% while every delivered-cost line and the real revenue stay unmoved; additive to the 13 artifact identities, the committed artifact unchanged.",
         "Honest findings kept in the headline: nothing beats the naive walk on lumpy demand (MASE 1.782); the exact Hungarian slotting optimum is worth only 1.6% over classic ABC, with the rearrangement-inequality math explaining why; OR-Tools CVRP beats the 1964 Clarke-Wright baseline by only 0.2% and loses 19 of 48 days; the synthetic picking crew is 18% utilized - measured, not tuned away.",
         "Measuring is split from presenting: the ~51-minute full run (48 per-day CVRPs) serializes to a committed, code-fingerprinted run artifact; the offline Flask CHAIN DASHBOARD (13-identity reconciliation panel, provenance-colored stage flow) boots from it in seconds and recomputes nothing; PDF + Excel deliverables regenerate from the same artifact byte-for-byte; every quantity carries a provenance tag (real | derived | synthetic-assigned), invented cost rates are labelled INVENTED, and the cost table makes no profit claims."
       ],
@@ -920,6 +1094,7 @@
       "category_de": "Supply-Chain-Integration",
       "highlights_de": [
         "Distributoren scheitern an den Nähten, nicht in den Silos – deshalb ist Stufe 6 das Produkt: ein Abstimmungs-Ledger aus 13 pytest-fähigen Identitätsprüfungen, die beide Zahlen ausgeben, vom über zwei Repositories auf den Penny reproduzierten bereinigten Umsatz (GBP 19,643,861.62) bis zum auf den Cent aufgehenden Kosten-Ledger, hinunter zu jedem erhaltenen Pick (256,787 Zeilen), Karton (70,820) und Routen-Stopp (4,151).",
+        "Die stufenübergreifende Sensitivität schließt sich in geschlossener Form: Eine 15. Identität beweist, dass die Bogenelastizität der Gesamtkosten gegenüber einem Prognoseschub exakt dem Lagerkostenanteil entspricht – 0.0580 im committeten Vollauf, sodass eine Verdopplung der prognostizierten Nachfrage die modellierten Cost-to-Serve um 5.80% erhöhen würde, während jede Zustellkostenzeile und der reale Umsatz unbewegt bleiben; additiv zu den 13 Artefakt-Identitäten, das committete Artefakt unverändert.",
         "Ehrliche Befunde in der Schlagzeile behalten: Nichts schlägt den naiven Walk bei unregelmäßiger Nachfrage (MASE 1.782); das exakte ungarische Slotting-Optimum ist nur 1.6% mehr wert als klassisches ABC, wobei die Rearrangement-Ungleichung erklärt, warum; OR-Tools CVRP schlägt die Clarke-Wright-Baseline von 1964 nur um 0.2% und verliert an 19 von 48 Tagen; die synthetische Kommissioniercrew ist zu 18% ausgelastet – gemessen, nicht weggetunt.",
         "Messen ist vom Präsentieren getrennt: Der ~51-minütige Vollauf (48 CVRPs pro Tag) serialisiert zu einem committeten, code-fingerabgedruckten Run-Artefakt; das Offline-Flask-CHAIN-DASHBOARD (Abstimmungs-Panel mit 13 Identitäten, herkunftsgefärbter Stufenfluss) startet daraus in Sekunden und rechnet nichts neu; PDF- + Excel-Deliverables regenerieren aus demselben Artefakt byte-für-byte; jede Menge trägt ein Herkunfts-Tag (real | abgeleitet | synthetisch-zugewiesen), erfundene Kostensätze sind als INVENTED gekennzeichnet, und die Kostentabelle erhebt keine Gewinnbehauptungen."
       ]
@@ -946,7 +1121,7 @@
         },
         {
           "label": "Tests",
-          "value": "20, incl. a live JSON-RPC handshake",
+          "value": "116, incl. handshake + validation matrix",
           "label_de": "Tests"
         },
         {
@@ -963,7 +1138,7 @@
       "impact_eur": null,
       "highlights": [
         "Six real engines - per-demand-class forecasting (decision-chain), exact Hungarian slotting and FFD carton packing (logistics-digital-twin), deterministic-limit CVRP vs Clarke-Wright (route-optimizer), discount-leakage drill-down (sales-kpi-analytics), and a read-only repo auditor (portfolio-ops) - are imported read-only from sibling checkouts and declared with typed JSON schemas an MCP client discovers via the protocol handshake.",
-        "Every tool validates its input, and every failure (bad input, missing source repo, engine error) comes back as a structured error result; a missing repo names the path tried and the env var to set, and the server keeps running.",
+        "Every tool validates its input, and every failure (bad input, missing source repo, engine error) comes back as a structured error result while the server keeps running; a machine-checked contract layer introspects the six served tools and asserts that registry, implementations and the published catalog stay in agreement, that every served inputSchema is a valid JSON Schema, and that a sample request/response round-trips against the real served contract.",
         "Honesty is wired into the protocol layer: five tools state via a data_note that they run on deterministic synthetic seeded datasets; forecast_demand runs the real UCI Online Retail II pipeline (history labelled real, forecasts derived) - and if naive wins a demand class, naive is what gets reported. Ships ready-to-paste configs for Claude Desktop and Claude Code."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/chain-mcp",
@@ -971,7 +1146,7 @@
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
         "Sechs echte Engines – Prognose je Nachfrageklasse (decision-chain), exaktes ungarisches Slotting und FFD-Kartonpackung (logistics-digital-twin), CVRP mit deterministischem Limit vs. Clarke-Wright (route-optimizer), Rabatt-Leckage-Drill-down (sales-kpi-analytics) und ein schreibgeschützter Repo-Auditor (portfolio-ops) – werden schreibgeschützt aus Nachbar-Checkouts importiert und mit typisierten JSON-Schemata deklariert, die ein MCP-Client über den Protokoll-Handshake entdeckt.",
-        "Jedes Tool validiert seine Eingabe, und jeder Fehler (fehlerhafte Eingabe, fehlendes Quell-Repo, Engine-Fehler) kommt als strukturiertes Fehlerergebnis zurück; ein fehlendes Repo nennt den versuchten Pfad und die zu setzende Umgebungsvariable, und der Server läuft weiter.",
+        "Jedes Tool validiert seine Eingabe, und jeder Fehler (fehlerhafte Eingabe, fehlendes Quell-Repo, Engine-Fehler) kommt als strukturiertes Fehlerergebnis zurück, während der Server weiterläuft; eine maschinell geprüfte Contract-Schicht introspiziert die sechs bereitgestellten Tools und stellt sicher, dass Registry, Implementierungen und der veröffentlichte Katalog übereinstimmen, dass jedes ausgelieferte inputSchema ein gültiges JSON-Schema ist und dass ein Beispiel-Request/-Response gegen den real bereitgestellten Contract round-trippt.",
         "Ehrlichkeit ist in die Protokollschicht eingebaut: Fünf Tools geben über eine data_note an, dass sie auf deterministischen, synthetischen, geseedeten Datensätzen laufen; forecast_demand durchläuft die reale UCI-Online-Retail-II-Pipeline (Historie als real gekennzeichnet, Prognosen als abgeleitet) – und wenn Naive eine Nachfrageklasse gewinnt, wird Naive berichtet. Liefert einfügefertige Konfigurationen für Claude Desktop und Claude Code."
       ]
     },
