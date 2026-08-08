@@ -41,9 +41,9 @@ only quote figures a public press release or vendor page stated.
 |---|---|
 | Governed KPI dashboards & reporting | `sales-kpi-analytics`, `distributor-intelligence-platform`, `revops-optimizer` (all ship KPI dashboards + exec reviews) |
 | Semantic model: star schema + DAX measures | `revops-optimizer` (Power BI star schema with KPIs written as real DAX) |
-| Forecasting with honest, out-of-sample evaluation | `sales-kpi-analytics` & `distributor-intelligence-platform` (rolling-origin CV, MASE); `ml-models-lab` (DeepAR-lite) |
-| Margin / price-volume-mix bridge, ABC-XYZ, RFM | `sales-kpi-analytics`, `distributor-intelligence-platform` |
-| Data quality / reconciliation trust | `sales-kpi-analytics` (SQL-vs-Python rollup asserted to the cent) |
+| Forecasting with honest, out-of-sample evaluation | `sales-kpi-analytics` & `distributor-intelligence-platform` (rolling-origin CV, MASE); `ml-models-lab` (DeepAR-lite); `retail-analytics-real` (real-data bake-off honest enough to report seasonal-naive winning, mean MASE 1.094 vs 1.187) |
+| Margin / price-volume-mix bridge, ABC-XYZ, RFM | `sales-kpi-analytics`, `distributor-intelligence-platform`; `retail-analytics-real` (RFM + cohorts on real UCI data) |
+| Data quality / reconciliation trust | `sales-kpi-analytics` (SQL-vs-Python rollup asserted to the cent); `decision-chain` (13 machine-checked cross-stage identities; revenue reproduced across two repositories to the penny, GBP 19,643,861.62); `retail-analytics-real` (row-cost cleaning log + a data-quality report card labelled a heuristic scorecard, not a certification) |
 | Prescriptive "what should we do" (not just describe) | `revops-optimizer`, `distributor-intelligence-platform` (optimizers → one € plan + action cards) |
 | **Backlog gap:** natural-language query (NLQ) over the model | *not built* — my dashboards are curated, not conversational. A genuine gap versus Power BI Q&A / Tableau Ask Data. |
 | **Backlog gap:** cloud multi-tenant governance, row-level security, scheduled refresh | *not built* — artifacts are offline single-file; enterprise governance is out of scope by design. |
@@ -75,12 +75,13 @@ only quote figures a public press release or vendor page stated.
 | Agentic tool-use loop (LLM selects tools, variable steps) | `agentic-automation-lab` (from-scratch, provider-agnostic loop); `agent-flow-studio` (mock observe→decide→act on a canvas) |
 | Visual low-code canvas: nodes, ports, DAG execution | `agent-flow-studio` (Kahn topo-sort executor, hand-drawn SVG wires) |
 | Same logic runnable low-code **and** full-code (hybrid) | `agentic-automation-lab` (n8n and Python drive identical tool functions) |
-| Document understanding / IDP with validation + confidence gate | `doc-extract-agent` (5-stage pipeline, totals cross-check, human routing) |
-| Human-in-the-loop / approval before an action posts | `doc-extract-agent` (confidence gate → human); `agentic-automation-lab` ("a rep reviews every draft" model) |
+| Document understanding / IDP with validation + confidence gate | `doc-extract-agent` (5-stage pipeline, totals cross-check, human routing; the combined confidence + business-rule gate lifts measured auto-post precision 70% → 87.5%) |
+| Human-in-the-loop / approval before an action posts | `doc-extract-agent` (confidence gate + business-rule validation → human); `agentic-automation-lab` ("a rep reviews every draft" model) |
 | Build-vs-buy / ROI to prioritize the automation backlog | `automation-roi-explorer` (hours, €, payback, 3y ROI, ranked) |
 | Decision framework: when low-code vs full-code | `agentic-automation-lab` (nine-dimension scorecard with cited ratings) |
-| **Backlog gap:** MCP / real connector ecosystem, retries, timeouts, parallel branches | *partly gap* — my agents run a mock/single provider offline; production connectors, retries and parallelism are named as next steps, not built. |
-| **Backlog gap:** live latency/cost telemetry per orchestrator | *gap* — only runtime is measured; a parallel live n8n run is the stated next step. |
+| MCP — expose real tools over the Model Context Protocol | **now covered** — `chain-mcp` ships a standard-conformant MCP server (official `mcp` SDK, JSON-RPC over stdio) exposing six real engines as tools, with 116 tests including a live protocol handshake and a machine-checked contract layer. |
+| **Backlog gap:** real connector ecosystem, retries, timeouts, parallel branches | *gap* — beyond the MCP server, production connectors, retries and parallelism are named as next steps, not built. |
+| **Backlog gap:** live latency/cost telemetry per orchestrator | *mostly gap* — a token & cost model now prices the nine fixtures per model (~$846–$4,232/yr at the ~104k-run volume), but it is a labelled order-of-magnitude planning model, not live telemetry; a parallel live n8n run is the stated next step. |
 
 ---
 
@@ -108,22 +109,24 @@ only quote figures a public press release or vendor page stated.
 |---|---|
 | Capacitated vehicle routing (CVRP) with a measured optimizer-vs-heuristic gap | `route-optimizer` (Clarke-Wright vs OR-Tools GLS, −4.6%/−31%); `distributor-intelligence-platform` (CVRP, 25% km saved) |
 | Clear baseline so the routing saving is quantified, not asserted | `route-optimizer` (nearest-neighbour + savings baselines shipped alongside) |
-| 3D bin-packing / cube utilization | `logistics-digital-twin` *(in progress — packing module started)* |
-| Slotting optimization (fast movers to golden zones) | `logistics-digital-twin` *(in progress — planned)* |
-| Discrete-event simulation / digital twin of the operation | `logistics-digital-twin` *(in progress — the DES layer is the next milestone)* |
+| 3D bin-packing / cube utilization | **now covered** — `logistics-digital-twin` (FFD 3D carton packing lifts container fill 2.0% → 30.2%, 60 → 4 containers; CP-SAT proves the FFD result optimal on the small instance — a 0% gap there, and the measured gap is reported on the rest) |
+| Slotting optimization (fast movers to golden zones) | **now covered** — `logistics-digital-twin` (velocity slotting cuts demand-weighted pick travel −44.2%; holding the routing policy fixed, the optimized layout routes ~46% shorter, 51.4 → 27.5 m/order); `logistics-flow-studio` (golden-zone optimizer 36.70 → 18.85 m/order, −48.6%, pinned in `docs/MEASUREMENTS.md`) |
+| Discrete-event simulation / digital twin of the operation | **now covered** — `logistics-digital-twin` (hand-rolled DES, no SimPy; pick-path policies scored against the exact optimum — the best policy comes within +3.0%); `logistics-flow-studio` (the WMS operation simulated receiving → shipping with ISO 22400-grounded KPIs and a live animated material flow) |
 | ROI / business case for warehouse automation (the MHI budget barrier) | `automation-roi-explorer` (generic back-office ROI; applicable to warehouse processes) |
 | **Backlog gap:** road-network distance/time matrix (OSRM/Valhalla) | *gap* — routing currently uses Euclidean/Manhattan distance, not roads. |
 | **Backlog gap:** time windows, heterogeneous fleet, driver shifts | *gap* — single depot, homogeneous fleet, no time windows yet (OR-Tools supports all; named as next constraints). |
-| **Backlog gap:** live warehouse metrics (throughput, labor) end to end | *gap* — `logistics-digital-twin` is under construction; no measured legacy-vs-modern gap published yet. |
+| **Backlog gap:** live warehouse metrics (throughput, labor) end to end | *narrowed* — the legacy-vs-optimized gap is now measured and published (`logistics-digital-twin`: container fill 2.0% → 30.2%, layout routes ~46% shorter); what remains a gap: every metric comes from seeded synthetic simulation, not telemetry from a live operation. |
 
 ---
 
 ## Summary of honest gaps
 
 Across the three areas the recurring, genuinely-unbuilt gaps are: **natural-language querying**
-over a BI model; a **real connector/MCP ecosystem with retries and parallelism** for the agents;
-**road-network routing** and **time-window/heterogeneous-fleet** constraints; and the
-**warehouse digital-twin metrics** (`logistics-digital-twin` is still under construction). These
+over a BI model; a **real connector ecosystem with retries and parallelism** for the agents
+(the MCP server itself is now built — `chain-mcp`); **road-network routing** and
+**time-window/heterogeneous-fleet** constraints; and **live operational telemetry** — the
+warehouse digital-twin metrics are now measured and published (`logistics-digital-twin`,
+`logistics-flow-studio`), but on seeded synthetic simulations, not a live operation. These
 are named as next steps in the respective repos rather than papered over.
 
 *Author: Dimitres Kisimov, 2026. Sources are cited inline; the capability-to-project mappings
