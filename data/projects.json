@@ -612,7 +612,7 @@
         "Charts are hand-drawn on a Canvas element rather than Chart.js/D3, keeping the whole thing a single double-clickable offline file.",
         "Every assumption (coverage, flat volumes, excluded change-management cost) is out in the open and adjustable - the design, not a corner cut."
       ],
-      "repo_url": "https://github.com/Dimitres-Kisimov/automation-roi-explorer",
+      "repo_url": "https://github.com/Dimikissimov/automation-roi-explorer",
       "tagline_de": "Welchen Back-Office-Prozess man zuerst automatisieren sollte, mit offengelegter Rechnung: eingesparte Stunden, eingesparte Euro, Amortisation und 3-Jahres-ROI, so gereiht, dass das Budget dem Wert folgt, nicht dem Volumen.",
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
