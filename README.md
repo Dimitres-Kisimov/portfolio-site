@@ -35,6 +35,36 @@ Then open `index.html` directly in a browser — no build tools, no server.
 To change the site, edit `data/projects.json` (or the template in `build.py`) and re-run
 `python build.py`.
 
+## Bilingual (EN + DE, same URL)
+
+The site is fully bilingual on a single URL. Every visible string — UI chrome, project
+descriptions, the SVG pipeline diagram, screen-reader strings (`aria-label`s and image `alt`
+texts) — ships in English **and** German inside the page as paired `data-en` / `data-de`
+attributes; a small client-side toggle in the header swaps the active language in place (no
+reload, no redirect, `<html lang>` flips too). Precedence: `?lang=de|en` for a single visit >
+the persisted choice in `localStorage` > `navigator.language` (any `de*` locale gets German),
+with English as the fallback and as the JS-free default. The German copy keeps the honest
+framing — every disclaimer is translated, none softened.
+
+## Site quality gate
+
+Beyond the pytest suite (which guards the generator's inputs), `tools/validate_site.py`
+validates the **rendered site as a document**, the way a browser and a screen reader consume
+it — standard library only, run locally or in CI:
+
+```bash
+python tools/validate_site.py
+```
+
+It fails the build on: malformed HTML (unbalanced tags, duplicate ids), broken `#fragment`
+links or missing local assets, any external asset reference (the offline guarantee), missing
+image alt text or untitled inline SVGs, heading-level skips, any visible string without its
+EN/DE pair (proper nouns are explicitly allowlisted), marketing superlatives in either language
+(the honest-claims lint), and any text/background color-token pair below the WCAG AA 4.5:1
+contrast ratio — computed for both the light and the dark scheme. When introduced, the gate
+caught three real contrast defects, which are fixed via the `--on-accent` token and a slightly
+darker light-mode accent.
+
 ## Project layout
 
 ```
@@ -48,8 +78,12 @@ portfolio-site/
 │   ├── RESULTS_AND_VIZ.md       # master results & visualization catalog
 │   ├── MARKET_REQUESTS.md       # cited market-demand -> project mapping
 │   └── BUSINESS_CASE.md         # why this site exists, for whom, evidence of quality
-├── tests/test_build.py         # pytest: determinism, coverage, offline guard, escaping, schema
-├── tools/make_onepager.py      # projects.json -> deliverables/portfolio_onepager.pdf
+├── tests/
+│   ├── test_build.py            # pytest: determinism, coverage, offline guard, escaping, schema
+│   └── test_site_validation.py  # pytest: the quality gate passes AND can fail (hostile fixtures)
+├── tools/
+│   ├── validate_site.py         # site quality gate: HTML, links, a11y, EN/DE DOM, claims, AA contrast
+│   └── make_onepager.py         # projects.json -> deliverables/portfolio_onepager.pdf
 ├── deliverables/               # portfolio_onepager.pdf (generated, committed)
 ├── pyproject.toml              # ruff + pytest config
 ├── .github/workflows/ci.yml    # lint + tests + build + offline guard + PDF size check

@@ -72,12 +72,24 @@
     currentLang = lang;
     document.documentElement.setAttribute("lang", lang);
 
-    // Swap every paired element's text in place.
+    // Swap every paired element's text in place (works for SVG <text>/<title> too).
     var nodes = document.querySelectorAll("[data-en]");
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
       var val = el.getAttribute("data-" + lang);
       if (val !== null) el.textContent = val;
+    }
+
+    // Screen-reader strings: paired aria-labels and image alt texts.
+    var ariaNodes = document.querySelectorAll("[data-aria-en]");
+    for (var j = 0; j < ariaNodes.length; j++) {
+      var ariaVal = ariaNodes[j].getAttribute("data-aria-" + lang);
+      if (ariaVal !== null) ariaNodes[j].setAttribute("aria-label", ariaVal);
+    }
+    var altNodes = document.querySelectorAll("img[data-alt-en]");
+    for (var k = 0; k < altNodes.length; k++) {
+      var altVal = altNodes[k].getAttribute("data-alt-" + lang);
+      if (altVal !== null) altNodes[k].setAttribute("alt", altVal);
     }
 
     langButtons.forEach(function (btn) {

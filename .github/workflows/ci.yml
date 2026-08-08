@@ -32,6 +32,9 @@ jobs:
       - name: Regenerated site must match the committed index.html
         run: git diff --exit-code -- index.html
 
+      - name: Site quality gate (well-formedness, links, a11y, bilingual DOM, claims, AA contrast)
+        run: python tools/validate_site.py
+
       - name: index.html must exist and be non-empty
         run: |
           test -s index.html

@@ -13,6 +13,7 @@
       "live_url": "https://dimitres-kisimov.github.io/logistics-flow-studio/",
       "image": "docs/img/hero-plant-2d.png",
       "image_alt": "WarehouseTwin plant simulator - 2D warehouse floor with racks, aisles, vehicles and material-flow stations (synthetic, illustrative)",
+      "image_alt_de": "WarehouseTwin Anlagensimulator - 2D-Lagerfläche mit Regalen, Gängen, Fahrzeugen und Materialfluss-Stationen (synthetisch, illustrativ)",
       "role_tag_de": "Vorzeigestück",
       "blurb_de": "Man kann es bedienen. Ein interaktiver Anlagen- + Lagersimulator, der im Browser läuft, offline, auf einem normalen Laptop: eine Anlage aus einem Stichwort generieren, sie in natürlicher Sprache bearbeiten, zwischen 2D <-> 3D umschalten und dem Materialfluss zusehen: Wareneingang -> Einlagerung -> Kommissionierung -> Verpackung -> Versand. Der emotionale Einstieg – ein echter Betrieb mit Regalen, Fahrzeugen und Toren."
     },
@@ -25,6 +26,7 @@
       "repo_url": "https://github.com/Dimitres-Kisimov/logistics-digital-twin",
       "image": "docs/img/warehouse_layout.svg",
       "image_alt": "logistics-digital-twin engine output - velocity-slotted warehouse layout with A-movers pulled to the golden-zone slots nearest dispatch (synthetic, seeded)",
+      "image_alt_de": "logistics-digital-twin Engine-Ausgabe - Lagerlayout mit Slotting nach Umschlagshäufigkeit, A-Artikel auf den Golden-Zone-Stellplätzen nahe dem Warenausgang (synthetisch, geseedet)",
       "role_tag_de": "Motor",
       "blurb_de": "Darunter steckt ein echter Motor – kein Spielzeug. Der Referenz-Motor hinter dem Simulator: 3D-Kartonpackung, ABC-/Golden-Zone-Slotting und eine ereignisdiskrete Simulation, getestet (128 Tests) und mit exakt demselben wt-1-Layoutformat, das die App nutzt. Das schöne Bild ist ein originalgetreues Front-End zu echtem Operations Research."
     },
@@ -48,6 +50,7 @@
       "repo_url": "https://github.com/Dimitres-Kisimov/distributor-intelligence-platform",
       "image": "docs/img/command-center.png",
       "image_alt": "distributor-intelligence-platform command center - forecasting, assortment and routing decision dashboard (synthetic data)",
+      "image_alt_de": "distributor-intelligence-platform Kommandozentrale - Entscheidungs-Dashboard für Prognose, Sortiment und Routenplanung (synthetische Daten)",
       "role_tag_de": "Kommandozentrale",
       "blurb_de": "Es skaliert zu einer Kommandozentrale – die Sicht des Betreibers. Ein Flask-Dashboard, das die Engines in ein Entscheidungs-Cockpit verwandelt – Prognose, Sortiment, Routenplanung – mit einer Abstimmungssicherung, damit keine Kennzahl unbemerkt von dem Code abweichen kann, der sie erzeugt hat. Das, wovor ein MRO-Distributor im Stil von Würth tatsächlich sitzen würde."
     }
@@ -858,6 +861,7 @@
       "live_url": "https://dimitres-kisimov.github.io/logistics-flow-studio/",
       "image": "docs/img/warehousetwin.png",
       "image_alt": "WarehouseTwin WMS + plant simulator — Cold-chain scenario (synthetic, illustrative)",
+      "image_alt_de": "WarehouseTwin WMS + Anlagensimulator — Kühlketten-Szenario (synthetisch, illustrativ)",
       "tagline_de": "WarehouseTwin – WMS + Anlagensimulator (v2.0.0): ein offline, browserbasiertes Lagerverwaltungssystem und ein Anlagensimulator. Eine Anlage aus einem Stichwort generieren (ein deterministischer Generator plus ein Offline-Parser für Befehle in natürlicher Sprache, kein trainiertes Modell), dann den WMS-Betrieb simulieren (Wareneingang -> Einlagerung -> Nachschub -> Kommissionierung -> Verpackung -> Versand) mit an ISO 22400 orientierten KPIs, einem live animierten Materialfluss und 29 Gerätetypen, jeder mit einer 2D- und einer 3D-Darstellung (P drücken zum Umschalten), detailliert gerendert bis hin zu Regalpaletten, Bodenmarkierungen und Meter-Linealen. Lagerung/Slotting, Automatisierung, eine benutzerdefinierbare Objektbibliothek, eine geführte Story-Mode-Tour, eine editierbare Standards-Wissensdatenbank und ein konsolidierter WMS-Bericht; läuft vollständig offline. Synthetisch, sofern Sie nicht Ihre eigene CSV importieren; an Standards orientiert, keine Zertifizierung.",
       "category_de": "Logistik & Optimierung",
       "highlights_de": [

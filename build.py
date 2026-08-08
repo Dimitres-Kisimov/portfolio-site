@@ -224,6 +224,21 @@ def render_metric(metric: dict) -> str:
     )
 
 
+def bi_alt(item: dict) -> str:
+    """Bilingual alt-text attributes for an <img>.
+
+    The default ``alt`` is the English text (canonical, JS-free reading);
+    ``data-alt-en`` / ``data-alt-de`` let the client toggle swap the alt in
+    place so screen readers get the active language too. German falls back to
+    English rather than rendering an empty alt.
+    """
+    alt_en = item.get("image_alt", "")
+    alt_de = item.get("image_alt_de") or alt_en
+    return (
+        f'alt="{esc(alt_en)}" data-alt-en="{esc(alt_en)}" data-alt-de="{esc(alt_de)}"'
+    )
+
+
 def render_media(project: dict) -> str:
     """Optional screenshot preview for projects that ship one.
 
@@ -233,9 +248,8 @@ def render_media(project: dict) -> str:
     image = project.get("image")
     if not image:
         return ""
-    alt = esc(project.get("image_alt", ""))
     return (
-        f'\n          <img class="card-media" src="{esc(image)}" alt="{alt}"'
+        f'\n          <img class="card-media" src="{esc(image)}" {bi_alt(project)}'
         ' loading="lazy">'
     )
 
@@ -263,9 +277,22 @@ def chain_diagram_svg() -> str:
     fully local, no external asset, honest (no invented numbers beyond the
     13/13 reconciliation identity count the repo actually machine-checks).
     """
-    stages = ["Clean", "Forecast", "Inventory", "Slotting", "Fulfilment", "Routing"]
-    final_label = "Reconciled ledger"
-    final_sub = "13/13 identities PASS"
+    stages = [
+        ("Clean", "Bereinigung"),
+        ("Forecast", "Prognose"),
+        ("Inventory", "Bestand"),
+        ("Slotting", "Slotting"),
+        ("Fulfilment", "Auftragsabwicklung"),
+        ("Routing", "Tourenplanung"),
+    ]
+    final_label = ("Reconciled ledger", "Abgestimmtes Hauptbuch")
+    final_sub = ("13/13 identities PASS", "13/13 Identitäten bestanden")
+    title = (
+        "decision-chain: one real dataset flows through six stages into a single"
+        " reconciled ledger where every identity check passes",
+        "decision-chain: ein realer Datensatz fließt durch sechs Stufen in ein"
+        " einziges abgestimmtes Hauptbuch, in dem jede Identitätsprüfung besteht",
+    )
     box_x, box_w, box_h, step, top = 30, 240, 32, 46, 8
     cx = box_x + box_w / 2  # horizontal centre (150)
     n = len(stages)
@@ -275,8 +302,11 @@ def chain_diagram_svg() -> str:
         # site's own external-URL guard for no benefit.
         '<svg class="chain-svg" viewBox="0 0 300 340" role="img"'
         ' aria-labelledby="chain-title">',
-        '<title id="chain-title">decision-chain: one real dataset flows through six stages'
-        " into a single reconciled ledger where every identity check passes</title>",
+        # The diagram text is bilingual like every other visible string: the
+        # generic [data-en] textContent swap in app.js works on SVG <text> and
+        # <title> elements too.
+        f'<title id="chain-title" data-en="{esc(title[0])}" data-de="{esc(title[1])}">'
+        f"{esc(title[0])}</title>",
     ]
     # Connectors + arrowheads (each box down into the next, ending in the ledger).
     for i in range(n):
@@ -291,7 +321,7 @@ def chain_diagram_svg() -> str:
             f' {y_to - 6} L{cx:g} {y_to} Z"/>'
         )
     # Regular stage boxes.
-    for i, label in enumerate(stages):
+    for i, (label_en, label_de) in enumerate(stages):
         y = top + i * step
         parts.append(
             f'<rect class="chain-box" x="{box_x}" y="{y}" width="{box_w}"'
@@ -299,7 +329,8 @@ def chain_diagram_svg() -> str:
         )
         parts.append(
             f'<text class="chain-text" x="{cx:g}" y="{y + box_h / 2 + 4:g}"'
-            f' text-anchor="middle" font-size="13">{esc(label)}</text>'
+            f' text-anchor="middle" font-size="13" data-en="{esc(label_en)}"'
+            f' data-de="{esc(label_de)}">{esc(label_en)}</text>'
         )
     # Final, highlighted ledger box (taller, two lines).
     fy = top + n * step
@@ -309,11 +340,13 @@ def chain_diagram_svg() -> str:
     )
     parts.append(
         f'<text class="chain-text-final" x="{cx:g}" y="{fy + 19:g}" text-anchor="middle"'
-        f' font-size="13" font-weight="700">{esc(final_label)}</text>'
+        f' font-size="13" font-weight="700" data-en="{esc(final_label[0])}"'
+        f' data-de="{esc(final_label[1])}">{esc(final_label[0])}</text>'
     )
     parts.append(
         f'<text class="chain-sub-final" x="{cx:g}" y="{fy + 35:g}" text-anchor="middle"'
-        f' font-size="11">{esc(final_sub)}</text>'
+        f' font-size="11" data-en="{esc(final_sub[0])}"'
+        f' data-de="{esc(final_sub[1])}">{esc(final_sub[0])}</text>'
     )
     parts.append("</svg>")
     return "".join(parts)
@@ -327,8 +360,9 @@ def render_featured_media(item: dict) -> str:
     """
     image = item.get("image")
     if image:
-        alt = esc(item.get("image_alt", ""))
-        return f'<img class="feature-media" src="{esc(image)}" alt="{alt}" loading="lazy">'
+        return (
+            f'<img class="feature-media" src="{esc(image)}" {bi_alt(item)} loading="lazy">'
+        )
     if item.get("diagram") == "chain":
         return f'<div class="feature-diagram">{chain_diagram_svg()}</div>'
     return ""
@@ -491,7 +525,7 @@ TEMPLATE = """<!doctype html>
         {projects_h}
         {projects_note}
       </div>
-      <div class="filters" role="group" aria-label="Filter projects by focus area">
+      <div class="filters" role="group" aria-label="Filter projects by focus area" data-aria-en="Filter projects by focus area" data-aria-de="Projekte nach Schwerpunkt filtern">
         {filters}
       </div>
       <div class="grid" id="grid">
@@ -505,7 +539,7 @@ TEMPLATE = """<!doctype html>
         <p class="muted">{impact_note}</p>
       </div>
       <figure class="chart-wrap">
-        <div id="chart" class="chart" role="img" aria-label="Bar chart of modelled annual euro impact per project"></div>
+        <div id="chart" class="chart" role="img" aria-label="Bar chart of modelled annual euro impact per project" data-aria-en="Bar chart of modelled annual euro impact per project" data-aria-de="Balkendiagramm der modellierten jährlichen Euro-Wirkung pro Projekt"></div>
         {impact_figcaption}
       </figure>
     </section>
