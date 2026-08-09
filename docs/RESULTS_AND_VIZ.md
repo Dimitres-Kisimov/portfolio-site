@@ -219,9 +219,23 @@ source describes qualitatively rather than as a single number.
   per-model price sheet: at the ~104,000-email annual volume the flagship agent costs
   **~$846/yr on Claude Haiku 4.5 (~$4,232 on Opus 4.8)** next to the ~€625k of labour the
   business case says it offsets — tokens from the deterministic mock's chars/4 estimate,
-  an order-of-magnitude planning model, not a bill.
+  an order-of-magnitude planning model, not a bill. A seeded reliability benchmark
+  (`eval/reliability.py`) re-runs the flows over the same 9 fixtures while injecting
+  model-level faults (wrong SKU, dropped line item, premature answer, stuck loop,
+  hallucinated tool, skipped validation) on a seeded schedule — 50 trials per task across
+  three tiers, **1,350 trials**, each classified into a four-way taxonomy: success /
+  recovered / detected failure / silent failure. At the anchor tier (a 30% **assumed**
+  fault rate): **76.8% success, 13.6% detected, 9.6% silent** — the guards catch the
+  control-flow faults (a hallucinated tool call is even converted into a recovery) while
+  content faults sail through looking plausible. The retry economics quantify the
+  consequence: at 2 retries the anchor tier delivers **88.7% correct for ~$843/yr** in
+  tokens at the business-case volume — but **~11,500 silent-wrong quotes a year**, the
+  quantified argument for the "a rep still reviews every draft" model. Per-tier fault
+  rates are assumed scenario parameters, not measured properties of any real model.
+  51 tests.
 - **Visualizations:** `benchmarks/results/scorecard.png` (nine-dimension comparison);
   `benchmarks/results/scorecard.md`; `eval/cost_scorecard.md` (+ `.json`/`.csv`, byte-stable);
+  `eval/reliability_scorecard.md` (+ `.json`/`.csv`, byte-stable);
   `deliverables/executive_onepager.pdf`; agent trace output.
 - **Use case:** deciding low-code vs full-code (vs hybrid) for an agentic automation, with the
   trade-off measured rather than asserted — and the model bill estimated before anyone runs it.
@@ -461,7 +475,7 @@ source describes qualitatively rather than as a single number.
   three-qubit mode would need a different visual language; (2) lessons could link out to
   exercises, kept offline-first.
 
-## 19. logistics-flow-studio — Logistics & Optimization (WarehouseTwin — WMS + Plant Simulator, v2.0.0)
+## 19. logistics-flow-studio — Logistics & Optimization (WarehouseTwin — WMS + Plant Simulator, v3.19)
 
 - **What it is:** an offline, browser-based warehouse / WMS digital twin and plant-flow
   simulator (WarehouseTwin) — hand-written HTML/CSS/JS, no build step, fully offline,
@@ -490,9 +504,23 @@ source describes qualitatively rather than as a single number.
 - **Measured results (pinned in `docs/MEASUREMENTS.md`, seed 42, starter demo layout):** the
   golden-zone optimizer cuts average pick travel **36.70 → 18.85 m/order (−48.6%)**,
   reproducible headlessly via `node measure_optimizer.js`; **ABC 80/20 beats random slotting
-  by ~21%** (46.71 → 36.70 m/order) — the measurement behind the advisor's suggestion. **35
+  by ~21%** (46.71 → 36.70 m/order) — the measurement behind the advisor's suggestion.
+  Factory mode (v3.17–v3.19) grew a real line-flow engine: the deterministic line sim
+  resolves declared **multi-way proportional-flow routing** (ratio splits, merges,
+  assembly/dismantle) with **conservation verified at every node**; the generator itself
+  emits a multi-way network — the *"Machining shop with QA split"* baseline
+  (`machining-qa-split`, declared 60/40 split) is harness-pinned at the offered 120
+  parts/hr: bottleneck *QA deep test* at 32 s → **112.5 parts/hr**, line efficiency
+  141/160 ≈ **88.1%** — and the optimizer's **RPW line balancing** packs workstations on
+  the resolved per-finished-unit effective loads (byte-identical to the legacy balancer on
+  a pure chain, harness-pinned). The v3.19 **Fluids steady-state continuous-flow solver**
+  gives the process-industry components deterministic flow in m³/h: volume conservation
+  verified at every node, tank fill horizons computed analytically (free volume ÷ net
+  inflow), and the bottleneck pipe, curtailed supply and starved mixers named in plain
+  language — a steady-state analytical model, **modelled, not measured**, and explicitly
+  **NOT CFD or hydraulics** (no pressure, viscosity, head loss or pump curves). **45
   headless verification harnesses** (`test/run-all.mjs`, no stubs) plus an **in-browser
-  self-test (57/57)** back every documented behaviour.
+  self-test (112/112)** back every documented behaviour.
 - **Visualizations:** the live canvas floor plan, the animated material flow and the KPI
   cockpit themselves; `docs/img/warehousetwin.png`; compliance highlights, optimizer ghost
   previews, the pick-travel heatmap and the 2D/3D equipment scene (P toggles the 3D view).
@@ -535,17 +563,28 @@ source describes qualitatively rather than as a single number.
   assertions that print both numbers at every seam. Every quantity carries a provenance tag
   (`real` | `derived` | `synthetic-assigned`); a derived quantity inherits the **weakest**
   provenance of its inputs.
-- **Measured results (full run, all 13 artifact identities PASS, plus 2 additive):** cleaned
+- **Measured results (full run, all 13 artifact identities PASS, plus 3 additive):** cleaned
   revenue reproduced across two repositories **to the penny — GBP 19,643,861.62**; the
   ledger's window revenue equal to the cleaned data's to the penny (GBP 1,047,042.41); the
   cost ledger summing to the cent (253,427.16); every pick (256,787 lines), carton (70,820)
-  and route drop (4,151) conserved. Two additive identities close the remaining seams:
+  and route drop (4,151) conserved. Three additive identities close the remaining seams:
   identity (n) — cost-driver reconstruction — rebuilds each cost line from its physical
-  driver × published rate to the cent, and identity (o) — forecast-error containment —
+  driver × published rate to the cent; identity (o) — forecast-error containment —
   proves the arc-elasticity of total cost to a whole-book forecast surge equals the
   holding-cost share **exactly (0.0580** on the committed full run**)**, so a doubling of
   forecast demand would raise modelled cost-to-serve by 5.80% while every delivered-cost
-  line and the real revenue stay unmoved. Honest findings kept in the headline: on lumpy
+  line and the real revenue stay unmoved; and identity (p) — order-level allocation
+  conservation — spreads the published cost ledger over every one of the **4,151 real
+  orders** under labelled allocation rules (labour by the order's own DES pick minutes,
+  transport by its carton share of its delivery day's CVRP km, facility split equally,
+  holding honestly kept on the SKU plane) and machine-checks that the spread loses nothing
+  and invents nothing: each column reassembles to its ledger line and both planes jointly
+  to the ledger total **to the cent (253,427.16 == 253,427.16)**. The per-order
+  distribution is the finding: median cost 20.67 GBP vs mean 57.51, the costliest 10% of
+  orders (416 of 4,151) carry **59.0% of delivered cost (Gini 0.665)**, and the 191 orders
+  (4.6%) whose modelled cost exceeds their own real revenue are reported as the model's
+  shape under invented rates — a labelled cost model, never a profit claim. Honest
+  findings kept in the headline: on lumpy
   demand **nothing beats the one-week naive walk** (MASE 1.782); the exact Hungarian
   slotting optimum is worth only **−1.6% vs classic ABC** (183.2 → 180.2 m/invoice; the
   rearrangement-inequality math is explained); OR-Tools CVRP beats 1964 Clarke-Wright by
@@ -576,14 +615,21 @@ source describes qualitatively rather than as a single number.
   call mid-conversation: `forecast_demand` (decision-chain), `optimize_slotting` and
   `pack_cartons` (logistics-digital-twin), `route_deliveries` (route-optimizer),
   `analyze_discount_leakage` (sales-kpi-analytics), `portfolio_status` (portfolio-ops).
-- **Measured results:** **116 tests — tool calls, an input-validation matrix, a live JSON-RPC
-  handshake, and contract validation**; every tool validates input and returns structured
-  error results on any failure (bad input, missing source repo, engine error) — the server
-  never crashes on a tool call; source repos are imported read-only with env-overridable
-  paths. A machine-checked contract layer introspects the six served tools and asserts that
-  the registry, the implementations and the published catalog stay in agreement, that every
-  served `inputSchema` is a valid JSON Schema, and that a sample request/response
-  round-trips against the real served contract.
+- **Measured results:** **145 tests — tool calls, an input-validation matrix, a live JSON-RPC
+  handshake, and contract + provenance validation**; every tool validates input and returns
+  structured error results on any failure (bad input, missing source repo, engine error) —
+  the server never crashes on a tool call; source repos are imported read-only with
+  env-overridable paths. A machine-checked contract layer introspects the six served tools
+  and asserts that the registry, the implementations and the published catalog stay in
+  agreement, that every served `inputSchema` is a valid JSON Schema, and that a sample
+  request/response round-trips against the real served contract. Every result — success
+  *or* error — now carries a **machine-readable provenance block**, required by the
+  contract layer's result envelope so no tool can omit it: server and engine commits
+  (best-effort from the local checkout's `.git`, null when unresolvable, never guessed), a
+  canonical data label (`synthetic` / `real+derived` / `real-local` / `caller-provided`)
+  cross-checked against the tool description's honesty wording, and a determinism flag;
+  error results carry identity only — a failed call computed nothing, so it makes no data
+  claims.
 - **Visualizations:** none of its own — the deliverable is the protocol integration; ships
   ready-to-paste configs for Claude Desktop (`claude_desktop_config.json`) and Claude Code
   (`claude mcp add chain-mcp -- python -m chainmcp`), six example prompts, and a

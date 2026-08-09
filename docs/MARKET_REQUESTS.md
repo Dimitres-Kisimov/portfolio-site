@@ -79,7 +79,7 @@ only quote figures a public press release or vendor page stated.
 | Human-in-the-loop / approval before an action posts | `doc-extract-agent` (confidence gate + business-rule validation → human); `agentic-automation-lab` ("a rep reviews every draft" model) |
 | Build-vs-buy / ROI to prioritize the automation backlog | `automation-roi-explorer` (hours, €, payback, 3y ROI, ranked) |
 | Decision framework: when low-code vs full-code | `agentic-automation-lab` (nine-dimension scorecard with cited ratings) |
-| MCP — expose real tools over the Model Context Protocol | **now covered** — `chain-mcp` ships a standard-conformant MCP server (official `mcp` SDK, JSON-RPC over stdio) exposing six real engines as tools, with 116 tests including a live protocol handshake and a machine-checked contract layer. |
+| MCP — expose real tools over the Model Context Protocol | **now covered** — `chain-mcp` ships a standard-conformant MCP server (official `mcp` SDK, JSON-RPC over stdio) exposing six real engines as tools, with 145 tests including a live protocol handshake and a machine-checked contract layer that also enforces machine-readable result provenance on every tool result. |
 | **Backlog gap:** real connector ecosystem, retries, timeouts, parallel branches | *gap* — beyond the MCP server, production connectors, retries and parallelism are named as next steps, not built. |
 | **Backlog gap:** live latency/cost telemetry per orchestrator | *mostly gap* — a token & cost model now prices the nine fixtures per model (~$846–$4,232/yr at the ~104k-run volume), but it is a labelled order-of-magnitude planning model, not live telemetry; a parallel live n8n run is the stated next step. |
 

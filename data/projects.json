@@ -419,7 +419,7 @@
     {
       "name": "agentic-automation-lab",
       "slug": "agentic-automation-lab",
-      "tagline": "The same RFQ-intake agent built low-code (n8n) and full-code, driving identical tool logic, then scored on nine dimensions so the trade-off is measured not asserted.",
+      "tagline": "The same RFQ-intake agent built low-code (n8n) and full-code, driving identical tool logic, then scored on nine dimensions so the trade-off is measured not asserted - and stress-tested with a seeded reliability benchmark that shows which faults the guardrails catch and which slip through silently.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
       "stack": [
@@ -437,14 +437,14 @@
           "label_de": "Modellierte zurückgewonnene Zeit"
         },
         {
-          "label": "Scorecard (full-code)",
-          "value": "4.44 / 5",
-          "label_de": "Scorecard (Full-Code)"
+          "label": "Scorecard (nine dimensions)",
+          "value": "full-code 4.44 vs n8n 3.33 / 5",
+          "label_de": "Scorecard (neun Dimensionen)"
         },
         {
-          "label": "Scorecard (n8n)",
-          "value": "3.33 / 5",
-          "label_de": "Scorecard (n8n)"
+          "label": "Reliability benchmark (seeded)",
+          "value": "1,350 trials - anchor tier 76.8% success, 9.6% silent",
+          "label_de": "Zuverlässigkeits-Benchmark (geseedet)"
         },
         {
           "label": "Token cost @ ~104k runs/yr",
@@ -457,15 +457,17 @@
         "A from-scratch, provider-agnostic tool-use loop (mock or Claude) parses an RFQ email, resolves SKUs, checks stock and drafts a quote - number of tool calls varies per email, which is what makes it genuinely agentic.",
         "Full-code and n8n drive the exact same tool functions (imported vs called over HTTP), so it is one logic compared two ways, not two implementations.",
         "A token & cost model prices the same nine task fixtures against a dated per-model sheet: at the ~104,000-email annual volume the flagship agent costs ~$846/yr on Claude Haiku 4.5 (~$4,232 on Opus 4.8) next to the ~EUR 625k of labour the business case says it offsets - with tokens from the deterministic mock's chars/4 estimate, an order-of-magnitude planning model, not a bill.",
+        "A seeded reliability benchmark injects model-level faults (wrong SKU, dropped line item, premature answer, stuck loop, hallucinated tool, skipped validation) into the same 9 fixtures - 50 trials per task across three tiers, 1,350 trials - and classifies every run as success, recovered, detected failure or silent failure. The finding: guards catch the control-flow faults (the unknown-tool block even converts one into a recovery) while content faults sail through looking plausible - at the anchor tier 76.8% success, 13.6% detected, 9.6% silent. Retry economics: 2 retries lift correct deliveries to 88.7% for ~$843/yr in tokens but leave ~11,500 silent-wrong quotes a year - the quantified argument for 'a rep still reviews every draft'. Fault rates are assumed scenario parameters, not measured properties of any real model; 51 tests, no key needed.",
         "Honest that only runtime figures are measured; the 1-5 ratings are reasoned judgements with cited sources."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/agentic-automation-lab",
-      "tagline_de": "Derselbe RFQ-Eingangs-Agent, einmal Low-Code (n8n) und einmal Full-Code gebaut, mit identischer Tool-Logik, dann auf neun Dimensionen bewertet, sodass der Kompromiss gemessen statt behauptet wird.",
+      "tagline_de": "Derselbe RFQ-Eingangs-Agent, einmal Low-Code (n8n) und einmal Full-Code gebaut, mit identischer Tool-Logik, dann auf neun Dimensionen bewertet, sodass der Kompromiss gemessen statt behauptet wird – und mit einem geseedeten Zuverlässigkeits-Benchmark belastungsgetestet, der zeigt, welche Fehler die Guardrails abfangen und welche still durchrutschen.",
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
         "Eine von Grund auf gebaute, anbieterunabhängige Tool-Use-Schleife (Mock oder Claude) analysiert eine RFQ-E-Mail, löst SKUs auf, prüft den Bestand und entwirft ein Angebot – die Anzahl der Tool-Aufrufe variiert je E-Mail, was es wirklich agentisch macht.",
         "Full-Code und n8n treiben exakt dieselben Tool-Funktionen an (importiert vs. über HTTP aufgerufen), es ist also eine Logik auf zwei Arten verglichen, nicht zwei Implementierungen.",
         "Ein Token- & Kostenmodell bepreist dieselben neun Task-Fixtures gegen eine datierte Preistabelle je Modell: Beim jährlichen Volumen von ~104,000 E-Mails kostet der Flaggschiff-Agent ~$846/Jahr auf Claude Haiku 4.5 (~$4,232 auf Opus 4.8) – neben den ~EUR 625k an Arbeitszeit, die er laut Business Case freisetzt; die Tokens stammen aus der chars/4-Schätzung des deterministischen Mocks, ein Planungsmodell in der Größenordnung, keine Rechnung.",
+        "Ein geseedeter Zuverlässigkeits-Benchmark injiziert Fehler auf Modellebene (falsche SKU, verlorene Position, vorzeitige Antwort, hängende Schleife, halluziniertes Tool, übersprungene Validierung) in dieselben 9 Fixtures – 50 Durchläufe je Task über drei Stufen, 1,350 Durchläufe – und ordnet jeden Lauf ein als Erfolg, abgefangen, erkannter Fehlschlag oder stiller Fehlschlag. Der Befund: Die Guards fangen die Kontrollfluss-Fehler ab (die Unknown-Tool-Sperre verwandelt einen sogar in eine Rettung), während Inhaltsfehler plausibel wirkend durchrutschen – auf der Ankerstufe 76.8% Erfolg, 13.6% erkannt, 9.6% still. Retry-Ökonomie: 2 Wiederholungen heben die korrekten Lieferungen auf 88.7% für ~$843/Jahr an Tokens, lassen aber ~11,500 still-falsche Angebote pro Jahr übrig – das bezifferte Argument für 'ein Mitarbeiter prüft weiterhin jeden Entwurf'. Die Fehlerraten sind angenommene Szenario-Parameter, keine gemessenen Eigenschaften eines realen Modells; 51 Tests, kein API-Schlüssel nötig.",
         "Ehrlich, dass nur Laufzeitzahlen gemessen werden; die 1-5-Bewertungen sind begründete Einschätzungen mit zitierten Quellen."
       ]
     },
@@ -989,7 +991,7 @@
     {
       "name": "logistics-flow-studio",
       "slug": "logistics-flow-studio",
-      "tagline": "WarehouseTwin - WMS + Plant Simulator (v2.0.0): an offline, browser-based warehouse management system and plant simulator. Generate a plant from a keyword (a deterministic generator plus an offline natural-language command parser, not a trained model), then simulate the WMS operation (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs, a live animated material flow, and 29 equipment types each with a 2D and a 3D representation (press P to switch) rendered in detail down to rack pallets, floor markings and metre rulers. Storage/slotting, automation, a user-definable object library, a guided Story Mode tour, an editable standards knowledge base and a consolidated WMS report; runs fully offline. Synthetic unless you import your own CSV; informed by standards, not a certification.",
+      "tagline": "WarehouseTwin - WMS + Plant Simulator (v3.19): an offline, browser-based warehouse management system and plant simulator. Generate a plant from a keyword (a deterministic generator plus an offline natural-language command parser, not a trained model), then simulate the WMS operation (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs, a live animated material flow, and 29 equipment types each with a 2D and a 3D representation (press P to switch) rendered in detail down to rack pallets, floor markings and metre rulers. Storage/slotting, automation, a user-definable object library, a guided Story Mode tour, an editable standards knowledge base, a consolidated WMS report and a Factory mode with a multi-way proportional-flow line simulation and a steady-state fluids solver; runs fully offline. Synthetic unless you import your own CSV; informed by standards, not a certification.",
       "role": "Job#2 analytics",
       "category": "Logistics & Optimization",
       "stack": [
@@ -1018,7 +1020,7 @@
         },
         {
           "label": "Verification",
-          "value": "35 headless harnesses + 57/57 in-browser self-test",
+          "value": "45 headless harnesses + 112/112 in-browser self-test",
           "label_de": "Verifikation"
         }
       ],
@@ -1026,23 +1028,25 @@
       "highlights": [
         "AI environment generator: describe a plant in keywords and a transparent, deterministic procedural generator builds a full valid layout (RGV/AGV, AS/RS, conveyor), then an offline natural-language parser applies plain-language edits like 'include 2 more RGVs in the picking sector' - a rule/heuristic engine, not a trained black-box model, and unknown phrasing gets an honest 'didn't understand'.",
         "WMS operations simulation over the layout you drew (receiving -> put-away -> replenishment -> picking -> packing -> shipping) with ISO 22400-grounded KPIs and the bottleneck stage named, a live animated material flow (boxes through stations, conveyor-path routing, emergent queue congestion) and a live KPI dashboard - all seeded and deterministic, so the same seed reproduces the same result.",
+        "Factory mode grew a real line-flow engine (v3.17-v3.19): the deterministic line sim resolves declared multi-way routing into a proportional flow network (ratio splits, merges, assembly/dismantle) with conservation verified at every node; the generator itself now emits a multi-way network - the 'Machining shop with QA split' baseline with a declared 60/40 split (bottleneck QA deep test at 32 s -> 112.5 parts/hr, line efficiency ~88.1%, harness-pinned) - and RPW line balancing packs workstations on the resolved per-finished-unit effective loads (byte-identical to the legacy balancer on a pure chain). The v3.19 Fluids solver gives the process-industry components steady-state continuous flow: volume conservation verified at every node, tank fill horizons computed analytically, and the bottleneck pipe, curtailed supply and starved mixers named in plain language - modelled, not measured, and explicitly NOT CFD or hydraulics (no pressure, viscosity or pump curves).",
         "Detailed twin rendering: every one of 29 equipment types carries both a 2D schematic and a 3D representation you flip between with the P key, and the floor plan is drawn down to individual rack pallets, aisle floor markings and metre rulers - zoom and pan the whole hall on a single canvas.",
         "Run it on your own data: a first-class SKU master + order pool with CSV import/export and row-numbered validation; golden-zone storage slotting, occupancy and retrieval; and an editable standards knowledge base where you change the DIN/ASR/EN/VDI/ISO values the compliance check, advisor and generator reason over. The pinned golden-zone optimizer still cuts demo pick travel 36.70 -> 18.85 m/order (-48.6%), reproducible headlessly.",
-        "Honest throughout: every figure is synthetic and seeded unless you import your own data, the standards work is 'informed by, not a certification', and the app makes zero network calls - it runs locally via a static server or installs as a PWA. Outputs a consolidated printable WMS Report plus JSON/CSV and a scoped IFC4 export; 35 headless verification harnesses plus a 57/57 in-browser self-test back the documented behaviour."
+        "Honest throughout: every figure is synthetic and seeded unless you import your own data, the standards work is 'informed by, not a certification', and the app makes zero network calls - it runs locally via a static server or installs as a PWA. Outputs a consolidated printable WMS Report plus JSON/CSV and a scoped IFC4 export; 45 headless verification harnesses plus a 112/112 in-browser self-test back the documented behaviour."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/logistics-flow-studio",
       "live_url": "https://dimitres-kisimov.github.io/logistics-flow-studio/",
       "image": "docs/img/warehousetwin.png",
       "image_alt": "WarehouseTwin WMS + plant simulator — Cold-chain scenario (synthetic, illustrative)",
       "image_alt_de": "WarehouseTwin WMS + Anlagensimulator — Kühlketten-Szenario (synthetisch, illustrativ)",
-      "tagline_de": "WarehouseTwin – WMS + Anlagensimulator (v2.0.0): ein offline, browserbasiertes Lagerverwaltungssystem und ein Anlagensimulator. Eine Anlage aus einem Stichwort generieren (ein deterministischer Generator plus ein Offline-Parser für Befehle in natürlicher Sprache, kein trainiertes Modell), dann den WMS-Betrieb simulieren (Wareneingang -> Einlagerung -> Nachschub -> Kommissionierung -> Verpackung -> Versand) mit an ISO 22400 orientierten KPIs, einem live animierten Materialfluss und 29 Gerätetypen, jeder mit einer 2D- und einer 3D-Darstellung (P drücken zum Umschalten), detailliert gerendert bis hin zu Regalpaletten, Bodenmarkierungen und Meter-Linealen. Lagerung/Slotting, Automatisierung, eine benutzerdefinierbare Objektbibliothek, eine geführte Story-Mode-Tour, eine editierbare Standards-Wissensdatenbank und ein konsolidierter WMS-Bericht; läuft vollständig offline. Synthetisch, sofern Sie nicht Ihre eigene CSV importieren; an Standards orientiert, keine Zertifizierung.",
+      "tagline_de": "WarehouseTwin – WMS + Anlagensimulator (v3.19): ein offline, browserbasiertes Lagerverwaltungssystem und ein Anlagensimulator. Eine Anlage aus einem Stichwort generieren (ein deterministischer Generator plus ein Offline-Parser für Befehle in natürlicher Sprache, kein trainiertes Modell), dann den WMS-Betrieb simulieren (Wareneingang -> Einlagerung -> Nachschub -> Kommissionierung -> Verpackung -> Versand) mit an ISO 22400 orientierten KPIs, einem live animierten Materialfluss und 29 Gerätetypen, jeder mit einer 2D- und einer 3D-Darstellung (P drücken zum Umschalten), detailliert gerendert bis hin zu Regalpaletten, Bodenmarkierungen und Meter-Linealen. Lagerung/Slotting, Automatisierung, eine benutzerdefinierbare Objektbibliothek, eine geführte Story-Mode-Tour, eine editierbare Standards-Wissensdatenbank, ein konsolidierter WMS-Bericht und ein Factory-Modus mit einer mehrwegigen Proportionalfluss-Liniensimulation und einem stationären Fluids-Solver; läuft vollständig offline. Synthetisch, sofern Sie nicht Ihre eigene CSV importieren; an Standards orientiert, keine Zertifizierung.",
       "category_de": "Logistik & Optimierung",
       "highlights_de": [
         "KI-Umgebungsgenerator: Eine Anlage in Stichworten beschreiben, und ein transparenter, deterministischer prozeduraler Generator baut ein vollständiges, gültiges Layout (RGV/AGV, AS/RS, Förderer), dann wendet ein Offline-Parser für natürliche Sprache Änderungen in Alltagssprache an wie 'füge 2 weitere RGVs im Kommissionierbereich hinzu' – eine Regel-/Heuristik-Engine, kein trainiertes Black-Box-Modell, und unbekannte Formulierungen erhalten ein ehrliches 'nicht verstanden'.",
         "Simulation des WMS-Betriebs über dem von Ihnen gezeichneten Layout (Wareneingang -> Einlagerung -> Nachschub -> Kommissionierung -> Verpackung -> Versand) mit an ISO 22400 orientierten KPIs und benannter Engpassstufe, ein live animierter Materialfluss (Kartons durch Stationen, Förderweg-Routing, entstehender Warteschlangenstau) und ein Live-KPI-Dashboard – alles geseedet und deterministisch, sodass derselbe Seed dasselbe Ergebnis reproduziert.",
+        "Der Factory-Modus hat eine echte Linienfluss-Engine erhalten (v3.17–v3.19): Die deterministische Liniensimulation löst deklariertes mehrwegiges Routing in ein proportionales Flussnetz auf (Ratio-Splits, Zusammenführungen, Montage/Demontage), wobei die Erhaltung an jedem Knoten verifiziert wird; der Generator selbst erzeugt jetzt ein Mehrweg-Netz – die Baseline 'Machining shop with QA split' mit deklariertem 60/40-Split (Engpass QA-Tiefentest bei 32 s -> 112.5 Teile/h, Linieneffizienz ~88.1%, per Harness fixiert) – und die RPW-Linienaustaktung packt Arbeitsstationen auf den aufgelösten effektiven Lasten je Fertigeinheit (auf einer reinen Kette byte-identisch zum bisherigen Balancer). Der Fluids-Solver aus v3.19 gibt den Prozessindustrie-Komponenten stationären kontinuierlichen Fluss: Volumenerhaltung an jedem Knoten verifiziert, Tankfüll-Horizonte analytisch berechnet, und Engpass-Rohr, gedrosselte Zufuhr und unterversorgte Mischer werden im Klartext benannt – modelliert, nicht gemessen, und ausdrücklich KEIN CFD und keine Hydraulik (kein Druck, keine Viskosität, keine Pumpenkennlinien).",
         "Detailliertes Twin-Rendering: Jeder der 29 Gerätetypen trägt sowohl ein 2D-Schema als auch eine 3D-Darstellung, zwischen denen Sie mit der P-Taste wechseln, und der Grundriss ist bis hin zu einzelnen Regalpaletten, Gangbodenmarkierungen und Meter-Linealen gezeichnet – die ganze Halle auf einer einzigen Canvas zoomen und schwenken.",
         "Mit eigenen Daten betreiben: ein vollwertiger SKU-Stamm + Auftragspool mit CSV-Import/-Export und zeilennummerierter Validierung; Golden-Zone-Lagerslotting, Belegung und Auslagerung; und eine editierbare Standards-Wissensdatenbank, in der Sie die DIN-/ASR-/EN-/VDI-/ISO-Werte ändern, über die Compliance-Prüfung, Berater und Generator schließen. Der fixierte Golden-Zone-Optimierer senkt den Demo-Kommissionierweg weiterhin von 36.70 -> 18.85 m/Auftrag (-48.6%), headless reproduzierbar.",
-        "Durchgehend ehrlich: Jede Zahl ist synthetisch und geseedet, sofern Sie nicht Ihre eigenen Daten importieren, die Standards-Arbeit ist 'orientiert an, keine Zertifizierung', und die App macht null Netzwerkaufrufe – sie läuft lokal über einen statischen Server oder installiert sich als PWA. Erzeugt einen konsolidierten druckbaren WMS-Bericht plus JSON/CSV und einen abgegrenzten IFC4-Export; 35 Headless-Verifikationsharnische plus ein 57/57-In-Browser-Selbsttest belegen das dokumentierte Verhalten."
+        "Durchgehend ehrlich: Jede Zahl ist synthetisch und geseedet, sofern Sie nicht Ihre eigenen Daten importieren, die Standards-Arbeit ist 'orientiert an, keine Zertifizierung', und die App macht null Netzwerkaufrufe – sie läuft lokal über einen statischen Server oder installiert sich als PWA. Erzeugt einen konsolidierten druckbaren WMS-Bericht plus JSON/CSV und einen abgegrenzten IFC4-Export; 45 Headless-Verifikationsharnische plus ein 112/112-In-Browser-Selbsttest belegen das dokumentierte Verhalten."
       ]
     },
     {
@@ -1063,7 +1067,7 @@
       "metrics": [
         {
           "label": "Reconciliation identities",
-          "value": "13/13 artifact PASS + 2 additive",
+          "value": "13/13 artifact PASS + 3 additive",
           "label_de": "Abstimmungsidentitäten"
         },
         {
@@ -1077,15 +1081,16 @@
           "label_de": "Reales Dataset"
         },
         {
-          "label": "Forecast-error containment (identity o)",
-          "value": "cost elasticity == holding share == 0.0580",
-          "label_de": "Prognosefehler-Eindämmung (Identität o)"
+          "label": "Per-order cost-to-serve (identity p)",
+          "value": "4,151 real orders - top decile 59.0%, Gini 0.665",
+          "label_de": "Cost-to-Serve je Auftrag (Identität p)"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "Distributors fail at the seams, not inside silos - so stage 6 is the product: a reconciliation ledger of 13 pytest-able identity checks that print both numbers, from cleaned revenue reproduced across two repositories to the penny (GBP 19,643,861.62) and the cost ledger summing to the cent, down to every pick (256,787 lines), carton (70,820) and route drop (4,151) conserved.",
         "Inter-stage sensitivity closes in closed form: a 15th identity proves the arc-elasticity of total cost to a forecast surge equals the holding-cost share exactly - 0.0580 on the committed full run, so a doubling of forecast demand would raise modelled cost-to-serve by 5.80% while every delivered-cost line and the real revenue stay unmoved; additive to the 13 artifact identities, the committed artifact unchanged.",
+        "A 16th identity (p) spreads the published cost ledger over every one of the 4,151 real orders under labelled allocation rules (labour by the order's own DES pick minutes, transport by its carton share of its delivery day's CVRP km, facility split equally, holding honestly kept on the SKU plane) and machine-checks that the spread loses nothing and invents nothing - each column reassembles to its ledger line and both planes jointly to the ledger total, to the cent (253,427.16). The distribution is the finding: the costliest 10% of orders carry 59.0% of delivered cost (Gini 0.665), and the 191 orders (4.6%) whose modelled cost exceeds their own real revenue are reported as the model's shape under invented rates - a labelled cost model, never a profit claim.",
         "Honest findings kept in the headline: nothing beats the naive walk on lumpy demand (MASE 1.782); the exact Hungarian slotting optimum is worth only 1.6% over classic ABC, with the rearrangement-inequality math explaining why; OR-Tools CVRP beats the 1964 Clarke-Wright baseline by only 0.2% and loses 19 of 48 days; the synthetic picking crew is 18% utilized - measured, not tuned away.",
         "Measuring is split from presenting: the ~51-minute full run (48 per-day CVRPs) serializes to a committed, code-fingerprinted run artifact; the offline Flask CHAIN DASHBOARD (13-identity reconciliation panel, provenance-colored stage flow) boots from it in seconds and recomputes nothing; PDF + Excel deliverables regenerate from the same artifact byte-for-byte; every quantity carries a provenance tag (real | derived | synthetic-assigned), invented cost rates are labelled INVENTED, and the cost table makes no profit claims."
       ],
@@ -1095,6 +1100,7 @@
       "highlights_de": [
         "Distributoren scheitern an den Nähten, nicht in den Silos – deshalb ist Stufe 6 das Produkt: ein Abstimmungs-Ledger aus 13 pytest-fähigen Identitätsprüfungen, die beide Zahlen ausgeben, vom über zwei Repositories auf den Penny reproduzierten bereinigten Umsatz (GBP 19,643,861.62) bis zum auf den Cent aufgehenden Kosten-Ledger, hinunter zu jedem erhaltenen Pick (256,787 Zeilen), Karton (70,820) und Routen-Stopp (4,151).",
         "Die stufenübergreifende Sensitivität schließt sich in geschlossener Form: Eine 15. Identität beweist, dass die Bogenelastizität der Gesamtkosten gegenüber einem Prognoseschub exakt dem Lagerkostenanteil entspricht – 0.0580 im committeten Vollauf, sodass eine Verdopplung der prognostizierten Nachfrage die modellierten Cost-to-Serve um 5.80% erhöhen würde, während jede Zustellkostenzeile und der reale Umsatz unbewegt bleiben; additiv zu den 13 Artefakt-Identitäten, das committete Artefakt unverändert.",
+        "Eine 16. Identität (p) verteilt das veröffentlichte Kosten-Ledger über jeden der 4,151 realen Aufträge nach gekennzeichneten Zuordnungsregeln (Arbeitszeit nach den DES-Pickminuten des Auftrags, Transport nach seinem Kartonanteil an den CVRP-Kilometern seines Liefertags, Fixkosten gleichverteilt, Lagerhaltung ehrlich auf der SKU-Ebene belassen) und prüft maschinell, dass die Verteilung nichts verliert und nichts erfindet – jede Spalte setzt sich auf ihre Ledger-Zeile zurück zusammen und beide Ebenen gemeinsam auf die Ledger-Gesamtsumme, auf den Cent (253,427.16). Die Verteilung ist der Befund: Die teuersten 10% der Aufträge tragen 59.0% der Zustellkosten (Gini 0.665), und die 191 Aufträge (4.6%), deren modellierte Kosten ihren eigenen realen Umsatz übersteigen, werden als Form des Modells unter erfundenen Kostensätzen berichtet – ein gekennzeichnetes Kostenmodell, nie eine Gewinnaussage.",
         "Ehrliche Befunde in der Schlagzeile behalten: Nichts schlägt den naiven Walk bei unregelmäßiger Nachfrage (MASE 1.782); das exakte ungarische Slotting-Optimum ist nur 1.6% mehr wert als klassisches ABC, wobei die Rearrangement-Ungleichung erklärt, warum; OR-Tools CVRP schlägt die Clarke-Wright-Baseline von 1964 nur um 0.2% und verliert an 19 von 48 Tagen; die synthetische Kommissioniercrew ist zu 18% ausgelastet – gemessen, nicht weggetunt.",
         "Messen ist vom Präsentieren getrennt: Der ~51-minütige Vollauf (48 CVRPs pro Tag) serialisiert zu einem committeten, code-fingerabgedruckten Run-Artefakt; das Offline-Flask-CHAIN-DASHBOARD (Abstimmungs-Panel mit 13 Identitäten, herkunftsgefärbter Stufenfluss) startet daraus in Sekunden und rechnet nichts neu; PDF- + Excel-Deliverables regenerieren aus demselben Artefakt byte-für-byte; jede Menge trägt ein Herkunfts-Tag (real | abgeleitet | synthetisch-zugewiesen), erfundene Kostensätze sind als INVENTED gekennzeichnet, und die Kostentabelle erhebt keine Gewinnbehauptungen."
       ]
@@ -1102,7 +1108,7 @@
     {
       "name": "chain-mcp",
       "slug": "chain-mcp",
-      "tagline": "The portfolio's engines as AI-callable tools: a standard-conformant MCP server exposing forecasting, slotting, packing, routing, leakage analytics and a repo auditor to Claude Desktop / Claude Code over the open Model Context Protocol.",
+      "tagline": "The portfolio's engines as AI-callable tools: a standard-conformant MCP server exposing forecasting, slotting, packing, routing, leakage analytics and a repo auditor to Claude Desktop / Claude Code over the open Model Context Protocol - every result carrying contract-enforced, machine-readable provenance.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
       "stack": [
@@ -1121,7 +1127,7 @@
         },
         {
           "label": "Tests",
-          "value": "116, incl. handshake + validation matrix",
+          "value": "145, incl. handshake, contract + provenance",
           "label_de": "Tests"
         },
         {
@@ -1130,23 +1136,25 @@
           "label_de": "Fehlerbehandlung"
         },
         {
-          "label": "Honesty labels",
-          "value": "per-tool data_note (synthetic seeded vs real UCI)",
-          "label_de": "Ehrlichkeits-Labels"
+          "label": "Result provenance",
+          "value": "machine-readable on every result - contract-enforced",
+          "label_de": "Ergebnis-Provenienz"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "Six real engines - per-demand-class forecasting (decision-chain), exact Hungarian slotting and FFD carton packing (logistics-digital-twin), deterministic-limit CVRP vs Clarke-Wright (route-optimizer), discount-leakage drill-down (sales-kpi-analytics), and a read-only repo auditor (portfolio-ops) - are imported read-only from sibling checkouts and declared with typed JSON schemas an MCP client discovers via the protocol handshake.",
         "Every tool validates its input, and every failure (bad input, missing source repo, engine error) comes back as a structured error result while the server keeps running; a machine-checked contract layer introspects the six served tools and asserts that registry, implementations and the published catalog stay in agreement, that every served inputSchema is a valid JSON Schema, and that a sample request/response round-trips against the real served contract.",
+        "Every tool result - success or error - carries a machine-readable provenance block, required by the contract layer's result envelope so no tool can omit it: server and engine commits (best-effort from the local checkout, null when unresolvable, never guessed), a canonical data label (synthetic / real+derived / real-local / caller-provided) cross-checked against the tool description's honesty wording, and a determinism flag; error results carry identity only - a failed call computed nothing, so it makes no data claims. 145 tests, including the live handshake, the validation matrix and the contract + provenance layer.",
         "Honesty is wired into the protocol layer: five tools state via a data_note that they run on deterministic synthetic seeded datasets; forecast_demand runs the real UCI Online Retail II pipeline (history labelled real, forecasts derived) - and if naive wins a demand class, naive is what gets reported. Ships ready-to-paste configs for Claude Desktop and Claude Code."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/chain-mcp",
-      "tagline_de": "Die Engines des Portfolios als KI-aufrufbare Tools: ein standardkonformer MCP-Server, der Prognose, Slotting, Packen, Routenplanung, Leckage-Analytik und einen Repo-Auditor über das offene Model Context Protocol für Claude Desktop / Claude Code bereitstellt.",
+      "tagline_de": "Die Engines des Portfolios als KI-aufrufbare Tools: ein standardkonformer MCP-Server, der Prognose, Slotting, Packen, Routenplanung, Leckage-Analytik und einen Repo-Auditor über das offene Model Context Protocol für Claude Desktop / Claude Code bereitstellt – jedes Ergebnis mit vertraglich erzwungener, maschinenlesbarer Provenienz.",
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
         "Sechs echte Engines – Prognose je Nachfrageklasse (decision-chain), exaktes ungarisches Slotting und FFD-Kartonpackung (logistics-digital-twin), CVRP mit deterministischem Limit vs. Clarke-Wright (route-optimizer), Rabatt-Leckage-Drill-down (sales-kpi-analytics) und ein schreibgeschützter Repo-Auditor (portfolio-ops) – werden schreibgeschützt aus Nachbar-Checkouts importiert und mit typisierten JSON-Schemata deklariert, die ein MCP-Client über den Protokoll-Handshake entdeckt.",
         "Jedes Tool validiert seine Eingabe, und jeder Fehler (fehlerhafte Eingabe, fehlendes Quell-Repo, Engine-Fehler) kommt als strukturiertes Fehlerergebnis zurück, während der Server weiterläuft; eine maschinell geprüfte Contract-Schicht introspiziert die sechs bereitgestellten Tools und stellt sicher, dass Registry, Implementierungen und der veröffentlichte Katalog übereinstimmen, dass jedes ausgelieferte inputSchema ein gültiges JSON-Schema ist und dass ein Beispiel-Request/-Response gegen den real bereitgestellten Contract round-trippt.",
+        "Jedes Tool-Ergebnis – Erfolg oder Fehler – trägt einen maschinenlesbaren Provenienz-Block, den die Ergebnis-Hülle der Contract-Schicht verpflichtend macht, sodass kein Tool ihn weglassen kann: Server- und Engine-Commits (Best-Effort aus dem lokalen Checkout, null wenn nicht auflösbar, nie geraten), ein kanonisches Daten-Label (synthetic / real+derived / real-local / caller-provided), das gegen die Ehrlichkeits-Formulierung der Tool-Beschreibung gegengeprüft wird, und ein Determinismus-Flag; Fehlerergebnisse tragen nur die Identität – ein fehlgeschlagener Aufruf hat nichts berechnet und erhebt daher keine Datenbehauptungen. 145 Tests, einschließlich Live-Handshake, Validierungsmatrix und Contract- + Provenienz-Schicht.",
         "Ehrlichkeit ist in die Protokollschicht eingebaut: Fünf Tools geben über eine data_note an, dass sie auf deterministischen, synthetischen, geseedeten Datensätzen laufen; forecast_demand durchläuft die reale UCI-Online-Retail-II-Pipeline (Historie als real gekennzeichnet, Prognosen als abgeleitet) – und wenn Naive eine Nachfrageklasse gewinnt, wird Naive berichtet. Liefert einfügefertige Konfigurationen für Claude Desktop und Claude Code."
       ]
     },
