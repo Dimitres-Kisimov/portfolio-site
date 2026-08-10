@@ -307,10 +307,23 @@ source describes qualitatively rather than as a single number.
   tokens at the business-case volume — but **~11,500 silent-wrong quotes a year**, the
   quantified argument for the "a rep still reviews every draft" model. Per-tier fault
   rates are assumed scenario parameters, not measured properties of any real model.
-  51 tests.
+  A content-verification layer (`src/agentic_lab/verification.py` + `eval/verification.py`)
+  is the direct countermeasure: it **independently recomputes the business outcome from the
+  source input** with deterministic tools (re-parse the email, re-resolve every line against
+  the catalog, re-run the enrichment pipeline) and cross-checks what the run delivered —
+  trusting the tools, distrusting the model. Replaying the reliability benchmark's **exact
+  fault schedule** (the "without" arm reproduces the reliability numbers verbatim, asserted
+  in tests), every injected content fault becomes detectable: at the anchor tier with 2
+  retries, delivered-correct **88.7% → 98.8%** and silent-wrong quotes **11,523/yr → 0**,
+  at a visible price — human escalations 260 → 1,300/yr, tokens ~$843 → ~$939/yr — with
+  0 false alarms on clean runs. A property of this fault schedule and this task's
+  recomputable ground truth, **not a production guarantee**; the verifier checks the
+  structured payload, never the prose — a blind spot that is unit-tested rather than
+  hidden. 71 tests.
 - **Visualizations:** `benchmarks/results/scorecard.png` (nine-dimension comparison);
   `benchmarks/results/scorecard.md`; `eval/cost_scorecard.md` (+ `.json`/`.csv`, byte-stable);
   `eval/reliability_scorecard.md` (+ `.json`/`.csv`, byte-stable);
+  `eval/verification_scorecard.md` (+ `.json`/`.csv`, byte-stable);
   `deliverables/executive_onepager.pdf`; agent trace output.
 - **Use case:** deciding low-code vs full-code (vs hybrid) for an agentic automation, with the
   trade-off measured rather than asserted — and the model bill estimated before anyone runs it.
@@ -620,18 +633,27 @@ source describes qualitatively rather than as a single number.
 ## 18. quantum-explainer — Teaching (live PWA)
 
 - **What it is:** an installable, offline-first PWA that teaches one- and two-qubit quantum
-  computing on a hand-written state-vector simulator (`sim.js`, ~300 lines, zero
+  computing on a hand-written state-vector simulator (`sim.js`, ~550 lines, zero
   dependencies) — circuit playground, draggable Bloch sphere (reduced states in two-qubit
-  mode), lessons including "What quantum computers are NOT" and Deutsch's algorithm. Live at
+  mode), lessons including "What quantum computers are NOT", Deutsch's algorithm and
+  superdense coding. Live at
   <https://dimitres-kisimov.github.io/quantum-explainer/>.
-- **Measured results:** **107 physics/behaviour assertions** pass in plain Node (H|0⟩ gives
+- **Measured results:** **201 physics/behaviour assertions** pass in plain Node (H|0⟩ gives
   50/50, H·H interference, Bell-state probabilities {00: 0.5, 11: 0.5} with a failing
   factorability check, RY(π) ≈ X up to global phase, norms stay 1 to 1e-10); the Deutsch
   lesson is checked for all four oracles — a single query yields the correct
   constant/balanced verdict with certainty, and the oracle leaves the state a product state
   (concurrence 0): phase kickback, not entanglement, even when the oracle is a CNOT.
-  **79 structural checks** in `tools/verify.mjs` prove the manifest, precache list and that
-  the app references **no external asset of any kind**, plus a **39-check in-app self-test**;
+  The superdense-coding lesson (two classical bits through one transmitted qubit, over a
+  Bell pair shared in advance) is checked for all four encodings — Alice touches only her
+  own qubit (I, X, Z, X-then-Z map the pair onto the four mutually orthogonal Bell states)
+  and Bob's CNOT+H decode reads both bits with certainty — along with its honesty demos:
+  the encoded pair is **locally invisible** (reduced Bloch length 0, and the phase-flip
+  message's seeded 1000-shot counts are identical to the plain Bell pair — no-signalling
+  shown on actual counts), and two qubits are used in total, one shipped ahead as
+  entanglement, so Holevo's bound is respected, not beaten.
+  **93 structural checks** in `tools/verify.mjs` prove the manifest, precache list and that
+  the app references **no external asset of any kind**, plus a **53-check in-app self-test**;
   zero runtime network calls after first load.
 - **Visualizations:** the app itself — live amplitude/probability readouts, the canvas Bloch
   sphere, the 1000-shot seeded histogram; original SVG-sourced icons.
