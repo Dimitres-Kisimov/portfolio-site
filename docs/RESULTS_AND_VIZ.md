@@ -31,10 +31,18 @@ source describes qualitatively rather than as a single number.
   promo budget least, €138), and a joint fixed-seed Monte-Carlo (256 draws) puts the
   **P10–P90 band at €145,091–170,723/yr** with only a **~43% chance** of clearing the
   €159,966 point estimate — reported, not hidden, and labelled illustrative planning
-  ranges on synthetic data, not a forecast.
+  ranges on synthetic data, not a forecast. A robustness gate turns the band into per-move
+  decisions: it replays the **same** fixed-seed draws (test-pinned to the simulator's
+  per-draw totals) and gates each of the 29 recommended price moves on carry ≥90%,
+  same-move ≥80% and a positive € at the P10 when executing the published price —
+  verdict **17 ACCEPT (€19,032/yr at baseline) / 12 HOLD (€16,187/yr parked)**, and the
+  single biggest move (+15% on S0006, €15,836/yr, 45% of the pricing uplift) is **held**
+  because the SKU survives the assortment re-optimization in only **67% of draws**. A
+  screening discipline under illustrative planning ranges, not a guarantee. 69 tests.
 - **Visualizations:** `docs/img/uplift_waterfall.png` (baseline→optimized waterfall);
   `deliverables/sensitivity_tornado.svg` + `.csv` (driver tornado);
   `deliverables/uplift_distribution.svg` + `uplift_simulation.csv` (Monte-Carlo band);
+  `deliverables/price_move_robustness.svg` + `.csv` (per-move accept/hold gate);
   executive PDF/PPTX deck (assortment before/after, inventory frontier, price-move
   distribution, promo allocation, model-quality slide); `web/index.html` offline dashboard
   (hand-drawn SVG, light/dark, promo what-if slider); Power BI star schema + DAX.
@@ -57,10 +65,20 @@ source describes qualitatively rather than as a single number.
   (**€10.91M, 95.7%** of the assumed plan) carries an 80% interval built from the model's
   own backtest errors — and the module shows the back-check, the realised year landing at
   **98.9% of plan just above the band**: an honest miss an 80% interval is expected to
-  make about one year in five.
+  make about one year in five. Rep performance is a **fair comparison via indirect
+  standardization**: each rep's gap vs an even-share baseline (a stated choice, not a
+  quota) decomposes into coverage + frequency + mix + execution, **summing to the gap
+  exactly** — Berg, #2 by raw revenue and the leakage table's top offender, has an
+  **execution index of 0.9999** (his +€337k gap is the Nordics book, not the selling),
+  and across all 12 reps **92% of the league-table dispersion is territory, only 8%
+  execution**; the chart's per-rep labels are read back off the SVG and asserted equal to
+  the source to the cent. Honest that this synthetic data assigns orders at random, so
+  indices *should* cluster near 1.00 — on real data a persistent gap would be the
+  coaching signal.
 - **Visualizations:** `deliverables/forecast.png` (revenue history + 3-month forecast);
   `deliverables/pacing_bullet.svg` (pacing bullet chart, euro labels asserted equal to the
-  computed figures); `deliverables/executive_review.pdf` (8-slide EBR) and `.pptx`;
+  computed figures); `deliverables/rep_performance.svg` + `.csv` (diverging stacked
+  decomposition, TOTAL row ties out); `deliverables/executive_review.pdf` (8-slide EBR) and `.pptx`;
   `deliverables/kpi_workbook.xlsx`; `deliverables/reorder_list.csv`; offline
   `web/index.html` dashboard.
 - **Use case:** the QBR a distributor's BI team prepares for leadership.
@@ -80,10 +98,20 @@ source describes qualitatively rather than as a single number.
   history halved)**. A continuous-review inventory policy (ROP/EOQ over 200 SKUs) prices
   safety stock from an ABC-XYZ service matrix (A/X lines protected to 98%, long-tail C/Z
   to 88%): **€127,421 working capital, 5.5x turns, 99.9% demand-weighted fill rate** —
-  with the 25%/yr carrying rate and €50 order cost stated as planning assumptions.
+  with the 25%/yr carrying rate and €50 order cost stated as planning assumptions. A
+  **supplier-reliability scorecard** measures the seeded PO receipt history (10 suppliers,
+  2,400 receipts, **74.3% on-time** at a stated 2-day grace window) instead of trusting
+  the vendor master: re-pricing safety stock on measured lead times at the same service
+  targets raises it **€16,282 → €18,626 (+€2,344, +14.4%)**, split *exactly* into a delay
+  effect (€576) and a variability effect (€1,768) — **variability, not lateness, is three
+  quarters of the bill**, and one supplier that delivers early on average (−0.4 days)
+  still costs €542. The quoted-basis column reproduces `dip.inventory`'s safety stock to
+  the cent (test-asserted); the layer is labelled a working-capital consequence on
+  synthetic receipts, deliberately kept out of the €136,972 uplift total.
 - **Visualizations:** executive PDF (`deliverables/executive_review.pdf`) + Excel; a hand-built
   command-center dashboard (`templates/`, `static/`); the inventory policy served via
-  `GET /api/inventory` (per-SKU rows + a nine-cell ABC-XYZ roll-up); screenshot slots in
+  `GET /api/inventory` (per-SKU rows + a nine-cell ABC-XYZ roll-up); supplier scorecards +
+  the safety-stock consequence served via `GET /api/reliability`; screenshot slots in
   `docs/img/`.
 - **Use case:** one place where descriptive numbers, the forecast and the optimization of
   price/assortment/inventory/routing all live together.
@@ -104,17 +132,29 @@ source describes qualitatively rather than as a single number.
   median of 10 days — and the famous 80,995-unit same-day cancellation surfaces exactly
   where it should. The from-scratch CLV is back-tested out of sample: **7,594 predicted
   holdout transactions vs 7,562 actual (0.4% over)**, per-customer correlation 0.85 — and
-  CLV is labelled gross revenue, not profit. The honest headline stays up front:
+  CLV is labelled gross revenue, not profit. **Lifecycle stage segmentation** is the
+  operational view: every identified customer gets one stage per calendar month
+  (new / retained / resurrected / at-risk / dormant) and the month-to-month movements
+  form a flow matrix whose structural zeros the test suite asserts. Measured over 24
+  complete months (5,824 customers): the average month has **1,041 active buyers = 212
+  new + 390 retained + 439 resurrected** — **resurrections outnumber month-over-month
+  repeats (439 vs 390)**, quick ratio 1.05; **31.2%** of identified-customer revenue in
+  complete months comes from resurrected buyer-months, and dormant customers still return
+  at **8.9% per month** — for a wholesale-heavy base, skipping months is normal
+  purchasing behaviour, and stage definitions are labelled definitional choices, a lens,
+  not a behavioural truth. The honest headline stays up front:
   **seasonal-naive wins the forecasting bake-off** (mean MASE 1.094 vs 1.187 for
   Holt-Winters); **22.77% of rows have no CustomerID** and are flagged rather than
   dropped; the data-quality report card (raw C → cleaned A) is labelled a heuristic
-  scorecard with stated weights, not a certification of data correctness. 97 tests.
+  scorecard with stated weights, not a certification of data correctness. 113 tests.
 - **Visualizations:** `deliverables/retail_analytics_executive.pdf`;
-  `deliverables/retail_analytics.xlsx` (11 sheets, CleaningReport → DataQuality);
+  `deliverables/retail_analytics.xlsx` (sheets CleaningReport → DataQuality, incl. a
+  Lifecycle sheet);
   `deliverables/cohort_retention.csv`, `customer_lifetime_value.csv`,
-  `returns_analysis.csv`, `data_quality_report_card.md`; `figures/` chart set
+  `returns_analysis.csv`, `lifecycle_stages.csv`, `lifecycle_flows.csv`,
+  `data_quality_report_card.md`; `figures/` chart set
   (`monthly_revenue.png`, `cohort_retention.svg`, `clv_validation.png`,
-  `returns_analysis.png`, and six more).
+  `returns_analysis.png`, `lifecycle_stages.svg`, and more).
 - **Use case:** honest, leakage-safe retail analytics on real transactions — the project
   that shows what the synthetic-portfolio methods do when the data is genuinely messy.
 - **Open improvements (its own framing):** (1) a single UK retailer with one full seasonal
@@ -138,11 +178,20 @@ source describes qualitatively rather than as a single number.
   4 time windows: 18 of the top 20 rules stable, 2 flagged window-specific. The category
   affinity network: **14 categories, 27 lift-weighted edges, 3 communities at weighted
   modularity 0.58** (greedy modularity maximisation, Newman 2004) with 4 bridge edges —
-  and the communities mirror the three k-means segments found independently. 55 tests.
-- **Visualizations:** `deliverables/cross_sell_briefing.pdf` (7 pages: rules table,
-  lift heatmap, affinity communities, segments, stability, back-test);
-  `deliverables/market_basket_analysis.xlsx` (7 sheets); hand-drawn SVG + CSV pairs:
-  `rule_stability`, `recommender_backtest`, `affinity_network`.
+  and the communities mirror the three k-means segments found independently. **Rule
+  redundancy pruning** (confidence improvement, Bayardo, Agrawal & Gunopulos 1999; itemsets
+  classified closed/maximal per Pasquier 1999 / Bayardo 1998): **105 of the 254 rules
+  (41%) are redundant and the remaining 149 carry all of the list's information** — every
+  pruned rule is covered by a simpler rule at equal-or-higher confidence, and a test
+  asserts the covering rule is itself in the kept set, so pruning loses nothing; the
+  flagship planted bundle survives with a **+16.0 pp** improvement margin, and of the 224
+  itemsets **224 are closed and 126 maximal**. Redundancy is labelled information
+  content, not causality or effect size. 68 tests.
+- **Visualizations:** `deliverables/cross_sell_briefing.pdf` (rules table,
+  lift heatmap, redundancy page, affinity communities, segments, stability, back-test);
+  `deliverables/market_basket_analysis.xlsx` (8 sheets incl. Redundancy); hand-drawn
+  SVG + CSV pairs: `rule_stability`, `recommender_backtest`, `affinity_network`,
+  `rule_redundancy` (every rule's verdict, with the covering rule named per row).
 - **Use case:** which category a rep should offer next given what is already in the order —
   plus the category groups a category manager uses for bundles, planogram adjacency and
   the promo calendar.
@@ -192,12 +241,22 @@ source describes qualitatively rather than as a single number.
   MILP at every network density: every density is Pareto-optimal on (cost, CO2), and a
   4th DC cuts modelled CO2 18.6% for +26.9% cost. The N-1 screen is blunt: the
   cost-optimal 3-DC network is **not N-1 resilient** — every opened DC is critical; the
-  worst single outage drops service to 59.6% and costs $157,016 to restore. 53 tests.
+  worst single outage drops service to 59.6% and costs $157,016 to restore. The
+  **demand-growth capacity plan** sweeps a uniform multiplier (1.00x → 2.00x in 5% steps)
+  and re-solves the same facility MILP twice per level (unconstrained vs today's three
+  DCs pinned open): the lean network has only **+8.8% growth headroom** (capacity wall at
+  exactly 1.088x — 19,451 units of capacity vs 17,880 of demand), the first response to
+  growth is a **reshuffle, not a new DC** (at 1.10x the optimizer swaps DC6 for DC0 and
+  stays at three), and the **4th DC first pays at 1.30x** — exactly when any 3-DC design
+  physically caps out (the three largest candidates hold 1.29x) — with the 5th at 1.65x
+  and the 6th at 1.95x as an economic trigger; growth is modelled as uniform, and the
+  expansion triggers are planning estimates on synthetic data, not forecasts. 71 tests.
 - **Visualizations:** executive PDF (cover with disclaimer, network map of opened DCs and
   flows, cost-breakdown bar, pooling chart, cost-vs-CO2 Pareto page, resilience page,
-  service-frontier page) + Excel workbook (9 sheets, Summary → Assignment);
-  `deliverables/co2_cost_frontier.svg` + `co2_sensitivity.csv`;
-  `deliverables/service_frontier.svg` + `.csv` (all SVGs hand-drawn).
+  service-frontier page, two-panel growth page) + Excel workbook (Summary → Assignment,
+  incl. a Growth sheet); `deliverables/co2_cost_frontier.svg` + `co2_sensitivity.csv`;
+  `deliverables/service_frontier.svg` + `.csv`; `deliverables/growth_expansion.svg` +
+  `growth_plan.csv` (all SVGs hand-drawn).
 - **Use case:** the network-design conversation a distributor has every few years — where
   to put DCs, how product should flow, how much stock each tier needs — with service, CO2
   and robustness priced instead of asserted.
@@ -264,19 +323,28 @@ source describes qualitatively rather than as a single number.
 
 ## 10. doc-extract-agent — Automation (Job #1)
 
-- **What it is:** unstructured business document in, structured record out — a five-stage
-  pipeline (detect → header → line_items → totals → confidence) with a confidence gate and
-  a business-rule validation layer.
+- **What it is:** unstructured business document in, structured record out — a six-stage
+  pipeline (detect → header → line_items → totals → confidence → validate) with a
+  confidence gate and a business-rule validation layer.
 - **Measured results:** takes per-document handling from **~4 minutes to under 1 second**;
   models a ~60,000-document/yr AP scenario freeing **~€110k/yr** of capacity; totals
   cross-checked against summed line items. Only documents that reconcile, clear the
   confidence gate and pass the business rules post automatically — requiring the rules as
   well as the gate lifts measured auto-post precision from **70% to 87.5%**, and the README
-  says plainly that 87.5% is not 100%, naming the multicurrency case it still misses. Two
+  says plainly that 87.5% is not 100%, naming the multicurrency case it still misses. An
+  **extraction-error cost model** (`python -m eval.run_cost`) joins the measured operating
+  point of every gating policy with the business case's modelled rates (€0.40 pre-filled
+  review, €25 per silent error): **the confidence gate alone would lose money on this set**
+  (€181,778/yr modelled vs €173,000 manual — silent errors outweigh the skipped reviews),
+  **the business-rule validation layer is worth ≈€109,333/yr in this model** (the entire
+  gap between gate-only and gate + validation, the euro version of the 70% → 87.5% lift),
+  and **auto-posting pays only above 98.4% precision** (break-even at 1 − 0.40/25) — a
+  bar no measured policy clears credibly. Measured operating points, modelled prices. Two
   parsing bugs (VAT 19.95 vs 19; Subtotal read as Total) pinned by regression tests; EU
   (`1.234,56`) and US (`1,234.56`) number parsing.
 - **Visualizations:** the web UI trace view (per-stage events, confidence scores) served by
-  `python -m docextract.server`; JSON/CSV exports; `deliverables/executive_onepager.pdf`.
+  `python -m docextract.server`; JSON/CSV exports; the per-policy cost table in
+  `eval/cost_results.json`; `deliverables/executive_onepager.pdf`.
 - **Use case:** an AP & order-desk team keying supplier invoices, order confirmations and
   delivery notes into the ERP.
 - **Open improvements:** (1) diff the heuristic against the Anthropic provider to see where
@@ -357,10 +425,21 @@ source describes qualitatively rather than as a single number.
   prices three maintenance policies per machine-day: age replacement at **T\* = 44.4 days
   cuts modelled cost 51.7%** vs run-to-failure — and the optimizer's own base-case check
   reports that for memoryless lifetimes no finite replacement age beats run-to-failure.
-  63 tests.
+  At the default 5%-FPR alert threshold condition-based maintenance loses — so the loop
+  is closed: an **exact sweep re-prices the CBM policy at every candidate alert
+  threshold** (timeliness and false alarms re-measured per threshold, costed with the
+  same Weibull MTBF), and at the policy-optimal threshold (**0.262 → 0.397**) all six
+  observed failures stay alerted ≥ 3 days early while false alarms collapse **44 → 3** —
+  the CBM cost rate falls **8.28 → 4.02 per machine-day, under the age-replacement
+  optimum's 7.16**, and the **ranking flips to condition-based**, with a closed-form
+  **break-even inspection cost of 553.3 units** (~11x the assumed 50). Honest that the
+  rates are illustrative and the tuned threshold is selected on the same held-out
+  machine-days it is priced on — the shape of the closed loop, not a certified operating
+  point. 80 tests.
 - **Visualizations:** `deliverables/pdm_report.pdf` (cover with disclaimer, PR curves, health
   ranking, before/after Gantt) and `deliverables/pdm_workbook.xlsx` (Machines, Alerts,
-  HealthIndex, Schedule, Comparison sheets).
+  HealthIndex, Schedule, Comparison sheets); `docs/cbm_tuning.svg` + `.csv` (the swept
+  cost curve against both benchmarks).
 - **Use case:** an operations team ranking degrading machines and scheduling scarce
   maintenance crews so the riskiest work happens first.
 - **Open improvements (its own framing):** (1) fault signatures are the author's own designs,
@@ -386,9 +465,22 @@ source describes qualitatively rather than as a single number.
   analysis, not headline metrics alone: the challenger swaps in just 2 alerts and catches 4
   fewer frauds — it wins by shedding 139 low-yield alerts, a net **$210 (2.4%) cheaper** —
   and five pre-declared gates (labelled policy knobs, not statistical laws) all pass, so
-  the measured verdict is **PROMOTE**. 42 tests.
+  the measured verdict is **PROMOTE**. A **feedback-loop simulation** (`python -m fdo
+  --feedback`) prices the **selective-labels problem** (Lakkaraju et al. 2017): analysts
+  confirm labels only on the alerts they review, so four labelling-policy arms deploy
+  over three rounds with a frozen threshold and retrain on their own decisions. The
+  measured mechanism is not the folklore one — **ranking survives (final PR-AUC spans
+  just 0.268–0.273 across arms)** because the clean initial history anchors it, but the
+  **probabilities die**: retraining with 292 frauds relabelled as legitimate drags the
+  poisoned arm's test **ECE to 0.0100, 3.2x the oracle arm's 0.0031**, and starves its
+  alert volume 651 → 197 at the frozen threshold — while its own dashboard reads **100%
+  observed recall every round, by construction** (true label coverage 23–35%): the model
+  grades its own homework. A model of a process, not a measurement of one — review
+  capacity and the 85% chargeback rate are labelled assumptions, and chargebacks land at
+  the round boundary instead of 30–90 days late. 55 tests.
 - **Visualizations:** executive PDF + Excel workbook via `python -m fdo --deliverables`
-  (matplotlib PdfPages / openpyxl); reliability and cost-curve tables in the report.
+  (matplotlib PdfPages / openpyxl); reliability and cost-curve tables in the report;
+  `figures/feedback_loop.csv` (the byte-deterministic per-round trajectory).
 - **Use case:** a small analyst team deciding which alerts fire, which 100 of 608 fired
   alerts actually get reviewed, and whether the retrained model earns its promotion.
 - **Open improvements (its own framing):** (1) constructed fraud patterns guarantee
