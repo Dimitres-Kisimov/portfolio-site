@@ -79,9 +79,9 @@ only quote figures a public press release or vendor page stated.
 | Human-in-the-loop / approval before an action posts | `doc-extract-agent` (confidence gate + business-rule validation → human); `agentic-automation-lab` ("a rep reviews every draft" model) |
 | Build-vs-buy / ROI to prioritize the automation backlog | `automation-roi-explorer` (hours, €, payback, 3y ROI, ranked) |
 | Decision framework: when low-code vs full-code | `agentic-automation-lab` (nine-dimension scorecard with cited ratings) |
-| MCP — expose real tools over the Model Context Protocol | **now covered** — `chain-mcp` ships a standard-conformant MCP server (official `mcp` SDK, JSON-RPC over stdio) exposing six real engines as tools, with 145 tests including a live protocol handshake and a machine-checked contract layer that also enforces machine-readable result provenance on every tool result. |
+| MCP — expose real tools over the Model Context Protocol | **now covered** — `chain-mcp` ships a standard-conformant MCP server (official `mcp` SDK, JSON-RPC over stdio) exposing six real engines as tools, with 193 tests including a live protocol handshake and a machine-checked contract layer that also enforces machine-readable result provenance on every tool result — plus idempotency-keyed result caching (SHA-256 keys embedding the exact engine checkout, so a cached result can never outlive the code that computed it; every success states its cache facts via `provenance.cache`). |
 | **Backlog gap:** real connector ecosystem, retries, timeouts, parallel branches | *gap* — beyond the MCP server, production connectors, retries and parallelism are named as next steps, not built. |
-| **Backlog gap:** live latency/cost telemetry per orchestrator | *mostly gap* — a token & cost model now prices the nine fixtures per model (~$846–$4,232/yr at the ~104k-run volume), but it is a labelled order-of-magnitude planning model, not live telemetry; a parallel live n8n run is the stated next step. |
+| **Backlog gap:** live latency/cost telemetry per orchestrator | *mostly gap* — a token & cost model now prices the nine fixtures per model (~$846–$4,232/yr at the ~104k-run volume), but it is a labelled order-of-magnitude planning model, not live telemetry; `agent-flow-studio` now also prices *designed* flows pre-run with a dry-run cost/latency estimator (declared-rate arithmetic, labelled "not a bill", branch scenarios test-proven against real engine runs), which is still an estimate, not telemetry; a parallel live n8n run is the stated next step. |
 
 ---
 
@@ -114,7 +114,7 @@ only quote figures a public press release or vendor page stated.
 | Discrete-event simulation / digital twin of the operation | **now covered** — `logistics-digital-twin` (hand-rolled DES, no SimPy; pick-path policies scored against the exact optimum — the best policy comes within +3.0% — and order batching measured on the same exact-routing yardstick: savings batching cuts pick travel 2,692 → 774 m/shift, −71.3%, and the denser tours flip the recommended heuristic from return to largest-gap); `logistics-flow-studio` (the WMS operation simulated receiving → shipping with ISO 22400-grounded KPIs and a live animated material flow) |
 | ROI / business case for warehouse automation (the MHI budget barrier) | `automation-roi-explorer` (generic back-office ROI; applicable to warehouse processes) |
 | **Backlog gap:** road-network distance/time matrix (OSRM/Valhalla) | *gap* — routing currently uses Euclidean/Manhattan distance, not roads. |
-| **Backlog gap:** time windows, heterogeneous fleet, driver shifts | *gap* — single depot, homogeneous fleet, no time windows yet (OR-Tools supports all; named as next constraints). |
+| **Backlog gap:** time windows, heterogeneous fleet, driver shifts | *narrowed* — `route-optimizer` now models time windows (a VRPTW / service-level layer, on synthetic windows and a fixed per-stop service time) and a heterogeneous fleet (the Fleet Size and Mix VRP: typed vehicle pool, fixed + per-km costs, money objective — consolidation −17.5% on n60 at a +25.2% longest route; a genuine 1-medium + 2-large mix beats the best single-size fleet by 8.5% on n30; catalogue costs labelled illustrative estimates, not certified rates). What remains a gap: multi-depot, driver shifts and variable service times (named as the next constraints). |
 | **Backlog gap:** live warehouse metrics (throughput, labor) end to end | *narrowed* — the legacy-vs-optimized gap is now measured and published (`logistics-digital-twin`: container fill 2.0% → 30.2%, layout routes ~46% shorter); what remains a gap: every metric comes from seeded synthetic simulation, not telemetry from a live operation. |
 
 ---
@@ -124,7 +124,9 @@ only quote figures a public press release or vendor page stated.
 Across the three areas the recurring, genuinely-unbuilt gaps are: **natural-language querying**
 over a BI model; a **real connector ecosystem with retries and parallelism** for the agents
 (the MCP server itself is now built — `chain-mcp`); **road-network routing** and
-**time-window/heterogeneous-fleet** constraints; and **live operational telemetry** — the
+**multi-depot / driver-shift** constraints (time windows and a heterogeneous fleet are now
+modelled in `route-optimizer`, on synthetic windows and illustrative catalogue costs); and
+**live operational telemetry** — the
 warehouse digital-twin metrics are now measured and published (`logistics-digital-twin`,
 `logistics-flow-studio`), but on seeded synthetic simulations, not a live operation. These
 are named as next steps in the respective repos rather than papered over.

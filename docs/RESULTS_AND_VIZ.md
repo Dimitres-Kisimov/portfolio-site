@@ -213,15 +213,31 @@ source describes qualitatively rather than as a single number.
   assumption): both zero-buffer plans hit a capacity failure in **~96%** of them, and the
   optimizer stays ahead by recovering cheaper (**117 vs 178 km** expected recourse per day);
   re-planning with just **5% capacity headroom** costs +3.0% planned km but cuts failing
-  scenarios to **44%** — the cheapest expected day in the sweep. 36 tests.
+  scenarios to **44%** — the cheapest expected day in the sweep. A heterogeneous **Fleet
+  Size and Mix** layer (the FSM VRP of Golden, Assad, Levy & Gheysens, 1984) hands the same
+  engine a typed pool of candidate vans — per-vehicle capacities, EUR/km and a fixed cost
+  per deployed van — so the objective is money, not kilometres: on n60 **consolidation wins
+  outright** — 5 large vans (EUR 1,325/day) undercut the status-quo 10 mediums (EUR 1,606)
+  by **17.5%** (distance −35.6%, CO2 −14.9%) at the stated service price of a **+25.2%**
+  longest route; on n30 the mix is genuine — **1 medium + 2 large** (EUR 628/day) beats the
+  best single-size fleet (all-large, EUR 686) by **8.5%** and the status quo by 14.7%. The
+  catalogue costs are illustrative labelled estimates, not certified rates; every plan is a
+  heuristic under a fixed search budget (byte-identical reruns), and the deliverable reports
+  whatever the numbers say — on n60 the mixed pool simply agrees with the all-large answer
+  (+0.0%). 46 tests.
 - **Visualizations:** `deliverables/routes.png` (OR-Tools routes on the 60-customer instance);
   `deliverables/route_plan.csv`; `deliverables/summary.md`; `deliverables/robustness.svg` +
-  `.csv` + `.md` (the scenario sweep); `web/index.html` interactive Canvas map with a
+  `.csv` + `.md` (the scenario sweep); `deliverables/fleet_mix.svg` + `.csv` + `.md` (the
+  mixed-vs-homogeneous fleet comparison); `web/index.html` interactive Canvas map with a
   savings-heuristic overlay toggle and light/dark.
 - **Use case:** the last-mile delivery plan a distributor builds every morning — now with the
-  buffer question ("how much headroom is worth paying for?") answered with a measured sweep.
+  buffer question ("how much headroom is worth paying for?") answered with a measured sweep,
+  and the van-catalogue question priced in money rather than kilometres.
 - **Open improvements:** (1) Euclidean distance, not road-network — add an OSRM/Valhalla
-  matrix; (2) single depot, homogeneous fleet, no time windows yet (OR-Tools supports all).
+  matrix; (2) single depot still — time windows are now modelled (the VRPTW / service-level
+  layer, on synthetic windows and a fixed per-stop service time) and the fleet can now be
+  heterogeneous (illustrative catalogue costs, not quotes); multi-depot, driver shifts and
+  variable service times are the next constraints, and OR-Tools supports all of them.
 
 ## 7. supply-network-opt — Logistics & Optimization (Job #2)
 
@@ -305,17 +321,30 @@ source describes qualitatively rather than as a single number.
 
 - **What it is:** a tiny in-browser visual agent-workflow builder — drag nodes, wire ports,
   Run, and watch a mock agent walk the graph and pick tools. No backend, no build step.
-- **Measured results:** covered by **60 tests** (engine logic, undo history, snapshot
-  rendering, flow linter, dependency analyzer — pure logic; the same `engine.js` runs in
-  the browser and under `node --test`); real topological sort (Kahn's algorithm) with cycle
-  detection; five node types. A static data-dependency / provenance analyzer (`analysis.js`)
-  computes each node's upstream/downstream closure, the parallelisable stages, the critical
-  path and which Trigger's payload can reach every Output — honest that it describes the
-  data flow the wiring permits, not the single path one input takes, and it withholds the
-  order-dependent fields when the graph is not a DAG. Business model estimates **~€47k/yr**
-  of engineering time freed by letting business users assemble simple flows themselves.
+- **Measured results:** covered by **78 tests** (engine logic, undo history, snapshot
+  rendering, flow linter, dependency analyzer, cost estimator — pure logic; the same
+  `engine.js` runs in the browser and under `node --test`); real topological sort (Kahn's
+  algorithm) with cycle detection; five node types. A static data-dependency / provenance
+  analyzer (`analysis.js`) computes each node's upstream/downstream closure, the
+  parallelisable stages, the critical path and which Trigger's payload can reach every
+  Output — honest that it describes the data flow the wiring permits, not the single path
+  one input takes, and it withholds the order-dependent fields when the graph is not a DAG.
+  A **dry-run cost/latency estimator** (`estimator.js`, behind the € Estimate button)
+  prices a *designed* flow before it runs against a declared rate card: per-node
+  tokens/€/ms, an agent call's prompt as a declared base plus a declared amount per
+  toolbelt entry (fatter toolbelts visibly cost more), both latencies — the sequential sum
+  this engine takes and the weighted critical path a parallel executor could reach — and,
+  because a Condition takes one branch per run, enumerated branch scenarios whose executed
+  sets the tests prove against real engine runs branch-for-branch. Emphatically **not a
+  bill**: the rates are illustrative inputs you edit, the shipped agent is a free
+  deterministic mock, nothing is measured, and a cyclic flow gets its estimate withheld,
+  not invented — the committed `docs/FLOW_COST_REPORT.md` regenerates byte-for-byte and is
+  stale-checked in CI. Business model estimates **~€47k/yr** of engineering time freed by
+  letting business users assemble simple flows themselves.
 - **Visualizations:** the live canvas itself (hand-drawn SVG wires, node highlighting, live
   wire animation, streamed trace); two example flows in `examples/` (RFQ triage, ticket router);
+  `docs/FLOW_COST_REPORT.md` (the declared rate card and each flow's tokens, € per run per
+  model profile, branch-scenario range and per-node table);
   `deliverables/executive_onepager.pdf`.
 - **Use case:** understanding a low-code agent canvas "from the inside."
 - **Open improvements:** (1) a real provider behind the agent node (keep the mock as default);
@@ -373,14 +402,27 @@ source describes qualitatively rather than as a single number.
 ## 12. bio-efficient-ai — Research
 
 - **What it is:** an honest study that brain-inspired circuits can be *more efficient* than
-  conventional methods on narrow tasks. Two experiments.
+  conventional methods on narrow tasks. Two experiment tracks: expand-and-sparsify hashing
+  (FlyHash, plus a learned BioHash variant) and a liquid CfC cell vs a GRU.
 - **Measured results (public MNIST + synthetic signal, 3 seeds):** **FlyHash precision@10** at
   4/16/64/128 bits = 0.152 / 0.352 / 0.552 / **0.614** vs classical LSH 0.017 / 0.093 / 0.309 /
-  0.419 — FlyHash wins at every budget. **Liquid CfC** cell: 3,233 params vs GRU 3,393; clean
+  0.419 — FlyHash wins at every budget. **BioHash (learned synapses, Ryali et al. 2020)**,
+  trained with the local Krotov–Hopfield plasticity rule — no labels, no backprop — at a
+  deliberately resource-hostile operating point: a **10× smaller circuit** (1,568 vs 15,680
+  units) whose dense learned projection under-spends FlyHash's sparse random one (1,229,312
+  vs 1,473,920 MACs/query). Learning wins the benchmark's mid-range at a discount
+  (equal-or-better at 8–128 bits, **0.626 vs 0.614** at 128 bits) — and the negatives are
+  reported with it: both tips of the grid go back to the wider random code space, the memory
+  frontier is never reached, training costs a one-time ~1.62 × 10¹² MACs per seed, a learned
+  hash is data-dependent, and the reference N(0,1) init is load-bearing (the paper documents
+  that a unit-norm init measurably collapses training onto <8% of units). **Liquid CfC**
+  cell: 3,233 params vs GRU 3,393; clean
   MSE 0.0142 vs 0.0147; MSE @ σ=0.4 noise 0.162 vs 0.168 (equal-or-lower at every noise level
   under noise-trained protocol; honest that clean-only training flips the robustness edge).
 - **Visualizations:** the FlyHash precision-vs-bits plot (regenerated by
-  `experiments/bench_flyhash.py`); `liquid_robustness.png` (by `experiments/bench_liquid.py`);
+  `experiments/bench_flyhash.py`); the BioHash learned-vs-random grid
+  (`experiments/results/biohash_mnist.csv` / `.svg`, by `experiments/biohash_mnist.py`);
+  `liquid_robustness.png` (by `experiments/bench_liquid.py`);
   full write-up `paper/bio_efficient_ai.pdf`.
 - **Use case:** evaluating whether a bio-inspired primitive earns its place at equal compute.
 - **Open improvements:** (1) benchmark against modern ANN search (HNSW/FAISS), currently out of
@@ -402,8 +444,20 @@ source describes qualitatively rather than as a single number.
   the two numpy models — churn **+0.457 [+0.381, +0.528]**, elasticity-RMSE
   **+0.918 [+0.904, +0.934]**, both entirely above zero — covering only the deterministic
   numpy models on purpose, so the intervals are bit-reproducible and CI-verifiable.
+  An **ablation study** (`mllab/ablation.py` → `docs/ABLATION.md`, machine-generated — no
+  numbers typed by hand) retrains the same two numpy models with each claimed improvement
+  knocked out and commits the exact deltas: **8 of 9 knockouts hurt the primary metric** —
+  dropping the engineered `freq_slope` costs the churn model **−0.247 PR-AUC** (0.653 →
+  0.406), dropping the demand-shock control costs the elasticity model **+1.446 RMSE**
+  (0.129 → 1.575), and the everything-removed variant *is* the leaderboard's naive-OLS fair
+  baseline. The honest exception: removing Platt calibration leaves PR-AUC **bit-identical**
+  (a positive-slope monotone rescaling cannot change a ranking metric) while ECE collapses
+  0.021 → 0.197 — exactly why the model reports both numbers; the two knockouts inside the
+  bootstrap-CI noise band are reported as within evaluation noise, not counted as wins, and
+  `tests/test_ablation.py` retrains every variant so the committed table cannot drift.
 - **Visualizations:** per-model confusion matrix, reliability curve, PR curve, and
-  elasticity/profit plots (produced by each model's training script); `docs/METHODOLOGY.md`.
+  elasticity/profit plots (produced by each model's training script); `docs/METHODOLOGY.md`;
+  `docs/ABLATION.md` (the machine-generated knockout-delta table).
 - **Use case:** a reusable pattern library for small, honestly-evaluated B2B distributor models.
 - **Open improvements:** (1) consolidate the five into one comparable evaluation harness;
   (2) larger held-out sets so the class-imbalance metrics are tighter.
@@ -502,9 +556,18 @@ source describes qualitatively rather than as a single number.
   baseline saved EUR 0. A causal, forecast-driven dispatch backtest measures **72.7%
   capture** of that perfect-foresight bound (**EUR 8,066** of the EUR 11,100/yr),
   decomposed into EUR 2,054/yr lost to forecast error and EUR 980/yr to the one-day
-  horizon. 59 tests.
+  horizon. A **change-point degree-day decomposition** (the piecewise-linear model behind
+  ASHRAE Guideline 14 and PRISM, with 168 hour-of-week means absorbing the two-shift
+  schedule so production cannot masquerade as weather) recovers the generator's designed
+  balance points exactly (**19.0 / 6.0 °C**) and the heating slope to the digit
+  (3.20 kW/°C) — a recovery asserted by the test suite, the check a real meter could not
+  offer without sub-metering — and finds weather-driven load is **4.5% of the year's
+  energy** (68 MWh) yet **76 kW of the 412 kW July peak hour is chiller load (18%)**: in
+  the worst month the battery is, to first order, shaving the weather; labelled a modelled
+  attribution, not a sub-meter. 72 tests.
 - **Visualizations:** `deliverables/energy_report.pdf` (6-page executive PDF with the
-  per-fold table) and `deliverables/energy_workbook.xlsx` (4 sheets).
+  per-fold table) and `deliverables/energy_workbook.xlsx` (4 sheets);
+  `docs/temp_sensitivity.svg` + `.csv` (base load vs weather-driven load, monthly).
 - **Use case:** a light-industrial site cutting the demand-charge line of its electricity
   bill — forecast first, then dispatch the battery against the monthly peak.
 - **Open improvements (its own framing):** (1) the perfect-foresight LP stays an explicit
@@ -531,11 +594,23 @@ source describes qualitatively rather than as a single number.
   subgroup 43 by a run rule while the naked 3-sigma rule never fires** in the monitored
   window, and a camera-brightness drift with an unchanged true defect rate still alarms —
   the cost of that sensitivity stated as in-control ARL ~92 vs ~370 for 3-sigma alone.
-  45 tests, two full runs bit-identical.
+  The alarm now ends in a **measured out-of-control action plan** (`qav/recalibration.py`):
+  four responses to the camera-drift alarm — keep running, re-center the threshold on the
+  unlabelled stream, re-fit on 200 recent verified-clean frames, repair the camera — each
+  measured and costed at four drift levels (in control: 358 EUR per 1,000 parts).
+  Re-centering is the trap the chart cannot see: it quiets the p-chart *by construction*
+  while its ROC-AUC stays bit-identical to doing nothing — at +0.10 drift the "recovered"
+  screen catches **1.1 of 15** defects behind an in-control-looking flag rate, a green
+  chart over a blind screen — while re-fitting returns ROC-AUC to ~0.785 at every drift
+  level and recovers **~99% of the drift-induced cost at +0.05 and beyond**; honest scope:
+  the drift is a synthetic brightness stand-in, and the refit window is assumed
+  verified-clean and free — verification labour and recalibration downtime are uncosted.
+  59 tests, two full runs bit-identical.
 - **Visualizations:** `figures/gallery.png` (per-method heatmaps), `figures/roc_pr.png`,
-  `figures/per_type_auc.png`; `deliverables/qa_defect_report.pdf` (5-page) and
+  `figures/per_type_auc.png`; `figures/recalibration.svg` (the four responses costed per
+  drift level); `deliverables/qa_defect_report.pdf` (9-page) and
   `deliverables/qa_defect_metrics.xlsx` (incl. every raw score so the curves can be
-  re-derived).
+  re-derived, plus a Recalibration sheet).
 - **Use case:** a visual QA station deciding whether a deep model earns its keep over the
   boring methods before anyone ships a neural network — then watching the line for drift.
 - **Open improvements (its own framing):** (1) the autoencoder is untuned — a better recipe
@@ -655,7 +730,7 @@ source describes qualitatively rather than as a single number.
   assertions that print both numbers at every seam. Every quantity carries a provenance tag
   (`real` | `derived` | `synthetic-assigned`); a derived quantity inherits the **weakest**
   provenance of its inputs.
-- **Measured results (full run, all 13 artifact identities PASS, plus 3 additive):** cleaned
+- **Measured results (full run, all 13 artifact identities PASS, plus 4 additive):** cleaned
   revenue reproduced across two repositories **to the penny — GBP 19,643,861.62**; the
   ledger's window revenue equal to the cleaned data's to the penny (GBP 1,047,042.41); the
   cost ledger summing to the cent (253,427.16); every pick (256,787 lines), carton (70,820)
@@ -675,7 +750,20 @@ source describes qualitatively rather than as a single number.
   distribution is the finding: median cost 20.67 GBP vs mean 57.51, the costliest 10% of
   orders (416 of 4,151) carry **59.0% of delivered cost (Gini 0.665)**, and the 191 orders
   (4.6%) whose modelled cost exceeds their own real revenue are reported as the model's
-  shape under invented rates — a labelled cost model, never a profit claim. Honest
+  shape under invented rates — a labelled cost model, never a profit claim. A 17th
+  identity (q) — the **fleet knob** — sweeps the van capacity (a labelled
+  synthetic-assigned fleet parameter, base 80 cartons) across a deterministic grid from 1
+  to 320, re-solving every delivery day's CVRP + Clarke-Wright at each setting with the
+  existing stage-4b engine and re-checking all 13 identities at every knob point: the
+  routed drops and cartons are conserved exactly (the knob changes HOW cartons ride, never
+  WHAT ships), labour, holding, facility and the real window revenue stay invariant to the
+  cent, the transport line equals CVRP km × the published rate rebuilt independently, and
+  the total moves by exactly the transport delta. The measured curve is diminishing
+  returns — capacity buys km only while it binds: 1 → 10 cartons per van saves 206,937.7
+  km, 40 → 80 saves 1,686.7, and 160 → 320 only 194.8 — and one omission is deliberate and
+  declared: this ledger prices km, not vehicles, so the downhill direction of the curve is
+  a model property, never fleet advice; vehicle-days are reported unpriced next to the
+  pounds. Honest
   findings kept in the headline: on lumpy
   demand **nothing beats the one-week naive walk** (MASE 1.782); the exact Hungarian
   slotting optimum is worth only **−1.6% vs classic ABC** (183.2 → 180.2 m/invoice; the
@@ -689,7 +777,8 @@ source describes qualitatively rather than as a single number.
   cost-to-serve ledger, slotting bars, CVRP-vs-Clarke-Wright per-day SVG chart;
   `deliverables/chain_report.pdf` + `chain_ledger.xlsx`, regenerated **byte-identically** from
   the committed run artifact `artifacts/full_run.json` (sha256 code-fingerprinted; consumers
-  flag it STALE if the code drifts).
+  flag it STALE if the code drifts); `deliverables/fleet_sweep.md` + `.csv` (the van-capacity
+  sweep, byte-deterministic, regenerated by `python fleet_sweep.py`).
 - **Use case:** proving the chain closes — that the forecast, the warehouse and the cost
   ledger all run on the *same* numbers — which is the integration failure mode real
   distributors actually have.
@@ -707,8 +796,8 @@ source describes qualitatively rather than as a single number.
   call mid-conversation: `forecast_demand` (decision-chain), `optimize_slotting` and
   `pack_cartons` (logistics-digital-twin), `route_deliveries` (route-optimizer),
   `analyze_discount_leakage` (sales-kpi-analytics), `portfolio_status` (portfolio-ops).
-- **Measured results:** **145 tests — tool calls, an input-validation matrix, a live JSON-RPC
-  handshake, and contract + provenance validation**; every tool validates input and returns
+- **Measured results:** **193 tests — tool calls, an input-validation matrix, a live JSON-RPC
+  handshake, and contract + provenance + idempotency/cache validation**; every tool validates input and returns
   structured error results on any failure (bad input, missing source repo, engine error) —
   the server never crashes on a tool call; source repos are imported read-only with
   env-overridable paths. A machine-checked contract layer introspects the six served tools
@@ -721,11 +810,24 @@ source describes qualitatively rather than as a single number.
   canonical data label (`synthetic` / `real+derived` / `real-local` / `caller-provided`)
   cross-checked against the tool description's honesty wording, and a determinism flag;
   error results carry identity only — a failed call computed nothing, so it makes no data
-  claims.
+  claims. Identical requests should not recompute — the enterprise-integration pattern:
+  every call to a **deterministic** tool is assigned a reproducible **SHA-256 idempotency
+  key** over a documented material string covering every fact the result depends on
+  (server version, tool, canonically-sorted arguments with defaults applied, and the exact
+  engine checkout — repo, resolved path, commit, read at call time), and an identical
+  earlier success is served from a bounded in-process LRU cache **and says so**:
+  `provenance.cache` (`cacheable` / `hit` / `key`) is required by the contract layer's
+  result envelope. Because the key embeds the engine commit, a cached result can never
+  outlive the code that computed it — after a checkout change you get a fresh computation,
+  never a stale replay; policy is derived from provenance (cacheable if and only if
+  declared deterministic, so `portfolio_status` is never cached), errors are never cached,
+  and the honest scope is stated: the cache lives and dies with one server process — no
+  persistence, no cross-session sharing.
 - **Visualizations:** none of its own — the deliverable is the protocol integration; ships
   ready-to-paste configs for Claude Desktop (`claude_desktop_config.json`) and Claude Code
   (`claude mcp add chain-mcp -- python -m chainmcp`), six example prompts, and a
-  deterministic `deliverables/tool_catalog.md` emitted by the contract layer.
+  deterministic `deliverables/tool_catalog.md` emitted by the contract layer (now carrying
+  a "Cacheable" column, so the docs cannot drift from the cache policy either).
 - **Use case:** the integration work "agentic AI" projects consist of in practice — wiring a
   language model to real, non-trivial computational engines with honest schemas, provenance
   labels and graceful failure.

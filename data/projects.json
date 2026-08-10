@@ -346,9 +346,9 @@
           "label_de": "OR-Tools vs. naiver Sweep"
         },
         {
-          "label": "Instance",
-          "value": "60 customers, capacity-50 vans",
-          "label_de": "Instanz"
+          "label": "Fleet mix (FSM) on n60",
+          "value": "5 large vans: -17.5% cost, +25.2% longest route",
+          "label_de": "Flottenmix (FSM) auf n60"
         },
         {
           "label": "5% capacity headroom",
@@ -361,6 +361,7 @@
         "Baseline is the classic 1964 Clarke-Wright savings algorithm written from scratch; the optimizer is OR-Tools CVRP with guided local search.",
         "Honest headline: ~5% over an already-good baseline, and on the 100-customer instance the gap shrinks to ~1% - shown rather than hidden.",
         "A robustness stress test drives each plan through 200 seeded demand scenarios (a labelled ±15% noise assumption): both zero-buffer plans hit a capacity failure in ~96% of them, and the optimizer stays ahead by recovering cheaper (117 vs 178 km expected recourse per day); re-planning with just 5% capacity headroom costs +3.0% planned km but cuts failing scenarios to 44% - the cheapest expected day in the sweep.",
+        "A heterogeneous Fleet Size and Mix layer (the FSM VRP of Golden, Assad, Levy & Gheysens, 1984) hands the same OR-Tools engine a typed pool of candidate vans - per-vehicle capacities, EUR/km and a fixed cost per deployed van - so the objective is money, not kilometres, and parking a van the demand does not justify is how the solver saves it. On n60 consolidation wins outright: 5 large vans (EUR 1,325/day) undercut the status-quo 10 mediums (EUR 1,606) by 17.5% - distance -35.6%, CO2 -14.9% - and the price is service, the longest route growing +25.2%; on n30 the mix is genuine: 1 medium + 2 large (EUR 628/day) beats the best single-size fleet by 8.5%. The catalogue costs are illustrative labelled estimates, not certified rates; every plan is a heuristic under a fixed search budget, not a proven optimum, and the deliverable reports whatever the numbers say - on n60 the mixed pool simply agrees with the all-large answer (+0.0%).",
         "Interactive offline Canvas map: depot, customers and coloured routes with a savings-heuristic overlay toggle."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/route-optimizer",
@@ -370,6 +371,7 @@
         "Baseline ist der klassische Clarke-Wright-Savings-Algorithmus von 1964, von Grund auf geschrieben; der Optimierer ist OR-Tools CVRP mit Guided Local Search.",
         "Ehrliche Schlagzeile: ~5% gegenüber einer bereits guten Baseline, und bei der 100-Kunden-Instanz schrumpft der Abstand auf ~1% – gezeigt statt versteckt.",
         "Ein Robustheits-Stresstest schickt jeden Plan durch 200 geseedete Nachfrageszenarien (eine ausgewiesene ±15%-Rauschannahme): Beide Pläne ohne Puffer erleiden in ~96% der Szenarien einen Kapazitätsfehlschlag, und der Optimierer bleibt vorn, weil er günstiger nachsteuert (117 vs. 178 km erwartete Zusatzstrecke pro Tag); eine Neuplanung mit nur 5% Kapazitätspuffer kostet +3.0% geplante km, senkt die fehlschlagenden Szenarien aber auf 44% – der günstigste erwartete Tag im Sweep.",
+        "Eine heterogene Fleet-Size-and-Mix-Schicht (das FSM-VRP von Golden, Assad, Levy & Gheysens, 1984) gibt derselben OR-Tools-Engine einen typisierten Pool von Kandidaten-Transportern - Kapazität, EUR/km und ein Fixpreis je eingesetztem Fahrzeug pro Typ -, sodass Geld statt Kilometer das Ziel ist und das Abstellen eines Transporters, den die Nachfrage nicht rechtfertigt, die Ersparnis des Solvers ist. Auf n60 gewinnt Konsolidierung klar: 5 große Transporter (EUR 1,325/Tag) unterbieten den Status quo aus 10 mittleren (EUR 1,606) um 17.5% - Distanz -35.6%, CO2 -14.9% -, und der Preis ist Service: Die längste Route wächst um +25.2%; auf n30 ist der Mix echt: 1 mittlerer + 2 große (EUR 628/Tag) schlagen die beste Ein-Größen-Flotte um 8.5%. Die Katalogkosten sind ausgewiesene illustrative Schätzungen, keine zertifizierten Sätze; jeder Plan ist eine Heuristik unter festem Suchbudget, kein bewiesenes Optimum, und das Deliverable berichtet, was die Zahlen sagen - auf n60 stimmt der gemischte Pool schlicht mit der Alles-groß-Antwort überein (+0.0%).",
         "Interaktive Offline-Canvas-Karte: Depot, Kunden und farbige Routen mit umschaltbarer Savings-Heuristik-Überlagerung."
       ]
     },
@@ -507,7 +509,7 @@
         },
         {
           "label": "Tests",
-          "value": "60: engine, undo, linter, analyzer",
+          "value": "78: engine, undo, linter, analyzer, estimator",
           "label_de": "Tests"
         },
         {
@@ -521,6 +523,7 @@
         "A real topological sort (Kahn's algorithm) with cycle detection walks the DAG, highlights each node, lights live wires and streams a trace; the same engine.js runs in the browser and the test suite.",
         "Every connection is a hand-drawn SVG path re-attached as nodes move; a Condition node prunes the dead branch.",
         "A static data-dependency / provenance analyzer (analysis.js, node-tested) computes each node's upstream/downstream closure, the parallelisable stages, the critical path and which Trigger's payload can reach every Output - honest that it describes the data flow the wiring permits, not the single path one input takes, and it withholds order-dependent fields when the graph is not a DAG.",
+        "A dry-run cost/latency estimator (estimator.js, node-tested, behind the EUR Estimate button) prices a designed flow before it runs against a declared rate card: per-node tokens/EUR/ms, an agent call's prompt as a declared base plus a declared amount per toolbelt entry - fatter toolbelts visibly cost more - both latencies (the sequential sum this engine takes and the weighted critical path a parallel executor could reach), and, because a Condition takes one branch per run, enumerated branch scenarios whose executed sets the tests prove against real engine runs branch-for-branch. Emphatically not a bill: the rates are illustrative inputs you edit, the shipped agent is a free deterministic mock, nothing is measured, and a cyclic flow gets its estimate withheld, not invented - the committed docs/FLOW_COST_REPORT.md regenerates byte-for-byte and goes stale-checked in CI.",
         "Small enough to read in one sitting; deliberately not competing with n8n on features."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/agent-flow-studio",
@@ -530,6 +533,7 @@
         "Eine echte topologische Sortierung (Kahns Algorithmus) mit Zyklenerkennung durchläuft den DAG, hebt jeden Knoten hervor, lässt aktive Verbindungen aufleuchten und streamt eine Ablaufspur; dieselbe engine.js läuft im Browser und in der Testsuite.",
         "Jede Verbindung ist ein handgezeichneter SVG-Pfad, der beim Verschieben der Knoten neu angeheftet wird; ein Condition-Knoten kappt den toten Zweig.",
         "Ein statischer Datenabhängigkeits-/Provenienz-Analysator (analysis.js, node-getestet) berechnet für jeden Knoten die vollständige Upstream-/Downstream-Hülle, die parallelisierbaren Stufen, den kritischen Pfad und welcher Trigger-Payload jeden Output erreichen kann – ehrlich darin, dass er den Datenfluss beschreibt, den die Verdrahtung zulässt, nicht den einen Pfad einer konkreten Eingabe, und ordnungsabhängige Felder zurückhält, wenn der Graph kein DAG ist.",
+        "Ein Dry-Run-Kosten-/Latenzschätzer (estimator.js, node-getestet, hinter dem EUR-Estimate-Button) bepreist einen entworfenen Flow vor dem Lauf gegen eine deklarierte Preistafel: Tokens/EUR/ms je Knoten, der Prompt eines Agentenaufrufs als deklarierte Basis plus deklariertem Aufschlag je Toolbelt-Eintrag - üppigere Toolbelts kosten sichtbar mehr -, beide Latenzen (die sequenzielle Summe dieser Engine und der gewichtete kritische Pfad, den ein paralleler Executor erreichen könnte) und, weil eine Condition pro Lauf genau einen Zweig nimmt, aufgezählte Zweig-Szenarien, deren ausgeführte Mengen die Tests Zweig für Zweig gegen echte Engine-Läufe beweisen. Ausdrücklich keine Rechnung: Die Sätze sind illustrative Eingaben, die Sie bearbeiten, der mitgelieferte Agent ist ein kostenloser deterministischer Mock, nichts ist gemessen, und ein zyklischer Flow bekommt seine Schätzung vorenthalten, nicht erfunden - das committete docs/FLOW_COST_REPORT.md regeneriert byte-für-byte und wird in CI auf Veralten geprüft.",
         "Klein genug, um es in einem Zug zu lesen; tritt bewusst nicht im Funktionsumfang gegen n8n an."
       ]
     },
@@ -639,7 +643,7 @@
     {
       "name": "bio-efficient-ai",
       "slug": "bio-efficient-ai",
-      "tagline": "A small honest study: circuits copied from real animal brains can be more efficient than conventional methods on narrow tasks. FlyHash vs LSH, and a liquid CfC cell vs a GRU.",
+      "tagline": "A small honest study: circuits copied from real animal brains can be more efficient than conventional methods on narrow tasks. FlyHash vs LSH, BioHash-learned synapses vs random ones, and a liquid CfC cell vs a GRU.",
       "role": "research",
       "category": "Research",
       "stack": [
@@ -656,9 +660,9 @@
           "label_de": "FlyHash Precision@10 (128 Bit)"
         },
         {
-          "label": "FlyHash precision@10 (4 bits)",
-          "value": "0.152 vs LSH 0.017",
-          "label_de": "FlyHash Precision@10 (4 Bit)"
+          "label": "BioHash learned (128 bits)",
+          "value": "0.626 vs FlyHash 0.614, 10x smaller circuit",
+          "label_de": "BioHash gelernt (128 Bit)"
         },
         {
           "label": "Liquid CfC params",
@@ -674,14 +678,16 @@
       "impact_eur": null,
       "highlights": [
         "Reproduces the fruit-fly odour-hashing trick (Dasgupta, Stevens & Navlakha, Science 2017) and runs the fair equal-budget comparison on real MNIST across 3 seeds; FlyHash wins at every hash length.",
+        "The learned follow-up (Ryali et al., ICML 2020): BioHash trains the synapses with the local Krotov-Hopfield plasticity rule - no labels, no backprop - at a deliberately resource-hostile operating point, a 10x smaller circuit (1,568 vs 15,680 units) whose dense learned projection under-spends FlyHash's sparse random one (1,229,312 vs 1,473,920 MACs/query). Measured: learning wins the benchmark's mid-range at a discount (equal-or-better at 8-128 bits, 0.626 vs 0.614 at 128) - and the negatives are reported with it: both tips of the grid go back to the wider random code space, the memory frontier is never reached, training is a one-time ~1.62 x 10^12 MACs per seed, a learned hash is data-dependent, and the reference N(0,1) init is load-bearing - a unit-norm init measurably collapses training onto <8% of units.",
         "A from-scratch ~32-neuron closed-form continuous-time (CfC) liquid cell matches or beats a parameter-heavier GRU under input noise.",
         "Careful about what it does NOT claim: not beating the brain, not beating HNSW/FAISS, not beating a well-tuned RNN in general - narrow, measured claims only."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/bio-efficient-ai",
-      "tagline_de": "Eine kleine, ehrliche Studie: Schaltkreise, die realen Tiergehirnen nachempfunden sind, können bei eng umrissenen Aufgaben effizienter sein als konventionelle Methoden. FlyHash vs. LSH und eine Liquid-CfC-Zelle vs. ein GRU.",
+      "tagline_de": "Eine kleine, ehrliche Studie: Schaltkreise, die realen Tiergehirnen nachempfunden sind, können bei eng umrissenen Aufgaben effizienter sein als konventionelle Methoden. FlyHash vs. LSH, gelernte BioHash-Synapsen vs. zufällige und eine Liquid-CfC-Zelle vs. ein GRU.",
       "category_de": "Forschung",
       "highlights_de": [
         "Reproduziert den Geruchs-Hashing-Trick der Fruchtfliege (Dasgupta, Stevens & Navlakha, Science 2017) und führt den fairen Vergleich bei gleichem Budget auf echtem MNIST über 3 Seeds durch; FlyHash gewinnt bei jeder Hash-Länge.",
+        "Die gelernte Fortsetzung (Ryali et al., ICML 2020): BioHash trainiert die Synapsen mit der lokalen Plastizitätsregel von Krotov-Hopfield - ohne Labels, ohne Backprop - an einem bewusst ressourcenfeindlichen Arbeitspunkt: ein 10x kleinerer Schaltkreis (1,568 vs. 15,680 Einheiten), dessen dichte gelernte Projektion FlyHashs dünn besetzte Zufallsprojektion unterbietet (1,229,312 vs. 1,473,920 MACs/Abfrage). Gemessen: Lernen gewinnt den Mittelbereich des Benchmarks mit Rabatt (gleich oder besser bei 8-128 Bit, 0.626 vs. 0.614 bei 128) - und die Negativbefunde stehen daneben: Beide Enden des Rasters gehen an den breiteren Zufallscoderaum zurück, die Speicher-Frontier wird nie erreicht, das Training kostet einmalig ~1.62 x 10^12 MACs je Seed, ein gelernter Hash ist datenabhängig, und die N(0,1)-Referenzinitialisierung ist tragend - eine Unit-Norm-Initialisierung lässt das Training messbar auf <8% der Einheiten kollabieren.",
         "Eine von Grund auf gebaute Liquid-Zelle mit ~32 Neuronen in geschlossener Form und kontinuierlicher Zeit (CfC) erreicht oder schlägt ein parameterstärkeres GRU unter Eingangsrauschen.",
         "Achtsam bei dem, was es NICHT behauptet: das Gehirn nicht zu schlagen, HNSW/FAISS nicht zu schlagen, ein gut abgestimmtes RNN nicht generell zu schlagen – nur eng umrissene, gemessene Aussagen."
       ]
@@ -715,15 +721,16 @@
           "label_de": "Bootstrap-95%-KI (Churn-Skill)"
         },
         {
-          "label": "Model cores",
-          "value": "from scratch in numpy or plain PyTorch",
-          "label_de": "Modellkerne"
+          "label": "Ablation knockouts",
+          "value": "8 of 9 hurt the primary metric",
+          "label_de": "Ablations-Knockouts"
         }
       ],
       "impact_eur": null,
       "highlights": [
         "The defensible thread across all five: implement the core from scratch, add one principled improvement, evaluate with a metric that survives class imbalance and zeros.",
         "A non-parametric percentile bootstrap puts 95% confidence intervals on the skill scores of the two numpy models - churn +0.457 [+0.381, +0.528], elasticity-RMSE +0.918 [+0.904, +0.934], both entirely above zero - covering only the deterministic numpy models on purpose, so the intervals are bit-reproducible and CI-verifiable.",
+        "An ablation study retrains the two numpy models with each claimed improvement knocked out and commits the exact deltas (docs/ABLATION.md - no numbers typed by hand, and a test retrains every variant so the committed table cannot drift): 8 of 9 knockouts hurt - dropping the engineered freq_slope costs the churn model -0.247 PR-AUC (0.653 -> 0.406), dropping the demand-shock control costs the elasticity model +1.446 RMSE (0.129 -> 1.575), and the everything-removed variant IS the leaderboard's naive-OLS fair baseline. The honest exception: removing Platt calibration leaves PR-AUC bit-identical (a positive-slope monotone rescaling cannot change a ranking metric) while ECE collapses 0.021 -> 0.197 - exactly why the model reports both numbers - and the two knockouts that land inside the bootstrap-CI noise band are reported as within evaluation noise, not counted as wins.",
         "Examples: a DeepAR-lite global forecaster with a negative-binomial head for intermittent SKUs; a fastText-core text classifier with regex sub-token splitting for unseen part numbers.",
         "Every spec is grounded in cited literature (DeepAR, N-BEATS, fastText, focal loss, ridge/lasso), deliberately the smallest credible version of each method."
       ],
@@ -733,6 +740,7 @@
       "highlights_de": [
         "Der belastbare rote Faden durch alle fünf: den Kern von Grund auf implementieren, eine fundierte Verbesserung ergänzen, mit einer Metrik evaluieren, die Klassenungleichgewicht und Nullen übersteht.",
         "Ein nichtparametrischer Perzentil-Bootstrap legt 95%-Konfidenzintervalle auf die Skill-Scores der beiden numpy-Modelle – Churn +0.457 [+0.381, +0.528], Elastizitäts-RMSE +0.918 [+0.904, +0.934], beide vollständig über null – und deckt bewusst nur die deterministischen numpy-Modelle ab, damit die Intervalle bit-reproduzierbar und CI-verifizierbar sind.",
+        "Eine Ablationsstudie trainiert die beiden numpy-Modelle mit jeweils einer herausgenommenen beanspruchten Verbesserung neu und committet die exakten Deltas (docs/ABLATION.md - keine Zahl von Hand getippt, und ein Test trainiert jede Variante neu, damit die committete Tabelle nicht driften kann): 8 von 9 Knockouts verschlechtern die Primärmetrik - der Wegfall des konstruierten freq_slope kostet das Churn-Modell -0.247 PR-AUC (0.653 -> 0.406), der Wegfall der Nachfrageschock-Kontrolle kostet das Elastizitätsmodell +1.446 RMSE (0.129 -> 1.575), und die Variante ohne alles IST die faire Naive-OLS-Baseline des Leaderboards. Die ehrliche Ausnahme: Das Entfernen der Platt-Kalibrierung lässt die PR-AUC bit-identisch (eine monotone Reskalierung mit positiver Steigung kann eine Ranking-Metrik nicht ändern), während die ECE von 0.021 auf 0.197 einbricht - genau deshalb berichtet das Modell beide Zahlen -, und die beiden Knockouts im Bootstrap-KI-Rauschband werden als innerhalb des Evaluationsrauschens berichtet, nicht als Siege gezählt.",
         "Beispiele: ein globaler DeepAR-lite-Forecaster mit Negativ-Binomial-Kopf für sporadische SKUs; ein Textklassifikator auf fastText-Basis mit Regex-Subtoken-Zerlegung für unbekannte Teilenummern.",
         "Jede Spezifikation ist in zitierter Literatur verankert (DeepAR, N-BEATS, fastText, Focal Loss, Ridge/Lasso), bewusst die kleinste glaubwürdige Version jeder Methode."
       ]
@@ -874,16 +882,17 @@
           "label_de": "Spitzenreduktion (Batterie-LP)"
         },
         {
-          "label": "Modelled saving",
-          "value": "~EUR 11,100/yr at an assumed tariff",
-          "label_de": "Modellierte Einsparung"
+          "label": "Weather share (degree-day fit)",
+          "value": "4.5% of energy, 18% of July peak",
+          "label_de": "Wetteranteil (Gradtag-Zerlegung)"
         }
       ],
       "impact_eur": 11100,
       "highlights": [
         "Written out from scratch on numpy/scipy/pandas: Holt-Winters as ~30 lines of recursions, the regression as numpy.linalg.lstsq, and the peak-shaving LP as a hand-assembled constraint matrix for HiGHS.",
         "Reports its own losses: Holt-Winters (MASE 3.040) loses to the seasonal-naive baseline and the README says so; the single Boxing Day fold that inflates the naive's mean (MASE 8.40) is unpacked rather than averaged away.",
-        "The fixed evening-timer baseline saves EUR 0 on this mid-morning-peaking site - when to discharge is the entire product - and the perfect-foresight LP is kept as an explicit upper bound: a causal, forecast-driven dispatch backtest measures 72.7% capture (EUR 8,066 of the EUR 11,100 bound), decomposed into EUR 2,054/yr lost to forecast error and EUR 980/yr to the one-day horizon, with the EUR 12/kW-month tariff still labelled an assumption."
+        "The fixed evening-timer baseline saves EUR 0 on this mid-morning-peaking site - when to discharge is the entire product - and the perfect-foresight LP is kept as an explicit upper bound: a causal, forecast-driven dispatch backtest measures 72.7% capture (EUR 8,066 of the EUR 11,100 bound), decomposed into EUR 2,054/yr lost to forecast error and EUR 980/yr to the one-day horizon, with the EUR 12/kW-month tariff still labelled an assumption.",
+        "A change-point degree-day decomposition (the piecewise-linear model behind ASHRAE Guideline 14 and PRISM) answers the analyst's other question - how much of this load is the building and how much is the weather - with 168 hour-of-week means absorbing the two-shift schedule so production cannot masquerade as weather: the fit recovers the generator's designed balance points exactly (19.0 / 6.0 degrees C) and the heating slope to the digit (3.20 kW per degree C), a recovery asserted by the test suite - the check a real meter could not offer without sub-metering. The finding: weather-driven load is 4.5% of the year's energy (68 MWh), yet 76 kW of the 412 kW July peak hour is chiller load (18%) - in the worst month the battery is, to first order, shaving the weather; labelled a modelled attribution, not a sub-meter."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/energy-demand-forecast",
       "tagline_de": "Die stündliche Last einer Anlage einen Tag im Voraus mit ehrlicher Rolling-Origin-CV prognostizieren und dann eine Batterie mit einem von Hand aufgestellten linearen Programm gegen die monatliche Leistungsspitze einsetzen – die Timer-Baseline spart exakt EUR 0.",
@@ -891,7 +900,8 @@
       "highlights_de": [
         "Von Grund auf mit numpy/scipy/pandas ausgeschrieben: Holt-Winters als ~30 Zeilen Rekursionen, die Regression als numpy.linalg.lstsq und das Peak-Shaving-LP als von Hand aufgestellte Nebenbedingungsmatrix für HiGHS.",
         "Berichtet die eigenen Niederlagen: Holt-Winters (MASE 3.040) verliert gegen die Seasonal-Naive-Baseline, und die README sagt das auch; der einzelne Boxing-Day-Fold, der den Mittelwert des Naive-Modells aufbläht (MASE 8.40), wird aufgeschlüsselt statt weggemittelt.",
-        "Die feste Abend-Timer-Baseline spart an diesem am späten Vormittag spitzenden Standort EUR 0 – wann entladen wird, ist das ganze Produkt – und das LP mit perfekter Voraussicht bleibt eine explizite Obergrenze: Ein kausaler, prognosegetriebener Dispatch-Backtest misst 72.7% Ausbeute (EUR 8,066 der EUR 11,100-Obergrenze), zerlegt in EUR 2,054/Jahr durch Prognosefehler und EUR 980/Jahr durch den Ein-Tages-Horizont, wobei der Tarif von EUR 12/kW-Monat weiterhin als Annahme ausgewiesen ist."
+        "Die feste Abend-Timer-Baseline spart an diesem am späten Vormittag spitzenden Standort EUR 0 – wann entladen wird, ist das ganze Produkt – und das LP mit perfekter Voraussicht bleibt eine explizite Obergrenze: Ein kausaler, prognosegetriebener Dispatch-Backtest misst 72.7% Ausbeute (EUR 8,066 der EUR 11,100-Obergrenze), zerlegt in EUR 2,054/Jahr durch Prognosefehler und EUR 980/Jahr durch den Ein-Tages-Horizont, wobei der Tarif von EUR 12/kW-Monat weiterhin als Annahme ausgewiesen ist.",
+        "Eine Change-Point-Gradtag-Zerlegung (das stückweise lineare Modell hinter ASHRAE Guideline 14 und PRISM) beantwortet die andere Frage des Analysten - wie viel dieser Last ist das Gebäude, wie viel das Wetter -, wobei 168 Wochenstunden-Mittelwerte den Zweischichtbetrieb absorbieren, damit sich Produktion nicht als Wetter tarnen kann: Der Fit stellt die im Generator angelegten Bilanzpunkte exakt wieder her (19.0 / 6.0 Grad C) und die Heizsteigung auf die Ziffer genau (3.20 kW pro Grad C) - eine Wiederherstellung, die die Testsuite zusichert und die ein realer Zähler ohne Untermessung nicht bieten könnte. Der Befund: Wetterbedingte Last macht 4.5% der Jahresenergie aus (68 MWh), doch 76 kW der 412-kW-Julispitzenstunde sind Kältelast (18%) - im schlimmsten Monat kappt die Batterie in erster Näherung das Wetter; ausgewiesen als modellierte Zuordnung, nicht als Untermessung."
       ]
     },
     {
@@ -920,9 +930,9 @@
           "label_de": "Empfohlene Methode"
         },
         {
-          "label": "TPR @ 5% FPR",
-          "value": "PCA 0.407 vs AE 0.393",
-          "label_de": "TPR @ 5% FPR"
+          "label": "Refit after drift alarm",
+          "value": "~99% of drift cost recovered (+0.05 on)",
+          "label_de": "Refit nach Drift-Alarm"
         },
         {
           "label": "SPC p-chart (Western Electric)",
@@ -935,7 +945,8 @@
         "One shared image-level scoring rule (mean of the hottest 2% of heatmap pixels) fixed before any results, and a pre-stated recommendation rule: the simplest method within 0.02 ROC-AUC of the best wins - so PCA reconstruction beats the 0.007-ahead autoencoder.",
         "The screening output feeds an SPC p-chart with limits frozen from Phase I (center line 1.31%, UCL 2.07%) and the four Western Electric run rules: a true 1.5% -> 2.5% defect-rate shift is caught at subgroup 43 by a run rule while the naked 3-sigma rule never fires in the monitored window, and a camera-brightness drift with an unchanged true defect rate still alarms - the cost of that sensitivity stated as in-control ARL ~92 vs ~370 for 3-sigma alone.",
         "Unexpected finding, reported: training the autoencoder longer made it worse (overall AUC 0.779 -> 0.738 at 30 epochs, blob detection 0.828 -> 0.610) because good reconstruction erases the anomaly signal.",
-        "Texture-breaks split the field: the autoencoder is the only method meaningfully above chance on them (0.609) and nobody can localize them (best mean IoU 0.043 vs 0.011 for random heatmaps); ROC/PR/IoU are implemented from scratch in numpy, no scikit-learn anywhere."
+        "Texture-breaks split the field: the autoencoder is the only method meaningfully above chance on them (0.609) and nobody can localize them (best mean IoU 0.043 vs 0.011 for random heatmaps); ROC/PR/IoU are implemented from scratch in numpy, no scikit-learn anywhere.",
+        "The alarm now has a measured out-of-control action plan: four responses to the camera-drift alarm - keep running, re-center the threshold on the unlabelled stream, re-fit on 200 recent verified-clean frames, repair the camera - each measured and costed at four drift levels. The cheap fix is a trap the chart cannot see: re-centering quiets the p-chart by construction while its ROC-AUC stays bit-identical to doing nothing - at +0.10 drift the 'recovered' screen catches 1.1 of 15 defects behind an in-control-looking flag rate, a green chart over a blind screen - while re-fitting returns ROC-AUC to ~0.785 at every drift level and recovers ~99% of the drift-induced cost at +0.05 and beyond. Honest scope: the drift is a synthetic brightness stand-in, and the refit window is assumed verified-clean and free - verification labour and recalibration downtime are uncosted."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/quality-anomaly-vision",
       "tagline_de": "Ab wann schlägt das neuronale Netz die langweiligen Methoden? Drei Oberflächenfehler-Detektoren auf synthetischen Texturen, eine gemeinsame, vorab festgelegte Bewertungsregel und eine vorab formulierte Komplexitätsregel, die den Sieger bestimmt.",
@@ -944,7 +955,8 @@
         "Eine gemeinsame Bewertungsregel auf Bildebene (Mittel der heißesten 2% der Heatmap-Pixel), festgelegt vor allen Ergebnissen, und eine vorab formulierte Empfehlungsregel: Die einfachste Methode innerhalb von 0.02 ROC-AUC zur besten gewinnt – so schlägt die PCA-Rekonstruktion den um 0.007 führenden Autoencoder.",
         "Die Screening-Ausgabe speist eine SPC-p-Karte mit in Phase I eingefrorenen Grenzen (Mittellinie 1.31%, OEG 2.07%) und den vier Western-Electric-Laufregeln: Ein echter Sprung der Fehlerrate von 1.5% auf 2.5% wird bei Untergruppe 43 von einer Laufregel erkannt, während die nackte 3-Sigma-Regel im überwachten Fenster nie auslöst, und eine Kamera-Helligkeitsdrift bei unveränderter wahrer Fehlerrate alarmiert trotzdem – der Preis dieser Empfindlichkeit ist als In-Control-ARL von ~92 vs. ~370 bei 3-Sigma allein ausgewiesen.",
         "Unerwarteter Befund, berichtet: Längeres Training des Autoencoders verschlechterte ihn (Gesamt-AUC 0.779 -> 0.738 bei 30 Epochen, Blob-Erkennung 0.828 -> 0.610), weil gute Rekonstruktion das Anomaliesignal auslöscht.",
-        "Texturbrüche spalten das Feld: Der Autoencoder ist die einzige Methode, die bei ihnen nennenswert über dem Zufall liegt (0.609), und niemand kann sie lokalisieren (bester mittlerer IoU 0.043 vs. 0.011 bei zufälligen Heatmaps); ROC/PR/IoU sind von Grund auf in numpy implementiert, nirgends scikit-learn."
+        "Texturbrüche spalten das Feld: Der Autoencoder ist die einzige Methode, die bei ihnen nennenswert über dem Zufall liegt (0.609), und niemand kann sie lokalisieren (bester mittlerer IoU 0.043 vs. 0.011 bei zufälligen Heatmaps); ROC/PR/IoU sind von Grund auf in numpy implementiert, nirgends scikit-learn.",
+        "Der Alarm hat jetzt einen gemessenen Out-of-Control-Aktionsplan: vier Reaktionen auf den Kameradrift-Alarm - weiterlaufen lassen, den Schwellwert auf dem ungelabelten Strom neu zentrieren, auf 200 aktuellen verifiziert-sauberen Frames neu fitten, die Kamera reparieren -, jede auf vier Driftstufen gemessen und bepreist. Die billige Abhilfe ist eine Falle, die die Karte nicht sehen kann: Neuzentrieren beruhigt die p-Karte konstruktionsbedingt, während ihre ROC-AUC bit-identisch zum Nichtstun bleibt - bei +0.10 Drift fängt der 'erholte' Screen 1.1 von 15 Fehlern hinter einer unauffällig wirkenden Flag-Rate, eine grüne Karte über einem blinden Screen -, während ein Neufit die ROC-AUC auf jeder Driftstufe auf ~0.785 zurückbringt und ab +0.05 ~99% der driftbedingten Kosten zurückholt. Ehrlicher Rahmen: Die Drift ist ein synthetischer Helligkeits-Stellvertreter, und das Refit-Fenster gilt als verifiziert sauber und kostenlos - Verifikationsaufwand und Rekalibrierungs-Stillstand sind nicht bepreist."
       ]
     },
     {
@@ -1079,7 +1091,7 @@
       "metrics": [
         {
           "label": "Reconciliation identities",
-          "value": "13/13 artifact PASS + 3 additive",
+          "value": "13/13 artifact PASS + 4 additive",
           "label_de": "Abstimmungsidentitäten"
         },
         {
@@ -1103,6 +1115,7 @@
         "Distributors fail at the seams, not inside silos - so stage 6 is the product: a reconciliation ledger of 13 pytest-able identity checks that print both numbers, from cleaned revenue reproduced across two repositories to the penny (GBP 19,643,861.62) and the cost ledger summing to the cent, down to every pick (256,787 lines), carton (70,820) and route drop (4,151) conserved.",
         "Inter-stage sensitivity closes in closed form: a 15th identity proves the arc-elasticity of total cost to a forecast surge equals the holding-cost share exactly - 0.0580 on the committed full run, so a doubling of forecast demand would raise modelled cost-to-serve by 5.80% while every delivered-cost line and the real revenue stay unmoved; additive to the 13 artifact identities, the committed artifact unchanged.",
         "A 16th identity (p) spreads the published cost ledger over every one of the 4,151 real orders under labelled allocation rules (labour by the order's own DES pick minutes, transport by its carton share of its delivery day's CVRP km, facility split equally, holding honestly kept on the SKU plane) and machine-checks that the spread loses nothing and invents nothing - each column reassembles to its ledger line and both planes jointly to the ledger total, to the cent (253,427.16). The distribution is the finding: the costliest 10% of orders carry 59.0% of delivered cost (Gini 0.665), and the 191 orders (4.6%) whose modelled cost exceeds their own real revenue are reported as the model's shape under invented rates - a labelled cost model, never a profit claim.",
+        "A 17th identity (q) turns the service-vs-cost dial: the van capacity (a labelled synthetic-assigned fleet parameter, base 80 cartons) is swept across a deterministic grid from 1 to 320, every delivery day's CVRP + Clarke-Wright is re-solved at each setting by the existing stage-4b engine and all 13 identities are re-checked at every knob point - and at every capacity the routed drops and cartons are conserved exactly (the knob changes HOW cartons ride, never WHAT ships), labour, holding, facility and the real window revenue stay invariant to the cent, the transport line equals CVRP km x the published rate rebuilt independently, and the total moves by exactly the transport delta. The measured curve is diminishing returns: capacity buys km only while it binds - 1 to 10 cartons per van saves 206,937.7 km, 40 to 80 saves 1,686.7, and 160 to 320 only 194.8 - and one omission is deliberate and declared: this ledger prices km, not vehicles, so the downhill direction of the curve is a model property, never fleet advice; vehicle-days are reported unpriced next to the pounds.",
         "Honest findings kept in the headline: nothing beats the naive walk on lumpy demand (MASE 1.782); the exact Hungarian slotting optimum is worth only 1.6% over classic ABC, with the rearrangement-inequality math explaining why; OR-Tools CVRP beats the 1964 Clarke-Wright baseline by only 0.2% and loses 19 of 48 days; the synthetic picking crew is 18% utilized - measured, not tuned away.",
         "Measuring is split from presenting: the ~51-minute full run (48 per-day CVRPs) serializes to a committed, code-fingerprinted run artifact; the offline Flask CHAIN DASHBOARD (13-identity reconciliation panel, provenance-colored stage flow) boots from it in seconds and recomputes nothing; PDF + Excel deliverables regenerate from the same artifact byte-for-byte; every quantity carries a provenance tag (real | derived | synthetic-assigned), invented cost rates are labelled INVENTED, and the cost table makes no profit claims."
       ],
@@ -1113,6 +1126,7 @@
         "Distributoren scheitern an den Nähten, nicht in den Silos – deshalb ist Stufe 6 das Produkt: ein Abstimmungs-Ledger aus 13 pytest-fähigen Identitätsprüfungen, die beide Zahlen ausgeben, vom über zwei Repositories auf den Penny reproduzierten bereinigten Umsatz (GBP 19,643,861.62) bis zum auf den Cent aufgehenden Kosten-Ledger, hinunter zu jedem erhaltenen Pick (256,787 Zeilen), Karton (70,820) und Routen-Stopp (4,151).",
         "Die stufenübergreifende Sensitivität schließt sich in geschlossener Form: Eine 15. Identität beweist, dass die Bogenelastizität der Gesamtkosten gegenüber einem Prognoseschub exakt dem Lagerkostenanteil entspricht – 0.0580 im committeten Vollauf, sodass eine Verdopplung der prognostizierten Nachfrage die modellierten Cost-to-Serve um 5.80% erhöhen würde, während jede Zustellkostenzeile und der reale Umsatz unbewegt bleiben; additiv zu den 13 Artefakt-Identitäten, das committete Artefakt unverändert.",
         "Eine 16. Identität (p) verteilt das veröffentlichte Kosten-Ledger über jeden der 4,151 realen Aufträge nach gekennzeichneten Zuordnungsregeln (Arbeitszeit nach den DES-Pickminuten des Auftrags, Transport nach seinem Kartonanteil an den CVRP-Kilometern seines Liefertags, Fixkosten gleichverteilt, Lagerhaltung ehrlich auf der SKU-Ebene belassen) und prüft maschinell, dass die Verteilung nichts verliert und nichts erfindet – jede Spalte setzt sich auf ihre Ledger-Zeile zurück zusammen und beide Ebenen gemeinsam auf die Ledger-Gesamtsumme, auf den Cent (253,427.16). Die Verteilung ist der Befund: Die teuersten 10% der Aufträge tragen 59.0% der Zustellkosten (Gini 0.665), und die 191 Aufträge (4.6%), deren modellierte Kosten ihren eigenen realen Umsatz übersteigen, werden als Form des Modells unter erfundenen Kostensätzen berichtet – ein gekennzeichnetes Kostenmodell, nie eine Gewinnaussage.",
+        "Eine 17. Identität (q) dreht am Service-vs-Kosten-Regler: Die Fahrzeugkapazität (ein gekennzeichneter synthetisch-zugewiesener Flottenparameter, Basis 80 Kartons) wird über ein deterministisches Raster von 1 bis 320 gefahren, der CVRP + Clarke-Wright jedes Liefertags wird bei jeder Einstellung von der bestehenden Stufe-4b-Engine neu gelöst und alle 13 Identitäten werden an jedem Rasterpunkt erneut geprüft - und bei jeder Kapazität bleiben die gerouteten Stopps und Kartons exakt erhalten (der Regler ändert, WIE Kartons fahren, nie WAS verschickt wird), Arbeitszeit, Lagerhaltung, Fixkosten und der reale Fensterumsatz auf den Cent unbewegt, die Transportzeile entspricht den unabhängig wieder aufgebauten CVRP-km x veröffentlichtem Satz, und die Gesamtsumme bewegt sich exakt um das Transport-Delta. Die gemessene Kurve zeigt abnehmende Erträge: Kapazität kauft Kilometer nur, solange sie bindet - 1 auf 10 Kartons je Fahrzeug spart 206,937.7 km, 40 auf 80 spart 1,686.7, 160 auf 320 nur 194.8 -, und eine Auslassung ist bewusst und erklärt: Dieses Ledger bepreist Kilometer, nicht Fahrzeuge; die abfallende Richtung der Kurve ist eine Modelleigenschaft, nie eine Flottenempfehlung, und Fahrzeugtage stehen unbepreist neben den Pfund-Beträgen.",
         "Ehrliche Befunde in der Schlagzeile behalten: Nichts schlägt den naiven Walk bei unregelmäßiger Nachfrage (MASE 1.782); das exakte ungarische Slotting-Optimum ist nur 1.6% mehr wert als klassisches ABC, wobei die Rearrangement-Ungleichung erklärt, warum; OR-Tools CVRP schlägt die Clarke-Wright-Baseline von 1964 nur um 0.2% und verliert an 19 von 48 Tagen; die synthetische Kommissioniercrew ist zu 18% ausgelastet – gemessen, nicht weggetunt.",
         "Messen ist vom Präsentieren getrennt: Der ~51-minütige Vollauf (48 CVRPs pro Tag) serialisiert zu einem committeten, code-fingerabgedruckten Run-Artefakt; das Offline-Flask-CHAIN-DASHBOARD (Abstimmungs-Panel mit 13 Identitäten, herkunftsgefärbter Stufenfluss) startet daraus in Sekunden und rechnet nichts neu; PDF- + Excel-Deliverables regenerieren aus demselben Artefakt byte-für-byte; jede Menge trägt ein Herkunfts-Tag (real | abgeleitet | synthetisch-zugewiesen), erfundene Kostensätze sind als INVENTED gekennzeichnet, und die Kostentabelle erhebt keine Gewinnbehauptungen."
       ]
@@ -1120,7 +1134,7 @@
     {
       "name": "chain-mcp",
       "slug": "chain-mcp",
-      "tagline": "The portfolio's engines as AI-callable tools: a standard-conformant MCP server exposing forecasting, slotting, packing, routing, leakage analytics and a repo auditor to Claude Desktop / Claude Code over the open Model Context Protocol - every result carrying contract-enforced, machine-readable provenance.",
+      "tagline": "The portfolio's engines as AI-callable tools: a standard-conformant MCP server exposing forecasting, slotting, packing, routing, leakage analytics and a repo auditor to Claude Desktop / Claude Code over the open Model Context Protocol - every result carrying contract-enforced, machine-readable provenance, and identical requests served from an idempotency-keyed result cache that says so.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
       "stack": [
@@ -1139,13 +1153,13 @@
         },
         {
           "label": "Tests",
-          "value": "145, incl. handshake, contract + provenance",
+          "value": "193, incl. handshake, contract, provenance + cache",
           "label_de": "Tests"
         },
         {
-          "label": "Error handling",
-          "value": "structured results - the server never crashes on a tool call",
-          "label_de": "Fehlerbehandlung"
+          "label": "Idempotency + result caching",
+          "value": "SHA-256 keys; provenance.cache on every success",
+          "label_de": "Idempotenz + Ergebnis-Caching"
         },
         {
           "label": "Result provenance",
@@ -1157,16 +1171,18 @@
       "highlights": [
         "Six real engines - per-demand-class forecasting (decision-chain), exact Hungarian slotting and FFD carton packing (logistics-digital-twin), deterministic-limit CVRP vs Clarke-Wright (route-optimizer), discount-leakage drill-down (sales-kpi-analytics), and a read-only repo auditor (portfolio-ops) - are imported read-only from sibling checkouts and declared with typed JSON schemas an MCP client discovers via the protocol handshake.",
         "Every tool validates its input, and every failure (bad input, missing source repo, engine error) comes back as a structured error result while the server keeps running; a machine-checked contract layer introspects the six served tools and asserts that registry, implementations and the published catalog stay in agreement, that every served inputSchema is a valid JSON Schema, and that a sample request/response round-trips against the real served contract.",
-        "Every tool result - success or error - carries a machine-readable provenance block, required by the contract layer's result envelope so no tool can omit it: server and engine commits (best-effort from the local checkout, null when unresolvable, never guessed), a canonical data label (synthetic / real+derived / real-local / caller-provided) cross-checked against the tool description's honesty wording, and a determinism flag; error results carry identity only - a failed call computed nothing, so it makes no data claims. 145 tests, including the live handshake, the validation matrix and the contract + provenance layer.",
+        "Every tool result - success or error - carries a machine-readable provenance block, required by the contract layer's result envelope so no tool can omit it: server and engine commits (best-effort from the local checkout, null when unresolvable, never guessed), a canonical data label (synthetic / real+derived / real-local / caller-provided) cross-checked against the tool description's honesty wording, and a determinism flag; error results carry identity only - a failed call computed nothing, so it makes no data claims. 193 tests, including the live handshake, the validation matrix and the contract + provenance + idempotency/cache layer.",
+        "Identical requests should not recompute - the enterprise-integration pattern: every call to a deterministic tool is assigned a reproducible SHA-256 idempotency key over a documented material string covering every fact the result depends on - server version, tool, canonically-sorted arguments with defaults applied, and the exact engine checkout (repo, resolved path, commit - read at call time) - and an identical earlier success is served from a bounded in-process LRU cache and says so: provenance.cache (cacheable / hit / key) is required by the contract layer's result envelope, so an agent always knows whether a number was just computed or replayed. Because the key embeds the engine commit, a cached result can never outlive the code that computed it - after a checkout change you get a fresh computation, never a stale replay; policy is derived from provenance (cacheable if and only if declared deterministic, so portfolio_status is never cached), errors are never cached, and the honest scope is stated: the cache lives and dies with one server process, no persistence, no cross-session sharing.",
         "Honesty is wired into the protocol layer: five tools state via a data_note that they run on deterministic synthetic seeded datasets; forecast_demand runs the real UCI Online Retail II pipeline (history labelled real, forecasts derived) - and if naive wins a demand class, naive is what gets reported. Ships ready-to-paste configs for Claude Desktop and Claude Code."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/chain-mcp",
-      "tagline_de": "Die Engines des Portfolios als KI-aufrufbare Tools: ein standardkonformer MCP-Server, der Prognose, Slotting, Packen, Routenplanung, Leckage-Analytik und einen Repo-Auditor über das offene Model Context Protocol für Claude Desktop / Claude Code bereitstellt – jedes Ergebnis mit vertraglich erzwungener, maschinenlesbarer Provenienz.",
+      "tagline_de": "Die Engines des Portfolios als KI-aufrufbare Tools: ein standardkonformer MCP-Server, der Prognose, Slotting, Packen, Routenplanung, Leckage-Analytik und einen Repo-Auditor über das offene Model Context Protocol für Claude Desktop / Claude Code bereitstellt – jedes Ergebnis mit vertraglich erzwungener, maschinenlesbarer Provenienz, und identische Anfragen werden aus einem idempotenzschlüssel-basierten Ergebnis-Cache bedient, der das auch sagt.",
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
         "Sechs echte Engines – Prognose je Nachfrageklasse (decision-chain), exaktes ungarisches Slotting und FFD-Kartonpackung (logistics-digital-twin), CVRP mit deterministischem Limit vs. Clarke-Wright (route-optimizer), Rabatt-Leckage-Drill-down (sales-kpi-analytics) und ein schreibgeschützter Repo-Auditor (portfolio-ops) – werden schreibgeschützt aus Nachbar-Checkouts importiert und mit typisierten JSON-Schemata deklariert, die ein MCP-Client über den Protokoll-Handshake entdeckt.",
         "Jedes Tool validiert seine Eingabe, und jeder Fehler (fehlerhafte Eingabe, fehlendes Quell-Repo, Engine-Fehler) kommt als strukturiertes Fehlerergebnis zurück, während der Server weiterläuft; eine maschinell geprüfte Contract-Schicht introspiziert die sechs bereitgestellten Tools und stellt sicher, dass Registry, Implementierungen und der veröffentlichte Katalog übereinstimmen, dass jedes ausgelieferte inputSchema ein gültiges JSON-Schema ist und dass ein Beispiel-Request/-Response gegen den real bereitgestellten Contract round-trippt.",
-        "Jedes Tool-Ergebnis – Erfolg oder Fehler – trägt einen maschinenlesbaren Provenienz-Block, den die Ergebnis-Hülle der Contract-Schicht verpflichtend macht, sodass kein Tool ihn weglassen kann: Server- und Engine-Commits (Best-Effort aus dem lokalen Checkout, null wenn nicht auflösbar, nie geraten), ein kanonisches Daten-Label (synthetic / real+derived / real-local / caller-provided), das gegen die Ehrlichkeits-Formulierung der Tool-Beschreibung gegengeprüft wird, und ein Determinismus-Flag; Fehlerergebnisse tragen nur die Identität – ein fehlgeschlagener Aufruf hat nichts berechnet und erhebt daher keine Datenbehauptungen. 145 Tests, einschließlich Live-Handshake, Validierungsmatrix und Contract- + Provenienz-Schicht.",
+        "Jedes Tool-Ergebnis – Erfolg oder Fehler – trägt einen maschinenlesbaren Provenienz-Block, den die Ergebnis-Hülle der Contract-Schicht verpflichtend macht, sodass kein Tool ihn weglassen kann: Server- und Engine-Commits (Best-Effort aus dem lokalen Checkout, null wenn nicht auflösbar, nie geraten), ein kanonisches Daten-Label (synthetic / real+derived / real-local / caller-provided), das gegen die Ehrlichkeits-Formulierung der Tool-Beschreibung gegengeprüft wird, und ein Determinismus-Flag; Fehlerergebnisse tragen nur die Identität – ein fehlgeschlagener Aufruf hat nichts berechnet und erhebt daher keine Datenbehauptungen. 193 Tests, einschließlich Live-Handshake, Validierungsmatrix und Contract- + Provenienz- + Idempotenz-/Cache-Schicht.",
+        "Identische Anfragen sollten nicht neu rechnen - das Enterprise-Integration-Muster: Jeder Aufruf eines deterministischen Tools erhält einen reproduzierbaren SHA-256-Idempotenzschlüssel über einen dokumentierten Materialstring, der jede Tatsache abdeckt, von der das Ergebnis abhängt - Serverversion, Tool, kanonisch sortierte Argumente mit angewandten Defaults und den exakten Engine-Checkout (Repo, aufgelöster Pfad, Commit - zur Aufrufzeit gelesen) -, und ein identischer früherer Erfolg wird aus einem begrenzten In-Process-LRU-Cache bedient und sagt das auch: provenance.cache (cacheable / hit / key) ist von der Ergebnis-Hülle der Contract-Schicht verpflichtend vorgeschrieben, sodass ein Agent immer weiß, ob eine Zahl gerade berechnet oder wieder abgespielt wurde. Weil der Schlüssel den Engine-Commit einbettet, kann ein gecachtes Ergebnis den Code, der es berechnet hat, nie überleben - nach einem Checkout-Wechsel gibt es eine frische Berechnung, nie ein veraltetes Replay; die Policy wird aus der Provenienz abgeleitet (cachebar genau dann, wenn als deterministisch deklariert, portfolio_status wird also nie gecacht), Fehler werden nie gecacht, und der ehrliche Rahmen ist benannt: Der Cache lebt und stirbt mit einem Serverprozess, keine Persistenz, kein sitzungsübergreifendes Teilen.",
         "Ehrlichkeit ist in die Protokollschicht eingebaut: Fünf Tools geben über eine data_note an, dass sie auf deterministischen, synthetischen, geseedeten Datensätzen laufen; forecast_demand durchläuft die reale UCI-Online-Retail-II-Pipeline (Historie als real gekennzeichnet, Prognosen als abgeleitet) – und wenn Naive eine Nachfrageklasse gewinnt, wird Naive berichtet. Liefert einfügefertige Konfigurationen für Claude Desktop und Claude Code."
       ]
     },
