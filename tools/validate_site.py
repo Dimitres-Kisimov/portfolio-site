@@ -69,12 +69,19 @@ BANNED_CLAIMS = (
 
 # Foreground/background CSS-token pairs the design actually uses; each must
 # meet WCAG AA for normal text (>= 4.5:1) in both color schemes.
+# --accent-2 (the oxide ledger accent) renders text as the hero eyebrow and
+# the section indices (on --bg), and as list markers inside cards (on
+# --surface); the feature arc-step stamp sets --on-accent on an --accent-2
+# fill; chips set --muted on --chip-bg.
 CONTRAST_PAIRS = (
     ("text", "bg"), ("text", "surface"), ("text", "surface-2"),
     ("text", "chip-bg"),
     ("muted", "bg"), ("muted", "surface"), ("muted", "surface-2"),
+    ("muted", "chip-bg"),
     ("accent", "bg"), ("accent", "surface"), ("accent", "accent-soft"),
     ("on-accent", "accent"),
+    ("accent-2", "bg"), ("accent-2", "surface"),
+    ("on-accent", "accent-2"),
 )
 AA_NORMAL_TEXT = 4.5
 

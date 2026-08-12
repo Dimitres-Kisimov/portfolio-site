@@ -496,22 +496,28 @@ TEMPLATE = """<!doctype html>
       <div class="lang-bar">
         {lang_toggle}
       </div>
-      {eyebrow}
-      <h1>Dimitres Kisimov</h1>
-      {lede}
-      <nav class="hero-links">
-        {nav_featured}
-        {nav_github}
-        {nav_browse}
-        {nav_impact}
-        {nav_approach}
-      </nav>
+      <div class="hero-grid">
+        <div class="hero-main">
+          {eyebrow}
+          <h1>Dimitres Kisimov</h1>
+          {lede}
+          <nav class="hero-links">
+            {nav_featured}
+            {nav_github}
+            {nav_browse}
+            {nav_impact}
+            {nav_approach}
+          </nav>
+        </div>
+        {hero_figure}
+      </div>
     </div>
   </header>
 
   <main class="wrap">
     <section id="featured" aria-labelledby="featured-h">
       <div class="section-head">
+        <p class="section-index" aria-hidden="true" data-en="01" data-de="01">01</p>
         {featured_h}
         {featured_note}
       </div>
@@ -522,6 +528,7 @@ TEMPLATE = """<!doctype html>
 
     <section id="projects" aria-labelledby="projects-h">
       <div class="section-head">
+        <p class="section-index" aria-hidden="true" data-en="02" data-de="02">02</p>
         {projects_h}
         {projects_note}
       </div>
@@ -535,6 +542,7 @@ TEMPLATE = """<!doctype html>
 
     <section id="impact" aria-labelledby="impact-h">
       <div class="section-head">
+        <p class="section-index" aria-hidden="true" data-en="03" data-de="03">03</p>
         {impact_h}
         <p class="muted">{impact_note}</p>
       </div>
@@ -546,6 +554,7 @@ TEMPLATE = """<!doctype html>
 
     <section id="approach" aria-labelledby="approach-h">
       <div class="section-head">
+        <p class="section-index" aria-hidden="true" data-en="04" data-de="04">04</p>
         {approach_h}
       </div>
       <div class="approach-grid">
@@ -602,12 +611,23 @@ def build() -> int:
         + bi(UI["impact_post"][0], UI["impact_post"][1], "span")
     )
 
+    # The hero cover figure: the project count, oversized. The numeral is
+    # derived from data/projects.json (never typed by hand), so the biggest
+    # number on the page is by construction an honest one.
+    hero_figure = (
+        '<p class="hero-figure">'
+        + bi(str(count), str(count), "span", cls="hero-count-value")
+        + bi("Projects", "Projekte", "span", cls="hero-count-label")
+        + "</p>"
+    )
+
     page = TEMPLATE.format(
         title=bi(UI["title"][0], UI["title"][1], "title"),
         skip=bi(UI["skip"][0], UI["skip"][1], "a", cls="skip", extra='href="#projects"'),
         lang_toggle=LANG_TOGGLE,
         eyebrow=bi(UI["eyebrow"][0], UI["eyebrow"][1], "p", cls="eyebrow"),
         lede=bi(UI["lede"][0], UI["lede"][1], "p", cls="lede"),
+        hero_figure=hero_figure,
         nav_featured=bi(
             UI["nav_featured"][0], UI["nav_featured"][1], "a",
             cls="btn primary", extra='href="#featured"',
