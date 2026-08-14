@@ -38,11 +38,31 @@ source describes qualitatively rather than as a single number.
   verdict **17 ACCEPT (€19,032/yr at baseline) / 12 HOLD (€16,187/yr parked)**, and the
   single biggest move (+15% on S0006, €15,836/yr, 45% of the pricing uplift) is **held**
   because the SKU survives the assortment re-optimization in only **67% of draws**. A
-  screening discipline under illustrative planning ranges, not a guarantee. 69 tests.
+  screening discipline under illustrative planning ranges, not a guarantee. A **scenario
+  compare** then puts two plans side by side and reconciles the difference rather than
+  reporting it: both are solved through the same `scenario.solve_plan` core (no second
+  model, no re-derived perturbation) and the **€ bridge attributes every euro to a named
+  driver**, summed in *integer cents* so it reconciles by construction rather than to a
+  tolerance. Baseline **€159,966.19** vs *Cost inflation +8%* **€139,487.29** closes with a
+  **residual of exactly €0.00** — and the single −€20,479 delta hides both halves of the
+  story: pricing *gains* **€7,382.88** from changed conditions at frozen prices (+€5.40 of
+  actual price action, −€264.96 of assortment mix), promo response loses **€3,707.02** on
+  the carried set, and the **MILP-vs-greedy assortment gap loses €23,895.20**. Honest about
+  its own construction: two of the drivers are **ordered**, so splitting a shared SKU's Δ
+  into "the world moved" and "we moved the price" is a sequential attribution — it closes to
+  the cent, but a different order would hand the interaction term to the other driver — and
+  the assortment gap moves as **one** line because a difference of two optimization
+  objectives over different subsets genuinely does not decompose per SKU (shipped whole
+  rather than split into invented per-SKU drivers). Illustrative planning ranges on
+  synthetic data: what the model computes under each assumption, not a forecast. 91 tests.
 - **Visualizations:** `docs/img/uplift_waterfall.png` (baseline→optimized waterfall);
   `deliverables/sensitivity_tornado.svg` + `.csv` (driver tornado);
   `deliverables/uplift_distribution.svg` + `uplift_simulation.csv` (Monte-Carlo band);
   `deliverables/price_move_robustness.svg` + `.csv` (per-move accept/hold gate);
+  `deliverables/plan_compare_summary.csv`, `plan_compare_bridge.csv` (anchor rows included,
+  so the file itself proves the identity closes), `plan_compare_lines.csv` and
+  `plan_compare.svg` (the A/B € bridge), fed to the dashboard's compare panel by
+  `web/compare.js`;
   executive PDF/PPTX deck (assortment before/after, inventory frontier, price-move
   distribution, promo allocation, model-quality slide); `web/index.html` offline dashboard
   (hand-drawn SVG, light/dark, promo what-if slider); Power BI star schema + DAX.
@@ -74,12 +94,26 @@ source describes qualitatively rather than as a single number.
   execution**; the chart's per-rep labels are read back off the SVG and asserted equal to
   the source to the cent. Honest that this synthetic data assigns orders at random, so
   indices *should* cluster near 1.00 — on real data a persistent gap would be the
-  coaching signal.
+  coaching signal. **Customer concentration & dependency risk** is measured with
+  arithmetic rather than prediction, and the company-level answer is the trap: over the
+  trailing 12 months the book scores **Gini 0.5476** and **HHI 68** — ~**148 effective
+  accounts out of 383**, the top 10 billing just **15.4%**, and **156 accounts (41%)**
+  needed to make 80% — which reads *unconcentrated* and, taken alone, would be reassuring
+  and wrong. Inside a territory it is not calm: the largest account (**C0393, €395,740.85,
+  3.51% of revenue**) is **35.76% of one rep's own book**, whose **HHI is 2,064** with a
+  top-3 of **64.10%** and **4.8 effective accounts**. Every "what if we lost them" figure
+  is **removal arithmetic on measured revenue** — no churn probability is modelled
+  anywhere, the first cut of the module was fixed by *dropping* a wrong "churned /
+  dormant" label off a still-ordering account rather than softening it, and a test asserts
+  no churn or RFM key can reappear; the HHI bands are the DOJ–FTC merger-guideline cuts
+  borrowed as a yardstick — an analogy, not a regulatory reading.
 - **Visualizations:** `deliverables/forecast.png` (revenue history + 3-month forecast);
   `deliverables/pacing_bullet.svg` (pacing bullet chart, euro labels asserted equal to the
   computed figures); `deliverables/rep_performance.svg` + `.csv` (diverging stacked
   decomposition, TOTAL row ties out); `deliverables/executive_review.pdf` (8-slide EBR) and `.pptx`;
-  `deliverables/kpi_workbook.xlsx`; `deliverables/reorder_list.csv`; offline
+  `deliverables/kpi_workbook.xlsx`; `deliverables/reorder_list.csv`;
+  `deliverables/customer_concentration.csv` + `.svg` + `.png` (the Lorenz/concentration
+  view, TOTAL row tying out) and §12 of `deliverables/management_report.md`; offline
   `web/index.html` dashboard.
 - **Use case:** the QBR a distributor's BI team prepares for leadership.
 - **Open improvements:** (1) longer/real history so the smarter forecasters earn their keep;
@@ -107,12 +141,28 @@ source describes qualitatively rather than as a single number.
   quarters of the bill**, and one supplier that delivers early on average (−0.4 days)
   still costs €542. The quoted-basis column reproduces `dip.inventory`'s safety stock to
   the cent (test-asserted); the layer is labelled a working-capital consequence on
-  synthetic receipts, deliberately kept out of the €136,972 uplift total.
+  synthetic receipts, deliberately kept out of the €136,972 uplift total. A **plan-diff
+  station** answers the question that follows every re-run — *what changed since last
+  time, and why?* — by diffing two full plan runs into a **€ bridge in which every euro is
+  attributed to a named cause**, held up by **11 change identities**. On the shipped
+  default pair the headline moves **€136,972.20 → €115,728.86**, and the single
+  **−€21,243.34** delta hides the actual story: price moves **−€29,931.98** (184 of 200
+  recommendations moved), SKUs dropped **−€150,919.35** (21 left the range) against
+  greedy-baseline re-picks of **+€150,224.01**, routing **+€9,384.00** (32.64 km/run saved
+  at €1.15/km × 250), and a publication-rounding line of **−€0.02 against a €4.03 bound
+  over 806 values**. The rounding line is real, not a plug — never fitted to close the gap,
+  and mis-attributing a single SKU stops the bridge closing; the inventory diff is
+  deliberately kept *out* of the uplift bridge, so a pair that changes only the
+  replenishment knobs correctly posts a **€0 uplift delta** (tested); and the assortment
+  lever gets its own line precisely because it moves against intuition, instead of being
+  netted into a small number with no explanation. **The bridge is an identity, not an
+  illustration.**
 - **Visualizations:** executive PDF (`deliverables/executive_review.pdf`) + Excel; a hand-built
   command-center dashboard (`templates/`, `static/`); the inventory policy served via
   `GET /api/inventory` (per-SKU rows + a nine-cell ABC-XYZ roll-up); supplier scorecards +
-  the safety-stock consequence served via `GET /api/reliability`; screenshot slots in
-  `docs/img/`.
+  the safety-stock consequence served via `GET /api/reliability`; the plan diff served via
+  `GET` / `POST /api/plan-diff` and surfaced as station **ST-07 · Change** on the dashboard
+  (API + UI only — this layer writes no file artifact); screenshot slots in `docs/img/`.
 - **Use case:** one place where descriptive numbers, the forecast and the optimization of
   price/assortment/inventory/routing all live together.
 - **Open improvements:** (1) the MILP barely beats greedy under this cost structure — worth an
@@ -146,15 +196,34 @@ source describes qualitatively rather than as a single number.
   **seasonal-naive wins the forecasting bake-off** (mean MASE 1.094 vs 1.187 for
   Holt-Winters); **22.77% of rows have no CustomerID** and are flagged rather than
   dropped; the data-quality report card (raw C → cleaned A) is labelled a heuristic
-  scorecard with stated weights, not a certification of data correctness. 113 tests.
+  scorecard with stated weights, not a certification of data correctness. **Price ladders**
+  take the same discipline into pricing: `Price` here is not a property of a product but of
+  a *line* — **4,342 of 4,895 SKUs (88.7%) sold at more than one price** — so the ladder is
+  measured before anything is said. On the cohort with ≥ 4 distinct prices and ≥ 200
+  invoice lines (**1,342 SKUs carrying 79.7% of revenue, GBP 15,653,663**; median **6
+  rungs**, p90/p10 spread **2.00×**), **39.5% of units sold below the posted price, 51.5%
+  at it, 9.0% above**, and **price realization is 98.6% — reported as a fact, not an
+  opportunity** (the GBP 216,608 gap is 1.4%). Two independent log-log slopes are kept
+  apart on purpose: **within-week −1.71** (measured on variation containing *no price
+  change at all* — the discount schedule alone) and **posted price week to week −1.78**,
+  **market-adjusted −1.67**, with **96.0%** of market-adjusted slopes negative and **825 of
+  1,113 SKUs (74.1%)** beating their own **199-draw permutation null at p ≤ 0.05** (553
+  single-price SKUs excluded). What the slopes do *not* license is the headline: read
+  **−1.0 as the benchmark, not zero** — a buyer who spends the same amount per line
+  whatever the price produces exactly −1 with no demand response — the two measurements
+  correlate at only **r = 0.20** per SKU, and prices were never randomised, with no cost,
+  competitor or stock data, so **nothing here is an elasticity and nothing here is
+  causal**: an assortment-level statement, not a per-SKU price recommendation. 113 tests.
 - **Visualizations:** `deliverables/retail_analytics_executive.pdf`;
   `deliverables/retail_analytics.xlsx` (sheets CleaningReport → DataQuality, incl. a
   Lifecycle sheet);
   `deliverables/cohort_retention.csv`, `customer_lifetime_value.csv`,
   `returns_analysis.csv`, `lifecycle_stages.csv`, `lifecycle_flows.csv`,
-  `data_quality_report_card.md`; `figures/` chart set
-  (`monthly_revenue.png`, `cohort_retention.svg`, `clv_validation.png`,
-  `returns_analysis.png`, `lifecycle_stages.svg`, and more).
+  `price_ladder.csv` (the full per-SKU ladder with both slopes and the permutation
+  p-value) and the workbook's `PriceLadder` sheet, `data_quality_report_card.md`;
+  `figures/` chart set (`monthly_revenue.png`, `cohort_retention.svg`,
+  `clv_validation.png`, `returns_analysis.png`, `lifecycle_stages.svg`,
+  `price_ladder.png`, and more).
 - **Use case:** honest, leakage-safe retail analytics on real transactions — the project
   that shows what the synthetic-portfolio methods do when the data is genuinely messy.
 - **Open improvements (its own framing):** (1) a single UK retailer with one full seasonal
@@ -224,20 +293,38 @@ source describes qualitatively rather than as a single number.
   catalogue costs are illustrative labelled estimates, not certified rates; every plan is a
   heuristic under a fixed search budget (byte-identical reruns), and the deliverable reports
   whatever the numbers say — on n60 the mixed pool simply agrees with the all-large answer
-  (+0.0%). 46 tests.
+  (+0.0%). A **driver shifts & working-time** layer then models the day as three kinds of
+  minute — driving (distance × 60 / speed), service at the kerb, and breaks — under a
+  **600-min duty envelope**, a **540-min daily driving limit** and a mandated **45-min
+  break before 270 min** of continuous driving, at 40 km/h and 5 min per stop. **The
+  statutory limits are slack on this data, and the deliverable says so**: audited on the
+  shift-blind savings plan the worst duty is **267 min (4h27)** across 10 vans — **333 min
+  of headroom** — the worst continuous drive is **227 min** against the 270-min threshold
+  (**43 min of slack**), **zero breaks** are required, and **10/10 vans** clear both
+  limits. The cap sweep shows where the constraint would start to cost (uncapped reference
+  1,001.6 km on 10 vans): **480 and 420 min cost nothing at all**, 360 → 1,010.3 km, 300 →
+  1,014.3 km, **240 min costs +5.3% distance**, **210 min costs +17.5% and an eleventh
+  van**, and at **180 min there is no plan at any fleet size** — a *proof*, not a search
+  that gave up. The defaults are **informed by EU Regulation (EC) No 561/2006 as a
+  modelling choice, not an implementation and not a compliance certification**: a real duty
+  would be longer than every number reported, every capped plan is a heuristic under a
+  fixed search budget (so the distance curve need not be monotone in the cap), and nothing
+  here should be used to judge whether a real roster is legal. 74 tests.
 - **Visualizations:** `deliverables/routes.png` (OR-Tools routes on the 60-customer instance);
   `deliverables/route_plan.csv`; `deliverables/summary.md`; `deliverables/robustness.svg` +
   `.csv` + `.md` (the scenario sweep); `deliverables/fleet_mix.svg` + `.csv` + `.md` (the
-  mixed-vs-homogeneous fleet comparison); `web/index.html` interactive Canvas map with a
+  mixed-vs-homogeneous fleet comparison); `deliverables/driver_shifts.svg` + `.csv` + `.md`
+  (the duty audit and the cap sweep); `web/index.html` interactive Canvas map with a
   savings-heuristic overlay toggle and light/dark.
 - **Use case:** the last-mile delivery plan a distributor builds every morning — now with the
   buffer question ("how much headroom is worth paying for?") answered with a measured sweep,
   and the van-catalogue question priced in money rather than kilometres.
 - **Open improvements:** (1) Euclidean distance, not road-network — add an OSRM/Valhalla
-  matrix; (2) single depot still — time windows are now modelled (the VRPTW / service-level
-  layer, on synthetic windows and a fixed per-stop service time) and the fleet can now be
-  heterogeneous (illustrative catalogue costs, not quotes); multi-depot, driver shifts and
-  variable service times are the next constraints, and OR-Tools supports all of them.
+  matrix; (2) single depot still — time windows are modelled (the VRPTW / service-level
+  layer, on synthetic windows and a fixed per-stop service time), the fleet can be
+  heterogeneous (illustrative catalogue costs, not quotes), and driver duty / working time
+  is now modelled too (informed by EU 561/2006, not an implementation of it); multi-depot
+  and variable service times are the next constraints, and OR-Tools supports both.
 
 ## 7. supply-network-opt — Logistics & Optimization (Job #2)
 
@@ -266,13 +353,31 @@ source describes qualitatively rather than as a single number.
   stays at three), and the **4th DC first pays at 1.30x** — exactly when any 3-DC design
   physically caps out (the three largest candidates hold 1.29x) — with the 5th at 1.65x
   and the 6th at 1.95x as an economic trigger; growth is modelled as uniform, and the
-  expansion triggers are planning estimates on synthetic data, not forecasts. 71 tests.
+  expansion triggers are planning estimates on synthetic data, not forecasts. A **phased
+  build plan** finally puts a calendar and a discount rate on that staircase: demand grows
+  at an **assumed 6%/yr** and every year is priced by re-solving the **same** facility MILP,
+  with policy continuity expressed through the same `force_open` / `force_closed` pins the
+  resilience and growth modules already use. Over 10 years at an **assumed 10% discount
+  rate**, staging the build costs **$2,750,462 NPV** — open **DC0 in year 2, DC3 in year
+  6**, ending on **5 DCs** — against a **$2,598,732** free-redesign lower bound (7 site
+  closures, and it closes live DCs at zero cost, which is why it is a *bound*);
+  **building ahead costs $671,597 more (+24.4%)**, **never closing a site costs $151,730
+  (+5.8%)**, and doing nothing **fails in year 2**, when demand reaches 1.124x and clears
+  the 1.088x wall (by year 9 demand is 1.69x against a 2.74x candidate-pool and 2.10x plant
+  ceiling). Test-asserted orderings: free ≤ staged ≤ build-ahead, and staged ≤ frozen. The
+  growth and discount rates are **illustrative assumptions, not forecasts**; fixed cost is
+  modelled as a **recurring per-period operating cost, not one-time capex**, a DC opens with
+  **no construction lead time**, and costs are charged at the start of each year — so the
+  build-ahead premium is the price of readiness rather than a finding that early building is
+  wrong, and a model carrying capex or land escalation could reverse the sign. 71 tests.
 - **Visualizations:** executive PDF (cover with disclaimer, network map of opened DCs and
   flows, cost-breakdown bar, pooling chart, cost-vs-CO2 Pareto page, resilience page,
-  service-frontier page, two-panel growth page) + Excel workbook (Summary → Assignment,
-  incl. a Growth sheet); `deliverables/co2_cost_frontier.svg` + `co2_sensitivity.csv`;
+  service-frontier page, two-panel growth page, plate 09 for the build schedule) + Excel
+  workbook (Summary → Assignment, incl. Growth and BuildSchedule sheets);
+  `deliverables/co2_cost_frontier.svg` + `co2_sensitivity.csv`;
   `deliverables/service_frontier.svg` + `.csv`; `deliverables/growth_expansion.svg` +
-  `growth_plan.csv` (all SVGs hand-drawn).
+  `growth_plan.csv`; `deliverables/build_schedule.svg` + `.csv` (all SVGs hand-drawn; the
+  `deliverables/` tree is generated rather than committed).
 - **Use case:** the network-design conversation a distributor has every few years — where
   to put DCs, how product should flow, how much stock each tier needs — with service, CO2
   and robustness priced instead of asserted.
@@ -319,11 +424,30 @@ source describes qualitatively rather than as a single number.
   0 false alarms on clean runs. A property of this fault schedule and this task's
   recomputable ground truth, **not a production guarantee**; the verifier checks the
   structured payload, never the prose — a blind spot that is unit-tested rather than
-  hidden. 71 tests.
+  hidden. **Human-in-the-loop checkpoints** are then priced *per placement* rather than
+  argued: the agent stops at a gate and hands out a **resumable, digest-stamped JSON
+  envelope** of its own run (transcript, tool state, counters, guard trace, pending calls),
+  and `Agent.resume()` continues from it — nothing is re-sent to the model and no tool runs
+  twice, so **an approved gate costs 0 extra tokens**, where restarting instead of resuming
+  would multiply attempt cost **7.90×**. Five placements, same fault schedule, anchor tier,
+  ~104,000 RFQs/yr, labour at €45/h: **no gate** leaves **11,523 silent-wrong quotes/yr**
+  (€780 labour); **risk-gated** review — only the runs where guards and verifier disagree —
+  takes that to **0** for **28,349 reviews, 1.24 FTE, €88,948/yr = €7.65 per prevented
+  error**; **pre-commit** €177,205/yr (€15.31); **pre-delivery** €188,438/yr (€16.29); and
+  **approving every step** €349,708/yr (€30.28) — which **buys nothing extra on this
+  schedule**. Placement also decides what is caught at all: a *skipped validation* is
+  missed at `pre_commit` and at `every_step`, but caught at `pre_delivery` and
+  `risk_gated`. The reviewer is **modelled, and modelled generously** — an ideal one, so
+  every catch rate is an **upper bound** and the 0 false alarms say nothing about people;
+  review times are assumed scenario parameters except the business case's own 2-minute
+  draft review; there is **no queue model**; and labour in EUR sits beside tokens in USD,
+  **reported side by side, never summed**. 100 tests.
 - **Visualizations:** `benchmarks/results/scorecard.png` (nine-dimension comparison);
   `benchmarks/results/scorecard.md`; `eval/cost_scorecard.md` (+ `.json`/`.csv`, byte-stable);
   `eval/reliability_scorecard.md` (+ `.json`/`.csv`, byte-stable);
   `eval/verification_scorecard.md` (+ `.json`/`.csv`, byte-stable);
+  `eval/checkpoint_scorecard.md` (+ `.csv` / `checkpoint_results.json`) — the five
+  placements costed per prevented error, per tier;
   `deliverables/executive_onepager.pdf`; agent trace output.
 - **Use case:** deciding low-code vs full-code (vs hybrid) for an agentic automation, with the
   trade-off measured rather than asserted — and the model bill estimated before anyone runs it.
@@ -383,9 +507,25 @@ source describes qualitatively rather than as a single number.
   and **auto-posting pays only above 98.4% precision** (break-even at 1 − 0.40/25) — a
   bar no measured policy clears credibly. Measured operating points, modelled prices. Two
   parsing bugs (VAT 19.95 vs 19; Subtotal read as Total) pinned by regression tests; EU
-  (`1.234,56`) and US (`1,234.56`) number parsing.
+  (`1.234,56`) and US (`1,234.56`) number parsing. **Side-by-side original ↔ extracted with
+  real source spans**: hit Extract and the left column becomes the document you submitted,
+  rendered as a **line-numbered sheet with every value the engine read underlined where it
+  was read**. That is real provenance rather than the UI re-searching the text for
+  something that looks like the answer — each extractor records the span of the match that
+  produced its value (`{"start": 177, "end": 190, "line": 12, "col": 17, "text":
+  "INV-2026-8842"}`), and the counter states coverage plainly: **25 of 26 extracted values
+  located in this document · 1 derived (no span)**. A computed value **has no span and says
+  so**; a span that does not match is reported as **not located** rather than drawn
+  somewhere plausible; and a span is the **source evidence, not a copy of the value**, so a
+  `1.234,56` span carries those characters while the caption reads *→ read as 1234.56*.
+  Across **all 30 committed documents** (3 samples + the 27-document eval set) every span
+  must satisfy `text[start:end] == span["text"]`. Honest scope: the sheet is the plain text
+  you submitted — there is no PDF or scan rendering behind it, so **a span is a character
+  range, never a pixel region on an image**.
 - **Visualizations:** the web UI trace view (per-stage events, confidence scores) served by
-  `python -m docextract.server`; JSON/CSV exports; the per-policy cost table in
+  `python -m docextract.server`, now with the line-numbered source sheet and its underlined
+  spans (they ride inside the existing `/extract` payload — no second route, no second
+  pass); JSON/CSV exports; the per-policy cost table in
   `eval/cost_results.json`; `deliverables/executive_onepager.pdf`.
 - **Use case:** an AP & order-desk team keying supplier invoices, order confirmations and
   delivery notes into the ERP.
@@ -502,11 +642,26 @@ source describes qualitatively rather than as a single number.
   **break-even inspection cost of 553.3 units** (~11x the assumed 50). Honest that the
   rates are illustrative and the tuned threshold is selected on the same held-out
   machine-days it is priced on — the shape of the closed loop, not a certified operating
-  point. 80 tests.
+  point. The same fit now prices the **storeroom**, which is the bill nobody quotes: every
+  policy is a renewal process consuming one part per cycle, so the Weibull (**β 4.81, η
+  73.6 d, MTBF 67.4 d**, 6 failures + 14 suspensions) gives each policy's part-demand rate
+  and a **Poisson base stock** says what 20 machines must hold over 365 days at **95%
+  service**. Run-to-failure and condition-based draw **0.0148 parts/machine-day** (108.3
+  expected, **base stock 126**, 18 safety); **age replacement at T\* = 44.4 d** shortens the
+  cycle to 43.8 d and draws **0.0229** (166.8 expected, **base stock 188**, 21 safety) — the
+  calendar policy cuts the cost rate 51.7% but pulls **+54% more parts**. The Poisson
+  assumption is checked rather than assumed away: measured cycle CV is **0.24** and
+  **0.07**, both well under the 1.00 Poisson implies, and a renewal-variance alternative
+  would hold **112 / 168** instead — so the base stock is deliberately conservative. **A
+  modelled provisioning exercise, not an order**: no replenishment lead time, no batching,
+  no repairable-part loop, and it counts units, not money (the file header says so:
+  *"SYNTHETIC data; part demand is MODELLED from a censored Weibull fit, not measured"*).
+  80 tests.
 - **Visualizations:** `deliverables/pdm_report.pdf` (cover with disclaimer, PR curves, health
   ranking, before/after Gantt) and `deliverables/pdm_workbook.xlsx` (Machines, Alerts,
   HealthIndex, Schedule, Comparison sheets); `docs/cbm_tuning.svg` + `.csv` (the swept
-  cost curve against both benchmarks).
+  cost curve against both benchmarks); `docs/spares_plan.svg` + `.csv` (the per-policy
+  part-demand rate and Poisson base stock, regenerated by `python -m pdm --spares-out docs`).
 - **Use case:** an operations team ranking degrading machines and scheduling scarce
   maintenance crews so the riskiest work happens first.
 - **Open improvements (its own framing):** (1) fault signatures are the author's own designs,
@@ -544,10 +699,31 @@ source describes qualitatively rather than as a single number.
   observed recall every round, by construction** (true label coverage 23–35%): the model
   grades its own homework. A model of a process, not a measurement of one — review
   capacity and the 85% chargeback rate are labelled assumptions, and chargebacks land at
-  the round boundary instead of 30–90 days late. 55 tests.
+  the round boundary instead of 30–90 days late. **Reason codes** answer *why did this
+  alert fire?* the way regulated lending answers it — a short list of **principal reasons**
+  — and the decomposition is **exact rather than approximate**, which is the only reason it
+  is worth shipping: the champion is linear in its standardized features, so fixing a
+  reference profile (the mean training-window transaction, which scores **z(r) = −0.509**)
+  makes the per-feature terms *the* Shapley values of the score under an interventional
+  reference. The tests check that against **brute-force enumeration over all 2^m
+  coalitions** (to 1e-12) instead of citing it, and the explained set is the **same 608
+  alerts the shipped threshold fires**, never a re-derived one. Across those alerts
+  `merchant_category` is the principal reason on **40.5%** but confirms fraud only
+  **11.4%** of the time, while `transaction_amount` is principal on **19.1%** and confirms
+  **20.7%** — **the most common reason is not the most predictive one** — and inside the
+  100-review queue `transaction_amount` heads **59.0%** of rows at **33.0%** confirmed
+  fraud. Removing just the single largest contribution drops **88.7%** of alerts back under
+  the threshold (median 1, against **3.30** reasons listed per alert). Read honestly:
+  contributions are **logits against a stated reference — not probabilities, not dollars,
+  not causal**; change the reference and every number changes; a faithful account of the
+  *score* can still be an incomplete account of the *fraud*; and the four-reason format is
+  borrowed from ECOA / Regulation B adverse-action practice as a discipline — a fraud alert
+  is not a credit denial, and nothing here is legal advice. 78 tests.
 - **Visualizations:** executive PDF + Excel workbook via `python -m fdo --deliverables`
   (matplotlib PdfPages / openpyxl); reliability and cost-curve tables in the report;
-  `figures/feedback_loop.csv` (the byte-deterministic per-round trajectory).
+  `figures/feedback_loop.csv` (the byte-deterministic per-round trajectory);
+  `figures/reason_code_summary.csv` (the population table), `figures/reason_codes.csv` (the
+  per-alert notice for the 100 queued reviews) and `figures/reason_codes.svg`.
 - **Use case:** a small analyst team deciding which alerts fire, which 100 of 608 fired
   alerts actually get reviewed, and whether the retrained model earns its promotion.
 - **Open improvements (its own framing):** (1) constructed fraud patterns guarantee
@@ -577,10 +753,30 @@ source describes qualitatively rather than as a single number.
   offer without sub-metering — and finds weather-driven load is **4.5% of the year's
   energy** (68 MWh) yet **76 kW of the 412 kW July peak hour is chiller load (18%)**: in
   the worst month the battery is, to first order, shaving the weather; labelled a modelled
-  attribution, not a sub-meter. 72 tests.
+  attribution, not a sub-meter. **Battery sizing** then refuses to answer the procurement
+  question from the bound: every candidate system is a *complete* causal backtest of the
+  same deployable controller (weekly-refit forecast, month-anchored plan, meter-clamped
+  execution — every rule unchanged) re-run against a different battery, power scaled at the
+  default spec's 0.30 C. At an **ASSUMED linear EUR 375/kWh installed** — the midpoint of
+  the EUR 120,000–180,000 range — break-even over a 15-year life is **EUR 25 per kWh-year**,
+  and **only the smallest system on the grid clears it**: 100 kWh / 30 kW earns **EUR
+  3,328/yr (77.0% capture), EUR 33.3 per kWh-year, an 11.3-year payback**, against 200 kWh
+  EUR 5,121 (14.6 yr), the default 400 kWh EUR 8,066 (**18.6 yr**), 600 kWh EUR 9,939 (22.6
+  yr) and 800 kWh EUR 12,579 (23.8 yr) — *"buying four times the battery buys 2.4x the
+  saving and turns an 11-year payback into a 19-year one."* The awkward parts stay in: the
+  600→800 kWh step (**EUR 13.2/kWh-yr**) is worth *more* than the 400→600 step (**EUR
+  9.4**), so the curve is not concave; and it is an energy problem, not a power one —
+  doubling the inverter to 240 kW buys **EUR 0/yr** while halving it to 60 kW costs **EUR
+  824/yr**. Demand charge only (no arbitrage, no TOU stacking), simple undiscounted
+  payback, no degradation or O&M — and the per-kWh price is **linear where real quotes are
+  not**, a caveat the repo states precisely because it flatters the small systems its own
+  table just recommended; five capacities and two inverter ratings, not a continuous
+  optimum. 72 tests.
 - **Visualizations:** `deliverables/energy_report.pdf` (6-page executive PDF with the
   per-fold table) and `deliverables/energy_workbook.xlsx` (4 sheets);
-  `docs/temp_sensitivity.svg` + `.csv` (base load vs weather-driven load, monthly).
+  `docs/temp_sensitivity.svg` + `.csv` (base load vs weather-driven load, monthly);
+  `docs/battery_sizing.svg` + `.csv` (the capacity grid with causal capture, marginal value
+  per kWh-year and payback, plus the inverter-rating probe).
 - **Use case:** a light-industrial site cutting the demand-charge line of its electricity
   bill — forecast first, then dispatch the battery against the monthly peak.
 - **Open improvements (its own framing):** (1) the perfect-foresight LP stays an explicit
@@ -618,12 +814,33 @@ source describes qualitatively rather than as a single number.
   level and recovers **~99% of the drift-induced cost at +0.05 and beyond**; honest scope:
   the drift is a synthetic brightness stand-in, and the refit window is assumed
   verified-clean and free — verification labour and recalibration downtime are uncosted.
+  **Severity grading** finally asks whether every escape costs the same: each defective
+  part carries a **measured severity index** — the total absolute intensity its injection
+  displaced (`sum |defective − clean|`, recorded at generation time, *no detector
+  involved*) — cut at **8** and **15** into **minor 43 parts (29%) / major 72 (48%) /
+  critical 35 (23%)** and priced at an illustrative **EUR 10 / 35 / 140**. Two findings,
+  both reported: **grading changes the bill long before it changes the decision** — the
+  recommended operating point does not move (**score ≥ 0.0217, 0.45% of parts pulled**)
+  because the zero-false-reject cliff pins it, and a critical escape would have to be
+  priced at **EUR 259 (7.4× the flat rate)** before the reject rate jumps to 1.83%; and
+  **the expensive grade is the one the screen sees worst** (critical ROC-AUC **0.706** vs
+  **0.819** for major and 0.746 for minor, because **22 of the 35 critical parts are
+  texture-breaks**, the class nothing detects well). The bill rises **368 → 509 EUR per
+  1,000 parts (+39%)**, **63%** of it from **2.3 critical escapes**; re-pricing the same
+  grade *mix* to a mean of 35 EUR gives **340 EUR — 7% below** the flat model, so the rise
+  is the shape of the mix, not its level. The cut points and the three prices are
+  illustrative labelled constants, the grade mix is this generator's mix (a real line's
+  comes from its own defect log), and the index is a synthetic-image proxy for "how much
+  material the mark disturbs" — not a customer-severity model; what *is* measured is the
+  index, every per-grade detection rate and every AUC.
   59 tests, two full runs bit-identical.
 - **Visualizations:** `figures/gallery.png` (per-method heatmaps), `figures/roc_pr.png`,
   `figures/per_type_auc.png`; `figures/recalibration.svg` (the four responses costed per
-  drift level); `deliverables/qa_defect_report.pdf` (9-page) and
+  drift level); `figures/severity.svg` (the graded ledger under the same threshold sweep);
+  `deliverables/qa_defect_report.pdf` (10-page) and
   `deliverables/qa_defect_metrics.xlsx` (incl. every raw score so the curves can be
-  re-derived, plus a Recalibration sheet).
+  re-derived, plus Recalibration and Severity sheets; the `deliverables/` tree is
+  generated rather than committed).
 - **Use case:** a visual QA station deciding whether a deep model earns its keep over the
   boring methods before anyone ships a neural network — then watching the line for drift.
 - **Open improvements (its own framing):** (1) the autoencoder is untuned — a better recipe
@@ -664,7 +881,7 @@ source describes qualitatively rather than as a single number.
   three-qubit mode would need a different visual language; (2) lessons could link out to
   exercises, kept offline-first.
 
-## 19. logistics-flow-studio — Logistics & Optimization (WarehouseTwin — WMS + Plant Simulator, v3.19)
+## 19. logistics-flow-studio — Logistics & Optimization (WarehouseTwin — WMS + Plant Simulator, v3.24)
 
 - **What it is:** an offline, browser-based warehouse / WMS digital twin and plant-flow
   simulator (WarehouseTwin) — hand-written HTML/CSS/JS, no build step, fully offline,
@@ -707,12 +924,66 @@ source describes qualitatively rather than as a single number.
   verified at every node, tank fill horizons computed analytically (free volume ÷ net
   inflow), and the bottleneck pipe, curtailed supply and starved mixers named in plain
   language — a steady-state analytical model, **modelled, not measured**, and explicitly
-  **NOT CFD or hydraulics** (no pressure, viscosity, head loss or pump curves). **45
+  **NOT CFD or hydraulics** (no pressure, viscosity, head loss or pump curves). **49
   headless verification harnesses** (`test/run-all.mjs`, no stubs) plus an **in-browser
-  self-test (112/112)** back every documented behaviour.
+  self-test (149/149)** back every documented behaviour.
+- **The plant now reads like a working shift (v3.21–v3.24)** — four releases that changed
+  what the canvas *shows*, not what it computes, shipped as strictly read-only drawing
+  layers. **v3.21 industrial material identity** (`floor.js`): a poured-concrete slab with
+  a deterministic exposed-aggregate speckle baked into an 8 m repeating tile, **saw-cut
+  control joints on the real ~5 m bay**, **100 mm safety-yellow aisle lines** with
+  stencilled travel arrows, **75 mm white zone borders** and a **150 mm black/yellow hazard
+  hatch** on every dock apron, and **51 element types** re-toned off the blueprint ramp onto
+  real materials — orange-red painted rack uprights on **galvanised steel beams whatever the
+  uprights are painted**, machine gray with safety-orange guards, wooden pallets and kraft
+  cartons (console ink measured at **11.3:1 / 5.3:1**, indicator LEDs at **≥ 3:1** as
+  non-text UI). **v3.22 living workers** (`workers.js`): every manned element is staffed by
+  an articulated **1.75 m** figure placed by two-link IK, whose pose is a *pure function of
+  that element and the sim tick* — a picker walks with a real alternating gait and
+  counter-swinging arms, **bends into the rack face** (deep at a floor-level face, barely a
+  lean at a chest-level one), straightens **with a kraft carton in its hands** and carries it
+  back; a packer sweeps a tape gun **one-handed** over the bench; a staging worker carries
+  and places; a dock worker **raises a handheld and scans** — in EN ISO 20471-family hi-vis
+  with a deliberately **neutral head: no skin tone, no gender, no identity is modelled**,
+  legible at **7 px**, culled below the glyph tier and **capped at 64** figures. **v3.23
+  physical goods** (`goods.js`): a wrapped **EUR pallet-load** off the inbound trailer
+  becomes a **kraft carton** when the put-away station depalletises it, a moulded **plastic
+  tote** when it is picked and a taped, labelled **parcel** when it is packed — the form
+  changes exactly where the sim's own FIFO server does the work, **one MU stays one MU** so
+  flowsim's spawned == in-flight + completed invariant is untouched, and units ride the
+  **belt top**, the **RGV/AGV deck** and the **forklift tines** (a reach truck's forks raise
+  with the load and come back down empty), follow the belt **round the bend**, and queue
+  **nose-to-tail** one unit length plus a bumper gap along the sim's own route; rack stock
+  moves through the **existing** deterministic fill pattern, clamped inside its own bound —
+  no second inventory model, no new number. **v3.24 the working shift** (`shift.js`):
+  forklifts take a load at the bay, **drive out along the aisle in the direction the sim's
+  own plan routes material** (the haul lane marched against the real layout at half-cell
+  steps, stopping about half a truck short of whatever blocks it — so a truck drives an
+  *aisle*, never through a rack), raise the forks, place the pallet, turn and come back with
+  the empty, in a closed loop **continuous in position, heading and fork height over a
+  4,000-sample sweep**; congestion is an exponential smoother on normalised queue depth,
+  integrated in *sim time* so it is exactly frame-rate invariant, under a **Schmitt trigger**
+  and a **48-tick minimum dwell** — against a queue that crosses its threshold **on every
+  tick for 900 ticks the band changes ZERO times**, while the badge keeps the sim's own raw
+  count; **dock trailers** back onto working doors behind a two-second dwell (shutters up,
+  levellers down, empty pallets on the apron); every stencilled floor arrow is flipped to
+  agree with the direction material actually goes; and an **andon lamp** reads the run as
+  **shape + colour + words**, never colour alone. All four are deterministic (no `Date`, no
+  `Math.random`), LOD-gated and view-culled, and resolve to a legible static frame under
+  `prefers-reduced-motion`. **Honest scope:** these are *rendering* corrections — they
+  change **no number, no model and no export** (capacities, KPIs, compliance outcomes, the
+  IFC path and every saved scenario stay byte-identical); the congestion bands are a
+  **drawing filter over the existing synthetic queue heuristic**, the truck, trailer and
+  handling-unit dimensions are **nominal drawing constants**, the one-worker-per-manned-
+  element roster is a drawing heuristic, and none of it is motion capture, ergonomics, a
+  labour standard, a staffing recommendation, a fleet or duty-cycle model, CAD/BIM or a
+  measurement. Still to do, stated: a truck does not yet steer round a corner, and the
+  docks model no turnaround time and no yard.
 - **Visualizations:** the live canvas floor plan, the animated material flow and the KPI
   cockpit themselves; `docs/img/warehousetwin.png`; compliance highlights, optimizer ghost
-  previews, the pick-travel heatmap and the 2D/3D equipment scene (P toggles the 3D view).
+  previews, the pick-travel heatmap and the 2D/3D equipment scene (P toggles the 3D view) —
+  now over a concrete-and-paint plant floor with workers, physical handling units, hauling
+  forklifts, dock trailers and an andon lamp.
 - **Use case:** experimenting with warehouse layout, slotting, WMS flow, automation and
   standards trade-offs before touching a real hall — a teaching-scale WMS twin and plant
   simulator, **not** a production WMS or a certification.
@@ -859,3 +1130,64 @@ source describes qualitatively rather than as a single number.
   `real`, forecasts `derived`), and if naive wins a demand class, naive is what gets
   reported. Limitations stated: local sibling checkouts only, stdio single-user, first
   forecast call ~10 s.
+
+## 23. logistics-digital-twin — Logistics & Optimization (the OR engine behind the twin)
+
+- **What it is:** the reference operations-research engine the WarehouseTwin app is a
+  front-end to — 3D carton packing (FFD with a CP-SAT optimality check), Hungarian-algorithm
+  slotting, a hand-rolled discrete-event simulation, pick-path routing scored against the
+  exact optimum and order batching — all sharing the same `wt-1` layout format the app uses.
+  Everything is synthetic and deterministic (seed 42).
+- **Measured results:** slotting via linear assignment cuts pick travel **−44.2%**
+  (golden-zone A-occupancy **25% → 100%**, reshuffle break-even **~0.7 days**); container
+  fill **2.0% → 30.2%** (**56 containers saved**, CP-SAT proving the heuristic optimal on
+  the checked instance); the DES modern-vs-legacy run gives **cycle time −76.1%, picker
+  travel −66.5%**. Pick-path routing measures four classic policies against a brute-force
+  **exact optimum** (equivalently Ratliff–Rosenthal single-block): on the optimized layout
+  **return is closest at 27.46 m/order, +3.03% above the 26.65 m optimum**, largest-gap
+  +5.53%, s-shape +7.13%, midpoint +11.01% — and holding the policy fixed, **the
+  velocity-optimized layout routes ~46% shorter than legacy (51.4 → 27.5 m/order)**. Order
+  batching walks every batched tour on the *same* aisle geometry against the same exact
+  optimum (extended with a Held–Karp DP): **savings batching cuts total pick travel 2,692 m
+  → 774 m per shift (−71.3%)** on the optimized layout (26 tours, 6.04 faces/tour) and
+  −72.3% on legacy, so **batching and slotting stack rather than cancel** — and **batching
+  flips the routing recommendation**, tour density rising **2.9 → 6.0** faces and the best
+  executable heuristic moving from return to **largest-gap (+1.24% above optimum)**, the
+  textbook density result measured rather than quoted. **New: the result is drawn on the
+  floor it happens on.** A renderer — *not a new model*: the assignment comes from the
+  Hungarian optimizer, the geometry from `RoutingGeometry`, the drawn waypoints from
+  `routing.heuristic_route`, and every metre from `routing.route_length` /
+  `optimal_route_length` / `batching.batch_route_length`, so **no number on either plate is
+  measured off the drawing** — it is printed because the engine computed it, and the test
+  suite pins each one. Plate 1 (the floor plan) draws six pick aisles on the modelled
+  **5.0 m** pitch between a front and back cross-aisle, a dispatch dock at the corner depot,
+  and **6 × 4 bays × 3 levels** of pallet positions shaded by ABC class, with the A-movers
+  filling the **12 positions nearest the dock (25% → 100%** golden-zone occupancy) and the
+  seeded shift's widest order walked under the recommended `return` policy — **6 pick faces,
+  69.2 m against the 64.4 m exact optimum for those same picks (+7.5%)**, the heuristic's
+  real gap measured per order rather than asserted. Plate 2 (batching before/after) shows the
+  batch that saves the most metres — **orders 44, 76, 87 and 96**: walked separately under
+  `largest-gap` they cost **60.8 + 63.2 + 63.2 + 66.8 = 254.0 m**; on one **4-tote cart** the
+  same ten pick faces cost **66.8 m — −73.7%**, both panels under the same routing policy so
+  the difference is batching alone.
+- **Visualizations:** `docs/img/warehouse_floorplan.svg` (Plate 1, also the repo's README
+  hero) and `docs/img/batching_routes.svg` (Plate 2), regenerated by
+  `python -m logitwin.floorplan`; `docs/img/warehouse_layout.svg` (the velocity-slotted
+  layout, mirrored into this site's `docs/img/`) and `docs/img/slotting_before_after.svg`;
+  `docs/batching_comparison.svg` / `.csv`, `docs/routing_comparison.svg`,
+  `docs/labour_sensitivity.svg`, `docs/slotting_sensitivity.svg` — every SVG hand-built by
+  the engine (no plotting library) and byte-identical across re-runs.
+- **Use case:** the tested analytics core that keeps the operable twin honest — the layer you
+  would harden and re-measure first on real slotting, packing and picking data.
+- **Open improvements (its own framing):** (1) the drawing conventions are stated *on every
+  plate because they are drawing and not model* — the model puts every pick face on the aisle
+  centreline and carries no rack side, depth or wall, rack levels are vertical in reality and
+  collapse to one floor point in the model (drawn as three chips across the rack depth), and
+  only the two modelled dimensions (5.0 m aisle pitch, 1.2 m bay depth) are true to the scale
+  bar; the drawn route is always the **executable heuristic**, because an exact optimum is a
+  length, not a drawn route; (2) single-block layout with a corner depot and **no aisle
+  congestion, one-way flow or middle cross-aisle** — a real floor has all three, so the
+  optimum is exact *only for this metric model*; batching is static/offline and counts travel
+  metres only (tote handling, cart weight, congestion and the time dimension are out of
+  scope), and "exact" means exact per tour *given the batches* — optimal batching is NP-hard
+  above 2 orders per cart (Gademann & van de Velde 2005).
