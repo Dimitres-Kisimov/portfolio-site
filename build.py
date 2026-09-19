@@ -164,13 +164,14 @@ APPROACH_CARDS = [
         "der Festplatte – ohne Server, CDN oder API-Schlüssel.",
     ),
     (
-        "Synthetic data, stated once and everywhere",
-        "Synthetische Daten, einmal und überall genannt",
-        "All figures are measured on synthetic, self-generated data. They "
-        "demonstrate method, not results on any real company's business.",
-        "Alle Zahlen werden auf synthetischen, selbst generierten Daten gemessen. "
-        "Sie demonstrieren die Methode, nicht Ergebnisse aus dem Geschäft eines "
-        "realen Unternehmens.",
+        "Data provenance beside the result",
+        "Datenherkunft direkt am Ergebnis",
+        "Projects distinguish public real datasets, derived results and synthetic "
+        "inputs. Modelled costs and benefits remain estimates, even when the "
+        "transactions underneath are real.",
+        "Die Projekte unterscheiden reale öffentliche Datensätze, abgeleitete "
+        "Ergebnisse und synthetische Eingaben. Modellierte Kosten und Nutzen "
+        "bleiben Schätzungen, auch wenn die zugrunde liegenden Transaktionen real sind.",
     ),
 ]
 
@@ -428,7 +429,7 @@ def render_card(project: dict) -> str:
     tagline_el = bi(tagline, tagline_de, "p", cls="tagline")
     repo_text = bi(UI["repo_link"][0], UI["repo_link"][1], "span")
     return f"""
-        <article class="card" data-role="{esc(role)}" data-category="{esc(category)}">
+        <article class="card" id="project-{esc(project['slug'])}" data-role="{esc(role)}" data-category="{esc(category)}">
           <header class="card-head">
             <h3>{esc(project['name'])}</h3>
             {badge}
@@ -535,6 +536,16 @@ TEMPLATE = """<!doctype html>
       <div class="filters" role="group" aria-label="Filter projects by focus area" data-aria-en="Filter projects by focus area" data-aria-de="Projekte nach Schwerpunkt filtern">
         {filters}
       </div>
+      <div class="project-finder" role="search" aria-label="Find a portfolio project" data-aria-en="Find a portfolio project" data-aria-de="Portfolio-Projekt finden">
+        <div class="project-finder-field">
+          <label for="project-search" data-en="Find a problem, method or tool" data-de="Problem, Methode oder Werkzeug finden">Find a problem, method or tool</label>
+          <input id="project-search" type="search" autocomplete="off" aria-describedby="project-search-hint" />
+          <p id="project-search-hint" data-en="Search both languages, including findings and limitations. Try routing, invoice or Python." data-de="Beide Sprachen durchsuchen, einschließlich Ergebnissen und Grenzen. Zum Beispiel Routing, Rechnung oder Python.">Search both languages, including findings and limitations. Try routing, invoice or Python.</p>
+        </div>
+        <button id="project-reset" class="btn" type="button" data-en="Reset search &amp; filters" data-de="Suche &amp; Filter zurücksetzen">Reset search &amp; filters</button>
+        <p id="project-count" role="status" aria-live="polite" data-en="All projects shown" data-de="Alle Projekte angezeigt">All projects shown</p>
+      </div>
+      <p id="project-empty" class="project-empty" hidden data-en="No projects match. Try a broader term or reset the filters." data-de="Keine passenden Projekte. Versuchen Sie einen allgemeineren Begriff oder setzen Sie die Filter zurück.">No projects match. Try a broader term or reset the filters.</p>
       <div class="grid" id="grid">
         {cards}
       </div>

@@ -35,11 +35,11 @@
       "arc_step": "03",
       "role_tag": "Integration proof",
       "name": "decision-chain",
-      "blurb": "The whole chain reconciles on real data - the hard proof. It takes ONE real dataset (UCI Online Retail II) and runs it through every stage - forecast -> inventory -> slotting -> fulfilment -> routing -> a single reconciled ledger - with 13 cross-stage identities machine-checked to hold, even under demand or cost shocks. The thing no single-silo demo can show: the functions actually agree with each other.",
+      "blurb": "One real UCI Online Retail II dataset through forecasting, inventory, slotting, fulfilment, routing and a reconciled ledger. The committed run checks 13 identities; five additive analyses bring the cross-stage total to 18. Its own evidence drill-down reports GBP 0.00 of GBP 253,427.16 modelled cost as real-anchored. The chain reconciles, but its cost rates remain invented assumptions.",
       "repo_url": "https://github.com/Dimitres-Kisimov/decision-chain",
       "diagram": "chain",
       "role_tag_de": "Integrationsnachweis",
-      "blurb_de": "Die gesamte Kette stimmt auf realen Daten überein – der harte Nachweis. Sie nimmt EIN reales Dataset (UCI Online Retail II) und schickt es durch jede Stufe – Prognose -> Bestand -> Slotting -> Auftragsabwicklung -> Routenplanung -> ein einziges abgestimmtes Ledger – wobei 13 stufenübergreifende Identitäten maschinell auf Gültigkeit geprüft werden, selbst unter Nachfrage- oder Kostenschocks. Das, was keine Einzel-Silo-Demo zeigen kann: dass die Funktionen tatsächlich miteinander übereinstimmen."
+      "blurb_de": "Ein realer UCI-Online-Retail-II-Datensatz durch Prognose, Bestand, Lagerplatzvergabe, Auftragsabwicklung, Tourenplanung und ein abgestimmtes Kostenbuch. Der gespeicherte Lauf prüft 13 Identitäten; fünf ergänzende Analysen erhöhen die stufenübergreifende Gesamtzahl auf 18. Der eigene Evidenz-Drill-down weist GBP 0,00 von GBP 253.427,16 modellierten Kosten als vollständig real verankert aus. Die Kette stimmt überein, doch ihre Kostensätze bleiben erfundene Annahmen."
     },
     {
       "slug": "distributor-intelligence-platform",
@@ -556,7 +556,7 @@
     {
       "name": "doc-extract-agent",
       "slug": "doc-extract-agent",
-      "tagline": "Unstructured business document in, structured record out: a six-stage pipeline that pulls header, line items and cross-checked totals, gated by confidence and business-rule validation - with a cost model that prices every gating policy in euros.",
+      "tagline": "Invoices, delivery notes and RFQ emails in, structured records out: a six-stage pipeline with source-span provenance, confidence and business-rule checks, plus an explicit cost model for review and silent errors.",
       "role": "Job#1 automation",
       "category": "Automation & Agents",
       "stack": [
@@ -597,7 +597,7 @@
         "Built around an LLMProvider interface: set DOCEXTRACT_PROVIDER=anthropic and each stage routes through a real model while the trace/confidence/validation logic stays put."
       ],
       "repo_url": "https://github.com/Dimitres-Kisimov/doc-extract-agent",
-      "tagline_de": "Unstrukturiertes Geschäftsdokument rein, strukturierter Datensatz raus: eine sechsstufige Pipeline, die Kopfdaten, Positionen und gegengeprüfte Summen extrahiert – abgesichert durch ein Konfidenz-Gate und eine Geschäftsregel-Validierung, mit einem Kostenmodell, das jede Gating-Politik in Euro bepreist.",
+      "tagline_de": "Rechnungen, Lieferscheine und Angebotsanfragen hinein, strukturierte Datensätze heraus: eine sechsstufige Pipeline mit Herkunftsnachweisen im Quelltext, Konfidenz- und Geschäftsregelprüfung sowie einem expliziten Kostenmodell für Prüfung und unerkannte Fehler.",
       "category_de": "Automatisierung & Agenten",
       "highlights_de": [
         "Automatisch gebucht wird nur, was gegen die aufsummierten Positionen abstimmt, das Konfidenz-Gate passiert und eine Geschäftsregel-Validierung besteht – der Rest geht an einen Menschen. Verlangt man die Regeln zusätzlich zum Gate, steigt die gemessene Auto-Buchungs-Präzision von 70% auf 87.5%, und die README sagt klar, dass 87.5% nicht 100% sind, und benennt den Multiwährungsfall, den sie weiterhin übersieht.",
@@ -1121,7 +1121,7 @@
       "metrics": [
         {
           "label": "Reconciliation identities",
-          "value": "13/13 artifact PASS + 4 additive",
+          "value": "13/13 artifact PASS + 5 additive",
           "label_de": "Abstimmungsidentitäten"
         },
         {
@@ -1142,6 +1142,7 @@
       ],
       "impact_eur": null,
       "highlights": [
+        "The evidence drill-down adds the 18th cross-stage identity and exposes the limit of reconciliation: GBP 0.00 of GBP 253,427.16 modelled cost is real-anchored. The real transactions do not turn invented rates into measured costs; GBP 20,000.00 has no observed number anywhere in its evidence chain.",
         "Distributors fail at the seams, not inside silos - so stage 6 is the product: a reconciliation ledger of 13 pytest-able identity checks that print both numbers, from cleaned revenue reproduced across two repositories to the penny (GBP 19,643,861.62) and the cost ledger summing to the cent, down to every pick (256,787 lines), carton (70,820) and route drop (4,151) conserved.",
         "Inter-stage sensitivity closes in closed form: a 15th identity proves the arc-elasticity of total cost to a forecast surge equals the holding-cost share exactly - 0.0580 on the committed full run, so a doubling of forecast demand would raise modelled cost-to-serve by 5.80% while every delivered-cost line and the real revenue stay unmoved; additive to the 13 artifact identities, the committed artifact unchanged.",
         "A 16th identity (p) spreads the published cost ledger over every one of the 4,151 real orders under labelled allocation rules (labour by the order's own DES pick minutes, transport by its carton share of its delivery day's CVRP km, facility split equally, holding honestly kept on the SKU plane) and machine-checks that the spread loses nothing and invents nothing - each column reassembles to its ledger line and both planes jointly to the ledger total, to the cent (253,427.16). The distribution is the finding: the costliest 10% of orders carry 59.0% of delivered cost (Gini 0.665), and the 191 orders (4.6%) whose modelled cost exceeds their own real revenue are reported as the model's shape under invented rates - a labelled cost model, never a profit claim.",
@@ -1153,6 +1154,7 @@
       "tagline_de": "Ein reales Dataset durch die gesamte Distributor-Entscheidungskette – bereinigen, prognostizieren, nachbestellen, slotten, kommissionieren, routen, kalkulieren – mit einem Abstimmungs-Ledger, das jede Naht maschinell prüft und den Umsatz über zwei Repositories auf den Penny genau reproduziert.",
       "category_de": "Supply-Chain-Integration",
       "highlights_de": [
+        "Der Evidenz-Drill-down ergänzt die 18. stufenübergreifende Identität und zeigt die Grenze der Abstimmung: Von GBP 253.427,16 modellierten Kosten sind GBP 0,00 vollständig real verankert. Reale Transaktionen machen erfundene Kostensätze nicht zu gemessenen Kosten; GBP 20.000,00 enthalten nirgends in ihrer Evidenzkette einen beobachteten Wert.",
         "Distributoren scheitern an den Nähten, nicht in den Silos – deshalb ist Stufe 6 das Produkt: ein Abstimmungs-Ledger aus 13 pytest-fähigen Identitätsprüfungen, die beide Zahlen ausgeben, vom über zwei Repositories auf den Penny reproduzierten bereinigten Umsatz (GBP 19,643,861.62) bis zum auf den Cent aufgehenden Kosten-Ledger, hinunter zu jedem erhaltenen Pick (256,787 Zeilen), Karton (70,820) und Routen-Stopp (4,151).",
         "Die stufenübergreifende Sensitivität schließt sich in geschlossener Form: Eine 15. Identität beweist, dass die Bogenelastizität der Gesamtkosten gegenüber einem Prognoseschub exakt dem Lagerkostenanteil entspricht – 0.0580 im committeten Vollauf, sodass eine Verdopplung der prognostizierten Nachfrage die modellierten Cost-to-Serve um 5.80% erhöhen würde, während jede Zustellkostenzeile und der reale Umsatz unbewegt bleiben; additiv zu den 13 Artefakt-Identitäten, das committete Artefakt unverändert.",
         "Eine 16. Identität (p) verteilt das veröffentlichte Kosten-Ledger über jeden der 4,151 realen Aufträge nach gekennzeichneten Zuordnungsregeln (Arbeitszeit nach den DES-Pickminuten des Auftrags, Transport nach seinem Kartonanteil an den CVRP-Kilometern seines Liefertags, Fixkosten gleichverteilt, Lagerhaltung ehrlich auf der SKU-Ebene belassen) und prüft maschinell, dass die Verteilung nichts verliert und nichts erfindet – jede Spalte setzt sich auf ihre Ledger-Zeile zurück zusammen und beide Ebenen gemeinsam auf die Ledger-Gesamtsumme, auf den Cent (253,427.16). Die Verteilung ist der Befund: Die teuersten 10% der Aufträge tragen 59.0% der Zustellkosten (Gini 0.665), und die 191 Aufträge (4.6%), deren modellierte Kosten ihren eigenen realen Umsatz übersteigen, werden als Form des Modells unter erfundenen Kostensätzen berichtet – ein gekennzeichnetes Kostenmodell, nie eine Gewinnaussage.",

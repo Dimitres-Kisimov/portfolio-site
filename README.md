@@ -37,6 +37,12 @@ To change the site, edit `data/projects.json` (or the template in `build.py`) an
 
 ## Bilingual (EN + DE, same URL)
 
+The project finder searches names, methods, tools, findings and limitations in both
+languages at once. Search terms combine with the existing focus-area filters; the
+result count and empty state explain what is visible, and Reset restores the full
+catalogue. Every project's evidence remains expanded. Stable `#project-<slug>`
+anchors let reviewers link directly to an individual project.
+
 The site is fully bilingual on a single URL. Every visible string — UI chrome, project
 descriptions, the SVG pipeline diagram, screen-reader strings (`aria-label`s and image `alt`
 texts) — ships in English **and** German inside the page as paired `data-en` / `data-de`
@@ -107,9 +113,11 @@ pushing.
 
 ## Honesty
 
-All figures on the site and in the docs are measured on **synthetic, self-generated data** (the
-one exception, FlyHash, uses public MNIST and is labelled). They demonstrate method, not results
-on any real company's business. Any mention of Würth or Schwarz/Lidl/Kaufland is independent
+Data provenance is project-specific: public real datasets (including UCI Online Retail II
+and MNIST), derived results, and synthetic inputs are labelled in the catalogue. Real
+transaction inputs do not make assumed cost rates measured facts. The featured
+decision-chain summary preserves that distinction and its adverse evidence finding.
+Any mention of Würth or Schwarz/Lidl/Kaufland is independent
 analysis of public information only — not affiliated with, endorsed by, or using internal data
 from those companies. No superlatives, no "state-of-the-art" claims.
 

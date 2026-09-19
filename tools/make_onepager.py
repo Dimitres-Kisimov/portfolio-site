@@ -78,8 +78,8 @@ def build_pdf() -> Path:
     y -= 0.14 / PAGE_H
 
     # --- Grouped project rows ------------------------------------------
-    group_h = 0.34 / PAGE_H
-    row_h = 0.315 / PAGE_H
+    group_h = 0.17 / PAGE_H
+    row_h = 0.29 / PAGE_H
     for role, label in ROLE_LABELS.items():
         group = [p for p in projects if p["role"] == role]
         if not group:
@@ -87,15 +87,17 @@ def build_pdf() -> Path:
         y -= group_h
         fig.text(left, y, label.upper(), fontsize=8.5, fontweight="bold",
                  color=MUTED)
-        y -= 0.10 / PAGE_H
+        y -= 0.07 / PAGE_H
         rule(y)
         for project in group:
             y -= row_h
             metric = project["metrics"][0]
-            fig.text(left, y, project["name"], fontsize=10,
+            fig.text(left, y, project["name"], fontsize=9,
                      fontweight="bold", color=INK)
-            fig.text(right, y, f"{metric['label']}:  {metric['value']}",
-                     fontsize=9.5, color=INK, ha="right")
+            fig.text(left, y - 0.13 / PAGE_H,
+                     f"{metric['label']}:  {metric['value']}",
+                     fontsize=8, color=MUTED, parse_math=False)
+        y -= 0.13 / PAGE_H
 
     # --- Footer ---------------------------------------------------------
     y_foot = 0.74 / PAGE_H

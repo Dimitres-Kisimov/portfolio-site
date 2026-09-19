@@ -25,19 +25,53 @@
   var filters = document.querySelectorAll(".filter");
   var cards = document.querySelectorAll(".card");
   var langButtons = document.querySelectorAll(".lang-btn");
+  var projectSearch = document.getElementById("project-search");
+  var activeFilter = "all";
+  function normalise(value) {
+    return value.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/ß/g, "ss");
+  }
+  // Index both languages once, before language switching changes visible text.
+  // Hidden-by-filter cards remain searchable, including all negative findings.
+  var searchIndex = Array.from(cards).map(function (card) {
+    var words = [card.textContent];
+    card.querySelectorAll("[data-en], [data-de]").forEach(function (node) {
+      words.push(node.getAttribute("data-en") || "", node.getAttribute("data-de") || "");
+    });
+    return normalise(words.join(" "));
+  });
 
   // ---- 1. Project filter ------------------------------------------------
   function applyFilter(value) {
-    cards.forEach(function (card) {
-      var match = value === "all" || card.getAttribute("data-role") === value;
+    activeFilter = value;
+    var terms = normalise(projectSearch ? projectSearch.value : "").trim().split(/\s+/).filter(Boolean);
+    var visible = 0;
+    cards.forEach(function (card, index) {
+      var match = (value === "all" || card.getAttribute("data-role") === value) &&
+        terms.every(function (term) { return searchIndex[index].indexOf(term) !== -1; });
       card.classList.toggle("is-hidden", !match);
+      if (match) visible++;
     });
     filters.forEach(function (btn) {
       var active = btn.getAttribute("data-filter") === value;
       btn.classList.toggle("is-active", active);
       btn.setAttribute("aria-pressed", active ? "true" : "false");
     });
+    var count = document.getElementById("project-count");
+    if (count) {
+      count.setAttribute("data-en", visible + " of " + cards.length + " projects shown");
+      count.setAttribute("data-de", visible + " von " + cards.length + " Projekten angezeigt");
+      count.textContent = count.getAttribute("data-" + currentLang);
+    }
+    var empty = document.getElementById("project-empty");
+    if (empty) empty.hidden = visible !== 0;
   }
+  if (projectSearch) projectSearch.addEventListener("input", function () { applyFilter(activeFilter); });
+  var reset = document.getElementById("project-reset");
+  if (reset) reset.addEventListener("click", function () {
+    if (projectSearch) projectSearch.value = "";
+    applyFilter("all");
+    if (projectSearch) projectSearch.focus();
+  });
 
   filters.forEach(function (btn) {
     btn.addEventListener("click", function () {
@@ -100,6 +134,7 @@
 
     // The JS-built chart carries a translated unit suffix, so rebuild it.
     buildChart();
+    applyFilter(activeFilter);
   }
 
   langButtons.forEach(function (btn) {
